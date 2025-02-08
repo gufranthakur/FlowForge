@@ -66,6 +66,7 @@ public abstract class Node extends JInternalFrame {
     public void connectTo(Node target) {
         this.outputNode = target;
         target.inputNode = this;
+        flowPanel.repaint();
     }
 
     public void drawConnection(Graphics2D g) {
@@ -104,7 +105,7 @@ public abstract class Node extends JInternalFrame {
 
     public Point getOutputPoint() {
 
-            return new Point(getX() + getWidth(), getY() + getHeight()/2);
+        return new Point(getX() + getWidth(), getY() + getHeight()/2);
 
     }
 

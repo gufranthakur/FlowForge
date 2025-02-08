@@ -26,5 +26,6 @@ public class PrintNode extends Node{
     public void execute() {
         System.out.println("print node executed");
         flowPanel.flowForge.console.print(textField.getText());
+        if (outputNode != null) this.outputNode.execute();
     }
 }

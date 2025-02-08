@@ -113,7 +113,8 @@ public class ControlPanel {
                 super.mouseClicked(e);
                 DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) functionsTree.getLastSelectedPathComponent();
                 if (selectedNode.getUserObject().equals("Print")) {
-                    flowForge.flowPanel.add(new PrintNode("Print", flowForge.flowPanel));
+                    flowForge.flowPanel.addNode(new PrintNode("Print", flowForge.flowPanel));
+
                 }
             }
         });

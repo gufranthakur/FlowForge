@@ -20,7 +20,7 @@ public class FlowForge extends JFrame {
     public Color errorTheme = new Color(198, 17, 17);
 
     public FlowForge() {
-        this.setTitle("flowforge.FlowForge");
+        this.setTitle("FlowForge");
         this.setSize(1200, 700);
         this.setLocationRelativeTo(null);
         this.setLayout(new BorderLayout());
