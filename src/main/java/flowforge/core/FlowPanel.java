@@ -7,13 +7,21 @@ import flowforge.nodes.StartNode;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class FlowPanel extends JDesktopPane {
     public FlowForge flowForge;
     public StartNode startNode;
     private Node sourceNode;
-    private List<Node> nodes = new ArrayList<>();  // Store nodes instead of connections
+    private Node externalSourceNode;
+
+    private List<Node> nodes = new ArrayList<>();
+
+    public HashMap<String, Integer> integers = new HashMap<>(20);
+    public HashMap<String, String> strings = new HashMap<>(20);
+    public HashMap<String, Boolean> booleans = new HashMap<>(20);
+    public HashMap<String, Float> floats = new HashMap<>(20);
 
     public FlowPanel(FlowForge flowForge) {
         this.flowForge = flowForge;
@@ -61,4 +69,22 @@ public class FlowPanel extends JDesktopPane {
             node.drawConnection(g2d);
         }
     }
+
+    public int getNodeAmount() {
+        return nodes.size();
+    }
+
+    public void addVariable(String varName) {
+        integers.put(varName, 0);
+        if (flowForge.controlPanel.variableBox.getSelectedItem().equals("Integer")) {
+            integers.put(varName, 0);
+        } else if (flowForge.controlPanel.variableBox.getSelectedItem().equals("String")) {
+            strings.put(varName, "");
+        } else if (flowForge.controlPanel.variableBox.getSelectedItem().equals("Boolean")) {
+            booleans.put(varName, false);
+        } else if (flowForge.controlPanel.variableBox.getSelectedItem().equals("Float")) {
+            floats.put(varName, 0.0f);
+        }
+    }
+
 }

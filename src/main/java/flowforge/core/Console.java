@@ -23,7 +23,11 @@ public class Console {
     }
 
     public void print(String value) {
-        consoleTextPane.setText(value);
+        consoleTextPane.setText(consoleTextPane.getText() + value + "\n");
+    }
+
+    public void clear() {
+        consoleTextPane.setText("");
     }
 
     public JPanel getRootPanel() {

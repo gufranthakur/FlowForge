@@ -22,6 +22,7 @@ public class FlowForge extends JFrame {
     public FlowForge() {
         this.setTitle("FlowForge");
         this.setSize(1200, 700);
+        this.setExtendedState(MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
         this.setLayout(new BorderLayout());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

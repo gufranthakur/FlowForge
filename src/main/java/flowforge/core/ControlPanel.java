@@ -4,13 +4,16 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.fonts.inter.FlatInterFont;
 import flowforge.FlowForge;
 import flowforge.nodes.PrintNode;
+import flowforge.nodes.VariableNode;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class ControlPanel {
     private JPanel rootPanel;
@@ -21,7 +24,7 @@ public class ControlPanel {
     private JPanel nodesListPanel;
     private JPanel variableControlPanel;
     private JTextField variableNameField;
-    private JComboBox variableBox;
+    public JComboBox variableBox;
     private JScrollPane variableScrollPanel;
     private JPanel variableListPanel;
     private JPanel executePanel;
@@ -59,8 +62,6 @@ public class ControlPanel {
         stopButton.setEnabled(false);
 
         searchField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Search...");
-
-        variableNameField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Variable name");
 
         for (String s : Arrays.asList("Integer", "String", "Boolean", "Float")) {
             variableBox.addItem(s);
@@ -114,13 +115,39 @@ public class ControlPanel {
                 DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) functionsTree.getLastSelectedPathComponent();
                 if (selectedNode.getUserObject().equals("Print")) {
                     flowForge.flowPanel.addNode(new PrintNode("Print", flowForge.flowPanel));
-
                 }
             }
         });
 
-        addButton.addActionListener(e -> {
+        variableTree.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) variableTree.getLastSelectedPathComponent();
+                DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) selectedNode.getParent();
 
+                if (selectedNode.getUserObject().equals("Integers") || selectedNode.getUserObject().equals("Strings")
+                || selectedNode.getUserObject().equals("Booleans") || selectedNode.getUserObject().equals("Floats")) {
+                    return;
+                }
+                String variableName = (String) selectedNode.getUserObject();
+                if (parentNode.getUserObject().equals("Integers")) {
+                    flowForge.flowPanel.addNode(new VariableNode(variableName, flowForge.flowPanel, 0));
+                } else if (parentNode.getUserObject().equals("Strings")) {
+                    flowForge.flowPanel.addNode(new VariableNode(variableName, flowForge.flowPanel, ""));
+                } else if (parentNode.getUserObject().equals("Booleans")) {
+                    flowForge.flowPanel.addNode(new VariableNode(variableName, flowForge.flowPanel, false));
+                }
+
+            }
+        });
+
+        addButton.addActionListener(e -> {
+            String variableName = JOptionPane.showInputDialog("Enter variable name");
+            flowForge.flowPanel.addVariable(variableName);
+
+            loadVariables();
+            refreshTree();
         });
     }
 
@@ -145,7 +172,49 @@ public class ControlPanel {
         variableListPanel.add(variableTree, BorderLayout.CENTER);
     }
 
+    private void loadVariables() {
 
+        integerNode.removeAllChildren();
+        stringNode.removeAllChildren();
+        floatNode.removeAllChildren();
+        booleanNode.removeAllChildren();
+
+        for (String key : flowForge.flowPanel.integers.keySet()) {
+            DefaultMutableTreeNode node = new DefaultMutableTreeNode();
+            node.setUserObject(key);
+            integerNode.add(node);
+        }
+        for (String key : flowForge.flowPanel.strings.keySet()) {
+            DefaultMutableTreeNode node = new DefaultMutableTreeNode();
+            node.setUserObject(key);
+            stringNode.add(node);
+        }
+        for (String key : flowForge.flowPanel.booleans.keySet()) {
+            DefaultMutableTreeNode node = new DefaultMutableTreeNode();
+            node.setUserObject(key);
+            booleanNode.add(node);
+        }
+        for (String key : flowForge.flowPanel.floats.keySet()) {
+            DefaultMutableTreeNode node = new DefaultMutableTreeNode();
+            node.setUserObject(key);
+            floatNode.add(node);
+        }
+    }
+
+    private void refreshTree() {
+        java.util.Enumeration<javax.swing.tree.TreePath> expanded = variableTree.getExpandedDescendants(new javax.swing.tree.TreePath(root));
+
+        DefaultTreeModel model = (DefaultTreeModel) variableTree.getModel();
+        model.reload();
+
+        if (expanded != null) {
+            while (expanded.hasMoreElements()) {
+                javax.swing.tree.TreePath treePath = expanded.nextElement();
+                variableTree.expandPath(treePath);
+            }
+        }
+        variableTree.expandRow(0);
+    }
 
     public JPanel getRootPanel() {
         return rootPanel;
