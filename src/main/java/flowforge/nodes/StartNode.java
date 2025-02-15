@@ -15,11 +15,12 @@ public class StartNode extends Node{
         this.flowPanel = flowPanel;
 
         inputButton.setVisible(false);
-
+        inputXButton.setVisible(false);
+        outputXButton.setVisible(false);
 
         contentPanel.add(outputButton, BorderLayout.CENTER);
 
-        this.setSize(150, 70);
+        this.setSize(150, 90);
         this.setLocation(20, 300);
     }
 

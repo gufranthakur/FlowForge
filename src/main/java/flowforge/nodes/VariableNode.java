@@ -10,9 +10,9 @@ public class VariableNode extends Node{
     private FlowPanel flowPanel;
     public JTextField textField;
 
-    public String stringValue;
-    public Integer intValue;
-    public Boolean booleanValue;
+    private String stringValue;
+    private Integer intValue;
+    private Boolean booleanValue;
 
     public VariableNode(String title, FlowPanel flowPanel, String stringValue) {
         super(title, flowPanel);
@@ -61,5 +61,29 @@ public class VariableNode extends Node{
     @Override
     public void execute() {
 
+    }
+
+    public String getStringValue() {
+        return stringValue;
+    }
+
+    public void setStringValue(String stringValue) {
+        this.stringValue = stringValue;
+    }
+
+    public Integer getIntValue() {
+        return intValue;
+    }
+
+    public void setIntValue(Integer intValue) {
+        this.intValue = intValue;
+    }
+
+    public Boolean getBooleanValue() {
+        return booleanValue;
+    }
+
+    public void setBooleanValue(Boolean booleanValue) {
+        this.booleanValue = booleanValue;
     }
 }

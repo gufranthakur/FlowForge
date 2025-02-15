@@ -17,9 +17,9 @@ public class PrintNode extends Node{
         outputButton.setVisible(true);
 
         textField = new JTextField();
+        topPanel.add(textField);
 
-
-        contentPanel.add(textField, BorderLayout.NORTH);
+        this.setSize(200, 140);
     }
 
     @Override

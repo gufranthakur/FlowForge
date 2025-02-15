@@ -14,9 +14,8 @@ public class FlowPanel extends JDesktopPane {
     public FlowForge flowForge;
     public StartNode startNode;
     private Node sourceNode;
-    private Node externalSourceNode;
 
-    private List<Node> nodes = new ArrayList<>();
+    public List<Node> nodes = new ArrayList<>();
 
     public HashMap<String, Integer> integers = new HashMap<>(20);
     public HashMap<String, String> strings = new HashMap<>(20);
@@ -48,6 +47,18 @@ public class FlowPanel extends JDesktopPane {
         }
     }
 
+    public void startXConnection(Node node) {
+        sourceNode = node;
+    }
+
+    public void finishXConnection(Node targetNode) {
+        if (sourceNode != null && sourceNode != targetNode) {
+            sourceNode.connectToX(targetNode);
+            sourceNode = null;
+            return;
+        }
+    }
+
     public void removeNode(Node node) {
         nodes.remove(node);
         this.remove(node);
@@ -64,9 +75,9 @@ public class FlowPanel extends JDesktopPane {
 
         g2d.setStroke(new BasicStroke(2.0f));
 
-
         for (Node node : nodes) {
             node.drawConnection(g2d);
+            node.drawXConnection(g2d);
         }
     }
 
