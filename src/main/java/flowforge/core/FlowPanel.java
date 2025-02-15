@@ -86,7 +86,6 @@ public class FlowPanel extends JDesktopPane {
     }
 
     public void addVariable(String varName) {
-        integers.put(varName, 0);
         if (flowForge.controlPanel.variableBox.getSelectedItem().equals("Integer")) {
             integers.put(varName, 0);
         } else if (flowForge.controlPanel.variableBox.getSelectedItem().equals("String")) {

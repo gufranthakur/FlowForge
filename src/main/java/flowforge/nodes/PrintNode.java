@@ -25,14 +25,14 @@ public class PrintNode extends Node{
     @Override
     public void execute() {
         System.out.println("print node executed");
-        flowPanel.flowForge.console.print(textField.getText());
-        for (Node nodes : outputNodes) {
-            if (nodes != null) nodes.execute();
-        }
 
-        for (Node nodes : inputNodes) {
-            if (nodes instanceof VariableNode) {
-                flowPanel.flowForge.console.print(((VariableNode) nodes).textField.getText());
+        if (inputXNode != null && inputXNode instanceof VariableNode) {
+            flowPanel.flowForge.console.print(((VariableNode) inputXNode).getStringValue());
+            System.out.println("Printed from variable node");
+        } else {
+            flowPanel.flowForge.console.print(textField.getText());
+            for (Node nodes : outputNodes) {
+                if (nodes != null) nodes.execute();
             }
         }
 

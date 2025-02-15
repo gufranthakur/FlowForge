@@ -4,7 +4,9 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.fonts.inter.FlatInterFont;
 import flowforge.FlowForge;
 import flowforge.nodes.PrintNode;
-import flowforge.nodes.VariableNode;
+import flowforge.nodes.variables.BooleanNode;
+import flowforge.nodes.variables.IntegerNode;
+import flowforge.nodes.variables.StringNode;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -13,7 +15,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
-import java.util.Objects;
 
 public class ControlPanel {
     private JPanel rootPanel;
@@ -124,19 +125,18 @@ public class ControlPanel {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) variableTree.getLastSelectedPathComponent();
-                DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) selectedNode.getParent();
 
-                if (selectedNode.getUserObject().equals("Integers") || selectedNode.getUserObject().equals("Strings")
-                || selectedNode.getUserObject().equals("Booleans") || selectedNode.getUserObject().equals("Floats")) {
-                    return;
-                }
-                String variableName = (String) selectedNode.getUserObject();
-                if (parentNode.getUserObject().equals("Integers")) {
-                    flowForge.flowPanel.addNode(new VariableNode(variableName, flowForge.flowPanel, 0));
-                } else if (parentNode.getUserObject().equals("Strings")) {
-                    flowForge.flowPanel.addNode(new VariableNode(variableName, flowForge.flowPanel, ""));
-                } else if (parentNode.getUserObject().equals("Booleans")) {
-                    flowForge.flowPanel.addNode(new VariableNode(variableName, flowForge.flowPanel, false));
+                if (selectedNode.getParent() != null) {
+                    DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) selectedNode.getParent();
+
+                    String variableName = (String) selectedNode.getUserObject();
+                    if (parentNode.getUserObject().equals("Integers")) {
+                        flowForge.flowPanel.addNode(new IntegerNode(variableName, flowForge.flowPanel, 0));
+                    } else if (parentNode.getUserObject().equals("Strings")) {
+                        flowForge.flowPanel.addNode(new StringNode(variableName, flowForge.flowPanel, ""));
+                    } else if (parentNode.getUserObject().equals("Booleans")) {
+                        flowForge.flowPanel.addNode(new BooleanNode(variableName, flowForge.flowPanel, false));
+                    }
                 }
 
             }
