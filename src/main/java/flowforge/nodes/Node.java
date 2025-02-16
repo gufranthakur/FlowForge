@@ -159,7 +159,7 @@ public abstract class Node extends JInternalFrame {
             drawGradientLine(g, start, end, new Color(253, 243, 46), new Color(37, 205, 71));
         }
     }
-    private void drawGradientLine(Graphics2D g, Point start, Point end, Color startColor, Color endColor) {
+    public void drawGradientLine(Graphics2D g, Point start, Point end, Color startColor, Color endColor) {
         GradientPaint gp = new GradientPaint(start.x, start.y, startColor, end.x, end.y, endColor);
         g.setPaint(gp);
         g.drawLine(start.x, start.y, end.x, end.y);

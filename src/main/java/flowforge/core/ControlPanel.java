@@ -4,7 +4,7 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.fonts.inter.FlatInterFont;
 import flowforge.FlowForge;
 import flowforge.nodes.PrintNode;
-import flowforge.nodes.logics.ifelseNode;
+import flowforge.nodes.logics.BranchNode;
 import flowforge.nodes.variables.BooleanNode;
 import flowforge.nodes.variables.IntegerNode;
 import flowforge.nodes.variables.StringNode;
@@ -120,7 +120,7 @@ public class ControlPanel {
                 DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) functionsTree.getLastSelectedPathComponent();
                 switch (selectedNode.getUserObject().toString()) {
                     case "Print" : flowForge.flowPanel.addNode(new PrintNode("Print", flowForge.flowPanel));
-                    case "If-else" : flowForge.flowPanel.addNode(new ifelseNode("If-else", flowForge.flowPanel));
+                    case "If-else" : flowForge.flowPanel.addNode(new BranchNode("If-else", flowForge.flowPanel));
                 }
 
             }
