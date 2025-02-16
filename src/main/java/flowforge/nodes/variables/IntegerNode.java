@@ -8,33 +8,45 @@ import java.awt.*;
 
 public class IntegerNode extends Node {
     private FlowPanel flowPanel;
-    public JTextField textField;
-
-    private Integer intValue;
+    public JSpinner spinner;
 
     public IntegerNode(String title, FlowPanel flowPanel, Integer intValue) {
         super(title, flowPanel);
         this.flowPanel = flowPanel;
-        this.intValue = intValue;
-        this.setSize(200, 80);
+        this.setSize(170, 90);
 
-        textField = new JTextField();
+        JPanel wrapperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        spinner = new JSpinner();
 
-        inputButton.setText("Set");
-        outputButton.setText("Get");
-        contentPanel.add(textField, BorderLayout.CENTER);
+        inputButton.setVisible(false);
+        outputButton.setVisible(false);
+
+        inputXButton.setText("Set");
+        outputXButton.setText("Get");
+
+        wrapperPanel.add(spinner);
+        contentPanel.add(wrapperPanel, BorderLayout.NORTH);
     }
 
     @Override
     public void execute() {
+        for (Node node : inputXNodes) {
+            if (node != null) {
+                setIntValue((Integer) spinner.getValue());
+            }
+        }
 
+        for (Node nodes : outputNodes) {
+            if (nodes != null) nodes.execute();
+        }
     }
 
     public Integer getIntValue() {
-        return intValue;
+        return flowPanel.integers.get(title);
     }
 
     public void setIntValue(Integer intValue) {
-        this.intValue = intValue;
+        flowPanel.integers.put(title, intValue);
+        System.out.println(flowPanel.integers);
     }
 }

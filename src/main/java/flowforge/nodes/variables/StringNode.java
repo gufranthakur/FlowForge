@@ -1,5 +1,6 @@
 package flowforge.nodes.variables;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import flowforge.core.FlowPanel;
 import flowforge.nodes.Node;
 
@@ -14,18 +15,24 @@ public class StringNode extends Node {
     public StringNode(String title, FlowPanel flowPanel, String stringValue) {
         super(title, flowPanel);
         this.flowPanel = flowPanel;
-        this.setSize(120, 30);
+        this.setSize(260, 100);
 
+        JPanel wrapperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         textField = new JTextField();
+        textField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Set value...");
+        textField.setPreferredSize(new Dimension(150, 30));
+
+
 
         inputButton.setVisible(false);
         outputButton.setVisible(false);
 
         inputXButton.setText("Set");
         outputXButton.setText("Get");
-        contentPanel.add(textField, BorderLayout.CENTER);
 
-        this.setSize(260, 90);
+        wrapperPanel.add(textField);
+        contentPanel.add(wrapperPanel, BorderLayout.NORTH);
+
     }
 
     @Override

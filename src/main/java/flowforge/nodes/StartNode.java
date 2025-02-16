@@ -24,22 +24,18 @@ public class StartNode extends Node{
         this.setLocation(20, 300);
     }
 
+    public void print(String message) {
+        flowPanel.flowForge.console.print(message);
+    }
+
     @Override
     public void execute() {
         flowPanel.flowForge.console.clear();
-        flowPanel.flowForge.console.print("Program Execution started");
-        flowPanel.flowForge.console.print("Total nodes : " + flowPanel.getNodeAmount());
+        print("Program Execution started");
+        print("Total nodes : " + flowPanel.getNodeAmount());
 
-        for (Node outputXNode : outputXNodes) {
-            if (outputXNode != null) outputXNode.execute();
-        }
-        for (Node outputNode : outputNodes) {
-            if (outputNode == null) {
-                flowPanel.flowForge.console.print("WARNING : No node is connected to the start node" );
-            } else {
-                outputNode.execute();
-            }
-        }
+        for (Node outputXNode : outputXNodes) if (outputXNode != null) outputXNode.execute();
+        for (Node outputNode : outputNodes) outputNode.execute();
 
     }
 }

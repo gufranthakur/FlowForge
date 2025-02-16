@@ -4,6 +4,7 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.fonts.inter.FlatInterFont;
 import flowforge.FlowForge;
 import flowforge.nodes.PrintNode;
+import flowforge.nodes.logics.ifelseNode;
 import flowforge.nodes.variables.BooleanNode;
 import flowforge.nodes.variables.IntegerNode;
 import flowforge.nodes.variables.StringNode;
@@ -39,7 +40,7 @@ public class ControlPanel {
     private JTree functionsTree;
     private DefaultMutableTreeNode root;
     private DefaultMutableTreeNode commonNode, basicNode, arithmeticNode, arduinoNode;
-    private DefaultMutableTreeNode print, add, subtract, multiply, divide;
+    private DefaultMutableTreeNode print, ifelse, add, subtract, multiply, divide;
 
     private JTree variableTree;
     private DefaultMutableTreeNode variableRoot;
@@ -74,9 +75,12 @@ public class ControlPanel {
 
     public void initFunctionNodes() {
         commonNode = new DefaultMutableTreeNode("Common");
-        print = new DefaultMutableTreeNode("Print");
+
 
         basicNode = new DefaultMutableTreeNode("Basic");
+        print = new DefaultMutableTreeNode("Print");
+        ifelse = new DefaultMutableTreeNode("If-else");
+
 
         arithmeticNode = new DefaultMutableTreeNode("Arithmetic");
         add = new DefaultMutableTreeNode("Add");
@@ -114,9 +118,11 @@ public class ControlPanel {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) functionsTree.getLastSelectedPathComponent();
-                if (selectedNode.getUserObject().equals("Print")) {
-                    flowForge.flowPanel.addNode(new PrintNode("Print", flowForge.flowPanel));
+                switch (selectedNode.getUserObject().toString()) {
+                    case "Print" : flowForge.flowPanel.addNode(new PrintNode("Print", flowForge.flowPanel));
+                    case "If-else" : flowForge.flowPanel.addNode(new ifelseNode("If-else", flowForge.flowPanel));
                 }
+
             }
         });
 
