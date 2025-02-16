@@ -1,11 +1,15 @@
 package flowforge;
 
+import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import flowforge.core.Console;
 import flowforge.core.ControlPanel;
 import flowforge.core.FlowPanel;
+import flowforge.nodes.Node;
 
 import javax.swing.*;
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.awt.*;
 
 public class FlowForge extends JFrame {
@@ -26,7 +30,6 @@ public class FlowForge extends JFrame {
         this.setLocationRelativeTo(null);
         this.setLayout(new BorderLayout());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
     }
 
     public void init() {
@@ -34,10 +37,11 @@ public class FlowForge extends JFrame {
 
         flowPanel = new FlowPanel(this);
 
+
         controlPanel = new ControlPanel(this);
         controlPanel.init();
 
-        loop = new Timer(50, e -> {
+        loop = new Timer(16, e -> {
             flowPanel.repaint();
         });
 
@@ -62,9 +66,10 @@ public class FlowForge extends JFrame {
 
     public void stop() {
         System.out.println("Stopped");
+        console.getRootPanel().setVisible(false);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)  {
         FlatMacDarkLaf.setup();
         SwingUtilities.invokeLater(() -> {
             FlowForge flowForge = new FlowForge();

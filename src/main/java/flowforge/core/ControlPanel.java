@@ -126,7 +126,7 @@ public class ControlPanel {
                 super.mouseClicked(e);
                 DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) variableTree.getLastSelectedPathComponent();
 
-                if (selectedNode.getParent() != null) {
+                if (selectedNode != null && selectedNode.getParent() != null) {
                     DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) selectedNode.getParent();
 
                     String variableName = (String) selectedNode.getUserObject();

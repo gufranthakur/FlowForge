@@ -11,16 +11,12 @@ public class StringNode extends Node {
     private FlowPanel flowPanel;
     public JTextField textField;
 
-    private String stringValue;
-
     public StringNode(String title, FlowPanel flowPanel, String stringValue) {
         super(title, flowPanel);
         this.flowPanel = flowPanel;
-        this.stringValue = stringValue;
         this.setSize(120, 30);
 
         textField = new JTextField();
-        textField.addActionListener(e -> setStringValue(textField.getText()));
 
         inputButton.setVisible(false);
         outputButton.setVisible(false);
@@ -29,22 +25,30 @@ public class StringNode extends Node {
         outputXButton.setText("Get");
         contentPanel.add(textField, BorderLayout.CENTER);
 
-        this.setSize(260, 60);
+        this.setSize(260, 90);
     }
 
     @Override
     public void execute() {
+
+        for (Node node : inputXNodes) {
+            if (node != null) {
+                setStringValue(textField.getText());
+            }
+        }
+
         for (Node nodes : outputNodes) {
             if (nodes != null) nodes.execute();
         }
     }
 
     public String getStringValue() {
-        return stringValue;
+        return flowPanel.strings.get(title);
     }
 
     public void setStringValue(String stringValue) {
-        this.stringValue = stringValue;
+        flowPanel.strings.put(title, stringValue);
+        System.out.println(flowPanel.strings);
     }
 
 }

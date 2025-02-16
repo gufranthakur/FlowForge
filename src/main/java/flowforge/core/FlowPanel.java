@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class FlowPanel extends JDesktopPane {
+public class FlowPanel extends JDesktopPane{
     public FlowForge flowForge;
     public StartNode startNode;
     private Node sourceNode;
@@ -55,7 +55,6 @@ public class FlowPanel extends JDesktopPane {
         if (sourceNode != null && sourceNode != targetNode) {
             sourceNode.connectToX(targetNode);
             sourceNode = null;
-            return;
         }
     }
 

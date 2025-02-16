@@ -10,19 +10,21 @@ import java.util.ArrayList;
 
 public abstract class Node extends JInternalFrame {
     private FlowPanel flowPanel;
+
     public ArrayList<Node> inputNodes = new ArrayList<>();
     public ArrayList<Node> outputNodes = new ArrayList<>();
-
-    public Node inputXNode;
-    public Node outputXNode;
+    public ArrayList<Node> inputXNodes = new ArrayList<>();
+    public ArrayList<Node> outputXNodes = new ArrayList<>();
 
     public JRadioButton inputButton;
     public JRadioButton outputButton;
     public JRadioButton inputXButton;
     public JRadioButton outputXButton;
     public JButton resetConnectionsButton;
+
     public JPanel contentPanel;
     public JPanel topPanel;
+    public JPanel outputsPanel;
 
     public Node(String title, FlowPanel flowPanel) {
         super(title, true, true, false, false);
@@ -37,7 +39,7 @@ public abstract class Node extends JInternalFrame {
         setLocation(300, 300);
 
         topPanel = new JPanel();
-        JPanel outputsPanel = new JPanel();
+        outputsPanel = new JPanel();
         JPanel inputsPanel = new JPanel();
 
         inputButton = new JRadioButton("Input");
@@ -138,8 +140,8 @@ public abstract class Node extends JInternalFrame {
     }
 
     public void connectToX(Node target) {
-        this.outputXNode = target;
-        target.inputXNode = this;
+        this.outputXNodes.add(target);
+        target.inputXNodes.add(this);
         flowPanel.repaint();
     }
 
@@ -151,13 +153,11 @@ public abstract class Node extends JInternalFrame {
         }
     }
     public void drawXConnection(Graphics2D g) {
-        if (outputXNode != null) {
+        for (Node output : outputXNodes) {
             Point start = getOutputXPoint();
-            Point end = outputXNode.getInputXPoint();
+            Point end = output.getInputXPoint();
             drawGradientLine(g, start, end, new Color(253, 243, 46), new Color(37, 205, 71));
         }
-
-
     }
     private void drawGradientLine(Graphics2D g, Point start, Point end, Color startColor, Color endColor) {
         GradientPaint gp = new GradientPaint(start.x, start.y, startColor, end.x, end.y, endColor);
@@ -173,11 +173,22 @@ public abstract class Node extends JInternalFrame {
             output.inputNodes.remove(this);
         }
 
+        for (Node input : inputXNodes) {
+            input.outputXNodes.remove(this);
+        }
+
+        for (Node output : outputXNodes) {
+            output.inputXNodes.remove(this);
+        }
+
         inputNodes.clear();
         outputNodes.clear();
 
-        outputXNode = null;
-        inputXNode = null;
+        inputButton.setSelected(false);
+        outputButton.setSelected(false);
+        inputXButton.setSelected(false);
+        outputXButton.setSelected(false);
+
 
     }
 
