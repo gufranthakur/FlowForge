@@ -1,7 +1,7 @@
 package flowforge.nodes.flownodes.logicgates;
 
 import com.formdev.flatlaf.fonts.inter.FlatInterFont;
-import flowforge.core.MainPanel;
+import flowforge.core.ProgramPanel;
 import flowforge.nodes.Node;
 import flowforge.nodes.variables.BooleanNode;
 
@@ -11,13 +11,13 @@ import java.awt.*;
 public class LogicGateNode extends Node {
 
     private JLabel label;
-    private MainPanel mainPanel;
+    private ProgramPanel programPanel;
     private boolean result = false;
     private String gateType;
 
-    public LogicGateNode(String title, MainPanel mainPanel, String gateType) {
-        super(title, mainPanel);
-        this.mainPanel = mainPanel;
+    public LogicGateNode(String title, ProgramPanel programPanel, String gateType) {
+        super(title, programPanel);
+        this.programPanel = programPanel;
         this.gateType = gateType.toUpperCase();
 
         label = new JLabel(gateType);

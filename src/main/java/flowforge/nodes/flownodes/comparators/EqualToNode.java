@@ -1,7 +1,7 @@
 package flowforge.nodes.flownodes.comparators;
 
 import com.formdev.flatlaf.fonts.inter.FlatInterFont;
-import flowforge.core.MainPanel;
+import flowforge.core.ProgramPanel;
 import flowforge.nodes.Node;
 import flowforge.nodes.variables.BooleanNode;
 import flowforge.nodes.variables.IntegerNode;
@@ -12,12 +12,12 @@ import java.awt.*;
 
 public class EqualToNode extends Node {
 
-    private MainPanel mainPanel;
+    private ProgramPanel programPanel;
     private boolean isEqual = false;
 
-    public EqualToNode(String title, MainPanel mainPanel) {
-        super(title, mainPanel);
-        this.mainPanel = mainPanel;
+    public EqualToNode(String title, ProgramPanel programPanel) {
+        super(title, programPanel);
+        this.programPanel = programPanel;
         JLabel label = new JLabel(title);
         label.setFont(new Font(FlatInterFont.FAMILY, Font.PLAIN, 28));
         label.setHorizontalAlignment(SwingConstants.CENTER);

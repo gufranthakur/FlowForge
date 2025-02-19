@@ -3,7 +3,7 @@ package flowforge;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import flowforge.core.Console;
 import flowforge.core.ControlPanel;
-import flowforge.core.MainPanel;
+import flowforge.core.ProgramPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,9 +15,9 @@ public class FlowForge extends JFrame {
     public Console console;
     public Timer loop;
 
-    public JPanel mainPanelContainer;
+    public JPanel programPanelContainer;
     public ControlPanel controlPanel;
-    public MainPanel mainPanel;
+    public ProgramPanel programPanel;
 
     public Color theme = new Color(26, 77, 236);
     public Color errorTheme = new Color(198, 17, 17);
@@ -34,12 +34,12 @@ public class FlowForge extends JFrame {
     public void init() {
         console = new Console(this);
 
-        mainPanelContainer = new JPanel(null);
-        mainPanel = new MainPanel(this);
-        mainPanel.addMouseListener(new MouseAdapter() {
+        programPanelContainer = new JPanel(null);
+        programPanel = new ProgramPanel(this);
+        programPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                mainPanel.requestFocusInWindow();
+                programPanel.requestFocusInWindow();
             }
         });
 
@@ -47,8 +47,8 @@ public class FlowForge extends JFrame {
         controlPanel.init();
 
         loop = new Timer(5, e -> {
-            mainPanel.repaint();
-            mainPanel.moveCamera();
+            programPanel.repaint();
+            programPanel.moveCamera();
 
         });
 
@@ -57,10 +57,10 @@ public class FlowForge extends JFrame {
     public void addComponent() {
         controlPanel.addComponent();
 
-        mainPanelContainer.add(mainPanel);
+        programPanelContainer.add(programPanel);
 
         this.add(controlPanel.getRootPanel(), BorderLayout.WEST);
-        this.add(mainPanelContainer, BorderLayout.CENTER);
+        this.add(programPanelContainer, BorderLayout.CENTER);
         this.add(console.getRootPanel(), BorderLayout.SOUTH);
 
         this.setVisible(true);
@@ -69,7 +69,7 @@ public class FlowForge extends JFrame {
     }
 
     public void run() {
-        mainPanel.startNode.execute();
+        programPanel.startNode.execute();
         console.getRootPanel().setVisible(true);
     }
 

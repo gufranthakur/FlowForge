@@ -1,6 +1,6 @@
 package flowforge.nodes.flownodes;
 
-import flowforge.core.MainPanel;
+import flowforge.core.ProgramPanel;
 import flowforge.nodes.Node;
 import flowforge.nodes.flownodes.comparators.*;
 import flowforge.nodes.flownodes.logicgates.LogicGateNode;
@@ -16,8 +16,8 @@ public class BranchNode extends Node {
     private ArrayList<Node> trueNodes = new ArrayList<>();
     private ArrayList<Node> falseNodes = new ArrayList<>();
 
-    public BranchNode(String title, MainPanel mainPanel) {
-        super(title, mainPanel);
+    public BranchNode(String title, ProgramPanel programPanel) {
+        super(title, programPanel);
         this.setSize(200, 100);
         this.pack();
 
@@ -31,22 +31,22 @@ public class BranchNode extends Node {
         outputXButton.setVisible(false);
 
         outputButton.addActionListener(e -> {
-            for (Node node : mainPanel.nodes) {
+            for (Node node : programPanel.nodes) {
                 node.inputXButton.setEnabled(false);
                 node.outputXButton.setEnabled(false);
             }
             if (outputButton.isSelected()) {
-                mainPanel.startConnection(this);
+                programPanel.startConnection(this);
             }
         });
 
         outputFalseButton.addActionListener(e -> {
-            for (Node node : mainPanel.nodes) {
+            for (Node node : programPanel.nodes) {
                 node.inputXButton.setEnabled(false);
                 node.outputXButton.setEnabled(false);
             }
             if (outputFalseButton.isSelected()) {
-                mainPanel.startConnection(this);
+                programPanel.startConnection(this);
             }
         });
 

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainPanel extends JDesktopPane implements KeyListener {
+public class ProgramPanel extends JDesktopPane implements Runnable, KeyListener {
 
     public FlowForge flowForge;
     public StartNode startNode;
@@ -29,11 +29,11 @@ public class MainPanel extends JDesktopPane implements KeyListener {
     private int cameraX, cameraY;
     private int cameraSpeed = 5;
 
-    public MainPanel(FlowForge flowForge) {
+    public ProgramPanel(FlowForge flowForge) {
         this.flowForge = flowForge;
         this.setLocation(0, 0);
         this.setSize(3000, 3000);
-        this.setBackground(new Color(20, 20, 20));
+        this.setBackground(new Color(35, 35, 35));
         this.addKeyListener(this);
         setDoubleBuffered(true);
 
@@ -136,5 +136,10 @@ public class MainPanel extends JDesktopPane implements KeyListener {
         if (e.getKeyChar() == 's') isDown = false;
         if (e.getKeyChar() == 'a') isLeft = false;
         if (e.getKeyChar() == 'd') isRight = false;
+    }
+
+    @Override
+    public void run() {
+
     }
 }

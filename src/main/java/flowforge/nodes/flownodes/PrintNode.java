@@ -1,7 +1,7 @@
 package flowforge.nodes.flownodes;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import flowforge.core.MainPanel;
+import flowforge.core.ProgramPanel;
 import flowforge.nodes.Node;
 import flowforge.nodes.flownodes.comparators.*;
 import flowforge.nodes.flownodes.logicgates.LogicGateNode;
@@ -14,11 +14,11 @@ import javax.swing.*;
 public class PrintNode extends Node {
 
     private final JTextField textField;
-    private final MainPanel mainPanel;
+    private final ProgramPanel programPanel;
 
-    public PrintNode(String title, MainPanel mainPanel) {
-        super(title, mainPanel);
-        this.mainPanel = mainPanel;
+    public PrintNode(String title, ProgramPanel programPanel) {
+        super(title, programPanel);
+        this.programPanel = programPanel;
         outputButton.setVisible(true);
 
         textField = new JTextField();
@@ -30,7 +30,7 @@ public class PrintNode extends Node {
     }
 
     public void print(String text) {
-        mainPanel.flowForge.console.print(text);
+        programPanel.flowForge.console.print(text);
     }
 
     @Override

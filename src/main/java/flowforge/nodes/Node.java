@@ -1,6 +1,6 @@
 package flowforge.nodes;
 
-import flowforge.core.MainPanel;
+import flowforge.core.ProgramPanel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -11,7 +11,7 @@ import java.awt.geom.Path2D;
 import java.util.ArrayList;
 
 public abstract class Node extends JInternalFrame {
-    private MainPanel mainPanel;
+    private ProgramPanel programPanel;
 
     public ArrayList<Node> inputNodes = new ArrayList<>();
     public ArrayList<Node> outputNodes = new ArrayList<>();
@@ -29,9 +29,9 @@ public abstract class Node extends JInternalFrame {
     public JPanel outputsPanel;
     public JPanel inputsPanel;
 
-    public Node(String title, MainPanel mainPanel) {
+    public Node(String title, ProgramPanel programPanel) {
         super(title, true, true, false, false);
-        this.mainPanel = mainPanel;
+        this.programPanel = programPanel;
         loadUI();
         loadActionListeners();
     }
@@ -80,48 +80,48 @@ public abstract class Node extends JInternalFrame {
 
     private void loadActionListeners() {
         inputButton.addActionListener(e -> {
-            for (Node node : mainPanel.nodes) {
+            for (Node node : programPanel.nodes) {
                 node.inputXButton.setEnabled(true);
                 node.outputXButton.setEnabled(true);
             }
             if (inputButton.isSelected()) {
-                mainPanel.finishConnection(Node.this);
+                programPanel.finishConnection(Node.this);
             }
         });
 
         outputButton.addActionListener(e -> {
-            for (Node node : mainPanel.nodes) {
+            for (Node node : programPanel.nodes) {
                 node.inputXButton.setEnabled(false);
                 node.outputXButton.setEnabled(false);
             }
             if (outputButton.isSelected()) {
-                mainPanel.startConnection(this);
+                programPanel.startConnection(this);
             }
         });
 
         inputXButton.addActionListener(e -> {
-            for (Node node : mainPanel.nodes) {
+            for (Node node : programPanel.nodes) {
                 node.inputButton.setEnabled(true);
                 node.outputButton.setEnabled(true);
             }
             if (inputXButton.isSelected()) {
-                mainPanel.finishXConnection(Node.this);
+                programPanel.finishXConnection(Node.this);
             }
         });
 
         outputXButton.addActionListener(e -> {
-            for (Node node : mainPanel.nodes) {
+            for (Node node : programPanel.nodes) {
                 node.inputButton.setEnabled(false);
                 node.outputButton.setEnabled(false);
             }
             if(outputXButton.isSelected()) {
-                mainPanel.startXConnection(this);
+                programPanel.startXConnection(this);
             }
         });
 
         resetConnectionsButton.addActionListener(e -> {
             disconnectAll();
-            for (Node node : mainPanel.nodes) {
+            for (Node node : programPanel.nodes) {
                 node.inputButton.setEnabled(true);
                 node.outputButton.setEnabled(true);
                 node.inputXButton.setEnabled(true);
@@ -132,7 +132,7 @@ public abstract class Node extends JInternalFrame {
         addInternalFrameListener(new InternalFrameAdapter() {
             @Override
             public void internalFrameClosing(InternalFrameEvent e) {
-                mainPanel.removeNode(Node.this);
+                programPanel.removeNode(Node.this);
                 disconnectAll();
             }
         });
@@ -141,13 +141,13 @@ public abstract class Node extends JInternalFrame {
     public void connectTo(Node target) {
         this.outputNodes.add(target);
         target.inputNodes.add(this);
-        mainPanel.repaint();
+        programPanel.repaint();
     }
 
     public void connectToX(Node target) {
         this.outputXNodes.add(target);
         target.inputXNodes.add(this);
-        mainPanel.repaint();
+        programPanel.repaint();
     }
 
     public void drawConnection(Graphics2D g) {

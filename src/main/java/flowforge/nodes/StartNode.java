@@ -1,18 +1,18 @@
 package flowforge.nodes;
 
-import flowforge.core.MainPanel;
+import flowforge.core.ProgramPanel;
 
 import java.awt.*;
 
 public class StartNode extends Node{
 
-    private MainPanel mainPanel;
+    private ProgramPanel programPanel;
 
-    public StartNode(String title, MainPanel mainPanel) {
-        super(title, mainPanel);
+    public StartNode(String title, ProgramPanel programPanel) {
+        super(title, programPanel);
         this.setClosable(false);
         this.setResizable(false);
-        this.mainPanel = mainPanel;
+        this.programPanel = programPanel;
 
         inputButton.setVisible(false);
         inputXButton.setVisible(false);
@@ -25,14 +25,14 @@ public class StartNode extends Node{
     }
 
     public void print(String message) {
-        mainPanel.flowForge.console.print(message);
+        programPanel.flowForge.console.print(message);
     }
 
     @Override
     public void execute() {
-        mainPanel.flowForge.console.clear();
+        programPanel.flowForge.console.clear();
         print("Program Execution started");
-        print("Total nodes : " + mainPanel.getNodeAmount());
+        print("Total nodes : " + programPanel.getNodeAmount());
 
         for (Node outputXNode : outputXNodes) if (outputXNode != null) outputXNode.execute();
         for (Node outputNode : outputNodes) outputNode.execute();

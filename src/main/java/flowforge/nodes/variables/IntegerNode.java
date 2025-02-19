@@ -1,18 +1,18 @@
 package flowforge.nodes.variables;
 
-import flowforge.core.MainPanel;
+import flowforge.core.ProgramPanel;
 import flowforge.nodes.Node;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class IntegerNode extends Node {
-    private MainPanel mainPanel;
+    private ProgramPanel programPanel;
     public JSpinner spinner;
 
-    public IntegerNode(String title, MainPanel mainPanel, Integer intValue) {
-        super(title, mainPanel);
-        this.mainPanel = mainPanel;
+    public IntegerNode(String title, ProgramPanel programPanel, Integer intValue) {
+        super(title, programPanel);
+        this.programPanel = programPanel;
         this.setSize(170, 90);
 
         JPanel wrapperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -42,11 +42,11 @@ public class IntegerNode extends Node {
     }
 
     public Integer getIntValue() {
-        return mainPanel.integers.get(title);
+        return programPanel.integers.get(title);
     }
 
     public void setIntValue(Integer intValue) {
-        mainPanel.integers.put(title, intValue);
-        System.out.println(mainPanel.integers);
+        programPanel.integers.put(title, intValue);
+        System.out.println(programPanel.integers);
     }
 }
