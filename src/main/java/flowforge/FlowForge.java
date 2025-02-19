@@ -1,15 +1,11 @@
 package flowforge;
 
-import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
-import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import flowforge.core.Console;
 import flowforge.core.ControlPanel;
-import flowforge.core.FlowPanel;
-import flowforge.nodes.Node;
+import flowforge.core.MainPanel;
 
 import javax.swing.*;
-import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.awt.*;
 
 public class FlowForge extends JFrame {
@@ -17,8 +13,9 @@ public class FlowForge extends JFrame {
     public Console console;
     public Timer loop;
 
+    public JPanel mainPanelContainer;
     public ControlPanel controlPanel;
-    public FlowPanel flowPanel;
+    public MainPanel mainPanel;
 
     public Color theme = new Color(26, 77, 236);
     public Color errorTheme = new Color(198, 17, 17);
@@ -35,14 +32,16 @@ public class FlowForge extends JFrame {
     public void init() {
         console = new Console(this);
 
-        flowPanel = new FlowPanel(this);
-
+        mainPanelContainer = new JPanel(null);
+        mainPanel = new MainPanel(this);
 
         controlPanel = new ControlPanel(this);
         controlPanel.init();
 
-        loop = new Timer(16, e -> {
-            flowPanel.repaint();
+        loop = new Timer(5, e -> {
+            mainPanel.repaint(); mainPanel.requestFocus();
+            mainPanel.moveCamera();
+
         });
 
     }
@@ -50,8 +49,10 @@ public class FlowForge extends JFrame {
     public void addComponent() {
         controlPanel.addComponent();
 
+        mainPanelContainer.add(mainPanel);
+
         this.add(controlPanel.getRootPanel(), BorderLayout.WEST);
-        this.add(flowPanel, BorderLayout.CENTER);
+        this.add(mainPanelContainer, BorderLayout.CENTER);
         this.add(console.getRootPanel(), BorderLayout.SOUTH);
 
         this.setVisible(true);
@@ -60,7 +61,7 @@ public class FlowForge extends JFrame {
     }
 
     public void run() {
-        flowPanel.startNode.execute();
+        mainPanel.startNode.execute();
         console.getRootPanel().setVisible(true);
     }
 

@@ -1,21 +1,19 @@
 package flowforge.nodes.variables;
 
-import com.formdev.flatlaf.FlatClientProperties;
-import flowforge.core.FlowPanel;
+import flowforge.core.MainPanel;
 import flowforge.nodes.Node;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class BooleanNode extends Node {
 
-    private FlowPanel flowPanel;
+    private MainPanel mainPanel;
     public JCheckBox checkBox;
 
-    public BooleanNode(String title, FlowPanel flowPanel, Boolean booleanValue) {
-        super(title, flowPanel);
-        this.flowPanel = flowPanel;
+    public BooleanNode(String title, MainPanel mainPanel, Boolean booleanValue) {
+        super(title, mainPanel);
+        this.mainPanel = mainPanel;
         this.setSize(240, 70);
 
         checkBox = new JCheckBox("Set value : False");
@@ -56,11 +54,11 @@ public class BooleanNode extends Node {
     }
 
     public Boolean getBooleanValue() {
-        return flowPanel.booleans.get(title);
+        return mainPanel.booleans.get(title);
     }
 
     public void setBooleanValue(Boolean booleanValue) {
-        flowPanel.booleans.put(title, booleanValue);
-        System.out.println(flowPanel.booleans);
+        mainPanel.booleans.put(title, booleanValue);
+        System.out.println(mainPanel.booleans);
     }
 }

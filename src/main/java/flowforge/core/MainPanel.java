@@ -6,11 +6,14 @@ import flowforge.nodes.StartNode;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class FlowPanel extends JDesktopPane{
+public class MainPanel extends JDesktopPane implements KeyListener {
+
     public FlowForge flowForge;
     public StartNode startNode;
     private Node sourceNode;
@@ -22,9 +25,19 @@ public class FlowPanel extends JDesktopPane{
     public HashMap<String, Boolean> booleans = new HashMap<>(20);
     public HashMap<String, Float> floats = new HashMap<>(20);
 
-    public FlowPanel(FlowForge flowForge) {
+    private boolean isUp, isDown, isLeft, isRight;
+    private int cameraX, cameraY;
+    private int cameraSpeed = 5;
+
+    public MainPanel(FlowForge flowForge) {
         this.flowForge = flowForge;
+        this.setLocation(0, 0);
+        this.setSize(3000, 3000);
+        this.addKeyListener(this);
         setDoubleBuffered(true);
+
+        cameraX = 0;
+        cameraY = 0;
 
         startNode = new StartNode("Start", this);
         addNode(startNode);
@@ -64,6 +77,13 @@ public class FlowPanel extends JDesktopPane{
         repaint();
     }
 
+    public void moveCamera() {
+        if (isUp) this.setLocation(this.getX(), this.getY() + cameraSpeed);
+        if (isDown) this.setLocation(this.getX(), this.getY() - cameraSpeed);
+        if (isLeft) this.setLocation(this.getX() + cameraSpeed, this.getY());
+        if (isRight) this.setLocation(this.getX() - cameraSpeed, this.getY());
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -96,4 +116,24 @@ public class FlowPanel extends JDesktopPane{
         }
     }
 
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyChar() == 'w') isUp = true;
+        if (e.getKeyChar() == 's') isDown = true;
+        if (e.getKeyChar() == 'a') isLeft = true;
+        if (e.getKeyChar() == 'd') isRight = true;
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if (e.getKeyChar() == 'w') isUp = false;
+        if (e.getKeyChar() == 's') isDown = false;
+        if (e.getKeyChar() == 'a') isLeft = false;
+        if (e.getKeyChar() == 'd') isRight = false;
+    }
 }

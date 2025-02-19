@@ -1,15 +1,16 @@
 package flowforge.nodes;
 
-import flowforge.core.FlowPanel;
+import flowforge.core.MainPanel;
 
 import javax.swing.*;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import java.awt.*;
+import java.awt.geom.Path2D;
 import java.util.ArrayList;
 
 public abstract class Node extends JInternalFrame {
-    private FlowPanel flowPanel;
+    private MainPanel mainPanel;
 
     public ArrayList<Node> inputNodes = new ArrayList<>();
     public ArrayList<Node> outputNodes = new ArrayList<>();
@@ -27,9 +28,9 @@ public abstract class Node extends JInternalFrame {
     public JPanel outputsPanel;
     public JPanel inputsPanel;
 
-    public Node(String title, FlowPanel flowPanel) {
+    public Node(String title, MainPanel mainPanel) {
         super(title, true, true, false, false);
-        this.flowPanel = flowPanel;
+        this.mainPanel = mainPanel;
         loadUI();
         loadActionListeners();
     }
@@ -76,48 +77,48 @@ public abstract class Node extends JInternalFrame {
 
     private void loadActionListeners() {
         inputButton.addActionListener(e -> {
-            for (Node node : flowPanel.nodes) {
+            for (Node node : mainPanel.nodes) {
                 node.inputXButton.setEnabled(true);
                 node.outputXButton.setEnabled(true);
             }
             if (inputButton.isSelected()) {
-                flowPanel.finishConnection(Node.this);
+                mainPanel.finishConnection(Node.this);
             }
         });
 
         outputButton.addActionListener(e -> {
-            for (Node node : flowPanel.nodes) {
+            for (Node node : mainPanel.nodes) {
                 node.inputXButton.setEnabled(false);
                 node.outputXButton.setEnabled(false);
             }
             if (outputButton.isSelected()) {
-                flowPanel.startConnection(this);
+                mainPanel.startConnection(this);
             }
         });
 
         inputXButton.addActionListener(e -> {
-            for (Node node : flowPanel.nodes) {
+            for (Node node : mainPanel.nodes) {
                 node.inputButton.setEnabled(true);
                 node.outputButton.setEnabled(true);
             }
             if (inputXButton.isSelected()) {
-                flowPanel.finishXConnection(Node.this);
+                mainPanel.finishXConnection(Node.this);
             }
         });
 
         outputXButton.addActionListener(e -> {
-            for (Node node : flowPanel.nodes) {
+            for (Node node : mainPanel.nodes) {
                 node.inputButton.setEnabled(false);
                 node.outputButton.setEnabled(false);
             }
             if(outputXButton.isSelected()) {
-                flowPanel.startXConnection(this);
+                mainPanel.startXConnection(this);
             }
         });
 
         resetConnectionsButton.addActionListener(e -> {
             disconnectAll();
-            for (Node node : flowPanel.nodes) {
+            for (Node node : mainPanel.nodes) {
                 node.inputButton.setEnabled(true);
                 node.outputButton.setEnabled(true);
                 node.inputXButton.setEnabled(true);
@@ -128,7 +129,7 @@ public abstract class Node extends JInternalFrame {
         addInternalFrameListener(new InternalFrameAdapter() {
             @Override
             public void internalFrameClosing(InternalFrameEvent e) {
-                flowPanel.removeNode(Node.this);
+                mainPanel.removeNode(Node.this);
                 disconnectAll();
             }
         });
@@ -137,34 +138,72 @@ public abstract class Node extends JInternalFrame {
     public void connectTo(Node target) {
         this.outputNodes.add(target);
         target.inputNodes.add(this);
-        flowPanel.repaint();
+        mainPanel.repaint();
     }
 
     public void connectToX(Node target) {
         this.outputXNodes.add(target);
         target.inputXNodes.add(this);
-        flowPanel.repaint();
+        mainPanel.repaint();
     }
 
     public void drawConnection(Graphics2D g) {
         for (Node output : outputNodes) {
             Point start = getOutputPoint();
             Point end = output.getInputPoint();
-            drawGradientLine(g, start, end, new Color(253, 46, 46), new Color(37, 114, 205));
+            drawCurvedGradientLine(g, start, end, new Color(64, 193, 239), new Color(10, 97, 200));
         }
     }
+
     public void drawXConnection(Graphics2D g) {
         for (Node output : outputXNodes) {
             Point start = getOutputXPoint();
             Point end = output.getInputXPoint();
-            drawGradientLine(g, start, end, new Color(253, 243, 46), new Color(37, 205, 71));
+            drawCurvedGradientLine(g, start, end, new Color(253, 108, 46), new Color(205, 183, 37));
         }
     }
-    public void drawGradientLine(Graphics2D g, Point start, Point end, Color startColor, Color endColor) {
+
+    public void drawCurvedGradientLine(Graphics2D g, Point start, Point end, Color startColor, Color endColor) {
+        // Calculate control points for the cubic curve
+        int dx = end.x - start.x;
+
+        int ctrlX1, ctrlY1, ctrlX2, ctrlY2;
+
+        // Determine if connection is going backward
+        boolean isBackward = end.x < start.x;
+
+        // Calculate horizontal offset for control points (larger offset for backward connections)
+        int offsetX = isBackward ? Math.abs(dx) / 2 + 100 : Math.abs(dx) / 3;
+
+        // Set control points
+        ctrlX1 = start.x + offsetX;
+        ctrlY1 = start.y;
+        ctrlX2 = end.x - offsetX;
+        ctrlY2 = end.y;
+
+        // Create the cubic curve path
+        Path2D path = new Path2D.Float();
+        path.moveTo(start.x, start.y);
+        path.curveTo(ctrlX1, ctrlY1, ctrlX2, ctrlY2, end.x, end.y);
+
+        // Set up gradient paint along the path
         GradientPaint gp = new GradientPaint(start.x, start.y, startColor, end.x, end.y, endColor);
         g.setPaint(gp);
-        g.drawLine(start.x, start.y, end.x, end.y);
+
+        // Save original stroke
+        Stroke originalStroke = g.getStroke();
+
+        // Set line properties
+        g.setStroke(new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+
+        // Draw the path
+        g.draw(path);
+
+        // Restore original stroke
+        g.setStroke(originalStroke);
     }
+
+
 
     public void disconnectAll() {
         for (Node input : inputNodes) {

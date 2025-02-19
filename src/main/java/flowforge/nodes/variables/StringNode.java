@@ -1,7 +1,7 @@
 package flowforge.nodes.variables;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import flowforge.core.FlowPanel;
+import flowforge.core.MainPanel;
 import flowforge.nodes.Node;
 
 import javax.swing.*;
@@ -9,12 +9,12 @@ import java.awt.*;
 
 public class StringNode extends Node {
 
-    private FlowPanel flowPanel;
+    private MainPanel mainPanel;
     public JTextField textField;
 
-    public StringNode(String title, FlowPanel flowPanel, String stringValue) {
-        super(title, flowPanel);
-        this.flowPanel = flowPanel;
+    public StringNode(String title, MainPanel mainPanel, String stringValue) {
+        super(title, mainPanel);
+        this.mainPanel = mainPanel;
         this.setSize(260, 100);
 
         JPanel wrapperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -49,12 +49,12 @@ public class StringNode extends Node {
     }
 
     public String getStringValue() {
-        return flowPanel.strings.get(title);
+        return mainPanel.strings.get(title);
     }
 
     public void setStringValue(String stringValue) {
-        flowPanel.strings.put(title, stringValue);
-        System.out.println(flowPanel.strings);
+        mainPanel.strings.put(title, stringValue);
+        System.out.println(mainPanel.strings);
     }
 
 }

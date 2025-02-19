@@ -1,8 +1,9 @@
 package flowforge.nodes.flownodes;
 
-import flowforge.core.FlowPanel;
+import flowforge.core.MainPanel;
 import flowforge.nodes.Node;
-import flowforge.nodes.flownodes.comparators.EqualToNode;
+import flowforge.nodes.flownodes.comparators.*;
+import flowforge.nodes.flownodes.logicgates.LogicGateNode;
 import flowforge.nodes.variables.BooleanNode;
 
 import javax.swing.*;
@@ -15,8 +16,8 @@ public class BranchNode extends Node {
     private ArrayList<Node> trueNodes = new ArrayList<>();
     private ArrayList<Node> falseNodes = new ArrayList<>();
 
-    public BranchNode(String title, FlowPanel flowPanel) {
-        super(title, flowPanel);
+    public BranchNode(String title, MainPanel mainPanel) {
+        super(title, mainPanel);
         this.setSize(200, 100);
 
         outputFalseButton = new JRadioButton();
@@ -29,22 +30,22 @@ public class BranchNode extends Node {
         outputXButton.setVisible(false);
 
         outputButton.addActionListener(e -> {
-            for (Node node : flowPanel.nodes) {
+            for (Node node : mainPanel.nodes) {
                 node.inputXButton.setEnabled(false);
                 node.outputXButton.setEnabled(false);
             }
             if (outputButton.isSelected()) {
-                flowPanel.startConnection(this);
+                mainPanel.startConnection(this);
             }
         });
 
         outputFalseButton.addActionListener(e -> {
-            for (Node node : flowPanel.nodes) {
+            for (Node node : mainPanel.nodes) {
                 node.inputXButton.setEnabled(false);
                 node.outputXButton.setEnabled(false);
             }
             if (outputFalseButton.isSelected()) {
-                flowPanel.startConnection(this);
+                mainPanel.startConnection(this);
             }
         });
 
@@ -89,8 +90,27 @@ public class BranchNode extends Node {
 
         for (Node node : inputXNodes) {
             if (node != null) {
-                if (node instanceof BooleanNode) condition = ((BooleanNode)node).getBooleanValue();
-                else if (node instanceof EqualToNode) condition = ((EqualToNode) node).getIsEqual();
+                switch (node) {
+                    case BooleanNode booleanNode -> condition = booleanNode.getBooleanValue();
+
+                    case EqualToNode equalToNode -> condition = equalToNode.getIsEqual();
+
+                    case GreaterThanNode greaterThanNode -> condition = greaterThanNode.getIsGreater();
+
+                    case LessThanNode lessThanNode -> condition = lessThanNode.getIsLess();
+
+                    case GreaterThanOrEqualNode greaterThanOrEqualNode -> condition = greaterThanOrEqualNode.getIsGreaterOrEqual();
+
+                    case LessThanOrEqualNode lessThanOrEqualNode -> condition = lessThanOrEqualNode.getIsLessOrEqual();
+
+                    case NotEqualToNode notEqualToNode -> condition = notEqualToNode.getIsNotEqual();
+
+                    case LogicGateNode logicGateNode -> condition = logicGateNode.getResult();
+
+                    default -> {
+                        System.out.println("Error");
+                    }
+                }
             }
         }
 
@@ -115,14 +135,14 @@ public class BranchNode extends Node {
         for (Node node : trueNodes) {
             Point start = getOutputPoint();
             Point end = node.getInputPoint();
-            drawGradientLine(g, start, end, new Color(31, 216, 241), new Color(37, 114, 205));
+            drawCurvedGradientLine(g, start, end, new Color(31, 216, 241), new Color(37, 114, 205));
         }
 
         // Draw False connections
         for (Node node : falseNodes) {
             Point start = getFalseOutputPoint();
             Point end = node.getInputPoint();
-            drawGradientLine(g, start, end, new Color(244, 34, 160), new Color(239, 36, 36));
+            drawCurvedGradientLine(g, start, end, new Color(244, 34, 160), new Color(239, 36, 36));
         }
     }
 

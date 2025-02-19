@@ -125,6 +125,7 @@ public class ControlPanel {
             runButton.setEnabled(false);
 
             flowForge.run();
+
         });
 
         stopButton.addActionListener(e -> {
@@ -132,6 +133,7 @@ public class ControlPanel {
             stopButton.setEnabled(false);
 
             flowForge.stop();
+
         });
 
         functionsTree.addMouseListener(new MouseAdapter() {
@@ -140,33 +142,33 @@ public class ControlPanel {
                 super.mouseClicked(e);
                 DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) functionsTree.getLastSelectedPathComponent();
                 switch (selectedNode.getUserObject().toString()) {
-                    case "Print" : flowForge.flowPanel.addNode(new PrintNode("Print", flowForge.flowPanel));
+                    case "Print" : flowForge.mainPanel.addNode(new PrintNode("Print", flowForge.mainPanel));
                         break;
-                    case "Branch" : flowForge.flowPanel.addNode(new BranchNode("Branch", flowForge.flowPanel));
+                    case "Branch" : flowForge.mainPanel.addNode(new BranchNode("Branch", flowForge.mainPanel));
                         break;
-                    case "Equals to" : flowForge.flowPanel.addNode(new EqualToNode("Equals to", flowForge.flowPanel));
+                    case "Equals to" : flowForge.mainPanel.addNode(new EqualToNode("Equals to", flowForge.mainPanel));
                         break;
-                    case "Greater than" : flowForge.flowPanel.addNode(new GreaterThanNode("Greater than", flowForge.flowPanel));
+                    case "Greater than" : flowForge.mainPanel.addNode(new GreaterThanNode("Greater than", flowForge.mainPanel));
                         break;
-                    case "Less than" : flowForge.flowPanel.addNode(new LessThanNode("Less than", flowForge.flowPanel));
+                    case "Less than" : flowForge.mainPanel.addNode(new LessThanNode("Less than", flowForge.mainPanel));
                         break;
-                    case "Greater than or equal to" : flowForge.flowPanel.addNode(new GreaterThanOrEqualNode("Greater than equal to", flowForge.flowPanel));
+                    case "Greater than or equal to" : flowForge.mainPanel.addNode(new GreaterThanOrEqualNode("Greater than equal to", flowForge.mainPanel));
                         break;
-                    case "Less than or equal to" : flowForge.flowPanel.addNode(new LessThanOrEqualNode("Less than equal to", flowForge.flowPanel));
+                    case "Less than or equal to" : flowForge.mainPanel.addNode(new LessThanOrEqualNode("Less than equal to", flowForge.mainPanel));
                         break;
-                    case "Not equal to" : flowForge.flowPanel.addNode(new NotEqualToNode("Not equal to", flowForge.flowPanel));
+                    case "Not equal to" : flowForge.mainPanel.addNode(new NotEqualToNode("Not equal to", flowForge.mainPanel));
                         break;
-                    case "NOT" : flowForge.flowPanel.addNode(new LogicGateNode("NOT", flowForge.flowPanel, "NOT"));
+                    case "NOT" : flowForge.mainPanel.addNode(new LogicGateNode("NOT", flowForge.mainPanel, "NOT"));
                         break;
-                    case "AND" : flowForge.flowPanel.addNode(new LogicGateNode("AND", flowForge.flowPanel, "AND"));
+                    case "AND" : flowForge.mainPanel.addNode(new LogicGateNode("AND", flowForge.mainPanel, "AND"));
                         break;
-                    case "OR" : flowForge.flowPanel.addNode(new LogicGateNode("OR", flowForge.flowPanel, "OR"));
+                    case "OR" : flowForge.mainPanel.addNode(new LogicGateNode("OR", flowForge.mainPanel, "OR"));
                         break;
-                    case "NAND" : flowForge.flowPanel.addNode(new LogicGateNode("NAND", flowForge.flowPanel, "NAND"));
+                    case "NAND" : flowForge.mainPanel.addNode(new LogicGateNode("NAND", flowForge.mainPanel, "NAND"));
                         break;
-                    case "NOR" : flowForge.flowPanel.addNode(new LogicGateNode("NOR", flowForge.flowPanel, "NOR"));
+                    case "NOR" : flowForge.mainPanel.addNode(new LogicGateNode("NOR", flowForge.mainPanel, "NOR"));
                         break;
-                    case "XOR" : flowForge.flowPanel.addNode(new LogicGateNode("XOR", flowForge.flowPanel, "XOR"));
+                    case "XOR" : flowForge.mainPanel.addNode(new LogicGateNode("XOR", flowForge.mainPanel, "XOR"));
                         break;
                 }
 
@@ -184,11 +186,11 @@ public class ControlPanel {
 
                     String variableName = (String) selectedNode.getUserObject();
                     if (parentNode.getUserObject().equals("Integers")) {
-                        flowForge.flowPanel.addNode(new IntegerNode(variableName, flowForge.flowPanel, 0));
+                        flowForge.mainPanel.addNode(new IntegerNode(variableName, flowForge.mainPanel, 0));
                     } else if (parentNode.getUserObject().equals("Strings")) {
-                        flowForge.flowPanel.addNode(new StringNode(variableName, flowForge.flowPanel, ""));
+                        flowForge.mainPanel.addNode(new StringNode(variableName, flowForge.mainPanel, ""));
                     } else if (parentNode.getUserObject().equals("Booleans")) {
-                        flowForge.flowPanel.addNode(new BooleanNode(variableName, flowForge.flowPanel, false));
+                        flowForge.mainPanel.addNode(new BooleanNode(variableName, flowForge.mainPanel, false));
                     }
                 }
 
@@ -197,7 +199,7 @@ public class ControlPanel {
 
         addButton.addActionListener(e -> {
             String variableName = JOptionPane.showInputDialog("Enter variable name");
-            flowForge.flowPanel.addVariable(variableName);
+            flowForge.mainPanel.addVariable(variableName);
 
             loadVariables();
             refreshTree();
@@ -247,22 +249,22 @@ public class ControlPanel {
         floatNode.removeAllChildren();
         booleanNode.removeAllChildren();
 
-        for (String key : flowForge.flowPanel.integers.keySet()) {
+        for (String key : flowForge.mainPanel.integers.keySet()) {
             DefaultMutableTreeNode node = new DefaultMutableTreeNode();
             node.setUserObject(key);
             integerNode.add(node);
         }
-        for (String key : flowForge.flowPanel.strings.keySet()) {
+        for (String key : flowForge.mainPanel.strings.keySet()) {
             DefaultMutableTreeNode node = new DefaultMutableTreeNode();
             node.setUserObject(key);
             stringNode.add(node);
         }
-        for (String key : flowForge.flowPanel.booleans.keySet()) {
+        for (String key : flowForge.mainPanel.booleans.keySet()) {
             DefaultMutableTreeNode node = new DefaultMutableTreeNode();
             node.setUserObject(key);
             booleanNode.add(node);
         }
-        for (String key : flowForge.flowPanel.floats.keySet()) {
+        for (String key : flowForge.mainPanel.floats.keySet()) {
             DefaultMutableTreeNode node = new DefaultMutableTreeNode();
             node.setUserObject(key);
             floatNode.add(node);
