@@ -1,13 +1,14 @@
-package flowforge.nodes;
+package flowforge.nodes.flownodes;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import flowforge.core.FlowPanel;
+import flowforge.nodes.Node;
 import flowforge.nodes.variables.IntegerNode;
 import flowforge.nodes.variables.StringNode;
 
 import javax.swing.*;
 
-public class PrintNode extends Node{
+public class PrintNode extends Node {
 
     private final JTextField textField;
     private final FlowPanel flowPanel;

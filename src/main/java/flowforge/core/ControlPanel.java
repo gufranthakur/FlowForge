@@ -3,8 +3,10 @@ package flowforge.core;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.fonts.inter.FlatInterFont;
 import flowforge.FlowForge;
-import flowforge.nodes.PrintNode;
-import flowforge.nodes.logics.BranchNode;
+import flowforge.nodes.flownodes.PrintNode;
+import flowforge.nodes.flownodes.BranchNode;
+import flowforge.nodes.flownodes.comparators.*;
+import flowforge.nodes.flownodes.logicgates.LogicGateNode;
 import flowforge.nodes.variables.BooleanNode;
 import flowforge.nodes.variables.IntegerNode;
 import flowforge.nodes.variables.StringNode;
@@ -39,8 +41,11 @@ public class ControlPanel {
 
     private JTree functionsTree;
     private DefaultMutableTreeNode root;
-    private DefaultMutableTreeNode commonNode, basicNode, arithmeticNode, arduinoNode;
-    private DefaultMutableTreeNode print, ifelse, add, subtract, multiply, divide;
+    private DefaultMutableTreeNode commonNode, flowNode, basic, comparators, logicGates, arithmeticNode, arduinoNode;
+    private DefaultMutableTreeNode print, branch, equalto, greaterThan, lessThan,
+            greaterThanEqualTo, lessThanEqualTo, notEqualTo,
+            notGate, andGate, orGate, nandGate, norGate, xorGate,
+            add, subtract, multiply, divide;
 
     private JTree variableTree;
     private DefaultMutableTreeNode variableRoot;
@@ -77,16 +82,32 @@ public class ControlPanel {
         commonNode = new DefaultMutableTreeNode("Common");
 
 
-        basicNode = new DefaultMutableTreeNode("Basic");
+        flowNode = new DefaultMutableTreeNode("Flow");
+
         print = new DefaultMutableTreeNode("Print");
-        ifelse = new DefaultMutableTreeNode("If-else");
+        branch = new DefaultMutableTreeNode("Branch");
 
+            comparators = new DefaultMutableTreeNode("Comparators");
+                equalto = new DefaultMutableTreeNode("Equals to");
+                greaterThan = new DefaultMutableTreeNode("Greater than");
+                lessThan = new DefaultMutableTreeNode("Less than");
+                greaterThanEqualTo = new DefaultMutableTreeNode("Greater than equal to");
+                lessThanEqualTo = new DefaultMutableTreeNode("Less than equal to");
+                notEqualTo = new DefaultMutableTreeNode("Not equal to");
 
-        arithmeticNode = new DefaultMutableTreeNode("Arithmetic");
-        add = new DefaultMutableTreeNode("Add");
-        subtract = new DefaultMutableTreeNode("Subtract");
-        multiply = new DefaultMutableTreeNode("Multiply");
-        divide = new DefaultMutableTreeNode("Divide");
+            logicGates = new DefaultMutableTreeNode("Logic gates");
+                notGate = new DefaultMutableTreeNode("NOT");
+                andGate = new DefaultMutableTreeNode("AND");
+                orGate = new DefaultMutableTreeNode("OR");
+                nandGate = new DefaultMutableTreeNode("NAND");
+                norGate = new DefaultMutableTreeNode("NOR");
+                xorGate = new DefaultMutableTreeNode("XOR");
+
+            arithmeticNode = new DefaultMutableTreeNode("Arithmetic");
+                add = new DefaultMutableTreeNode("Add");
+                subtract = new DefaultMutableTreeNode("Subtract");
+                multiply = new DefaultMutableTreeNode("Multiply");
+                divide = new DefaultMutableTreeNode("Divide");
 
         arduinoNode = new DefaultMutableTreeNode("Arduino");
     }
@@ -120,7 +141,33 @@ public class ControlPanel {
                 DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) functionsTree.getLastSelectedPathComponent();
                 switch (selectedNode.getUserObject().toString()) {
                     case "Print" : flowForge.flowPanel.addNode(new PrintNode("Print", flowForge.flowPanel));
-                    case "If-else" : flowForge.flowPanel.addNode(new BranchNode("If-else", flowForge.flowPanel));
+                        break;
+                    case "Branch" : flowForge.flowPanel.addNode(new BranchNode("Branch", flowForge.flowPanel));
+                        break;
+                    case "Equals to" : flowForge.flowPanel.addNode(new EqualToNode("Equals to", flowForge.flowPanel));
+                        break;
+                    case "Greater than" : flowForge.flowPanel.addNode(new GreaterThanNode("Greater than", flowForge.flowPanel));
+                        break;
+                    case "Less than" : flowForge.flowPanel.addNode(new LessThanNode("Less than", flowForge.flowPanel));
+                        break;
+                    case "Greater than or equal to" : flowForge.flowPanel.addNode(new GreaterThanOrEqualNode("Greater than equal to", flowForge.flowPanel));
+                        break;
+                    case "Less than or equal to" : flowForge.flowPanel.addNode(new LessThanOrEqualNode("Less than equal to", flowForge.flowPanel));
+                        break;
+                    case "Not equal to" : flowForge.flowPanel.addNode(new NotEqualToNode("Not equal to", flowForge.flowPanel));
+                        break;
+                    case "NOT" : flowForge.flowPanel.addNode(new LogicGateNode("NOT", flowForge.flowPanel, "NOT"));
+                        break;
+                    case "AND" : flowForge.flowPanel.addNode(new LogicGateNode("AND", flowForge.flowPanel, "AND"));
+                        break;
+                    case "OR" : flowForge.flowPanel.addNode(new LogicGateNode("OR", flowForge.flowPanel, "OR"));
+                        break;
+                    case "NAND" : flowForge.flowPanel.addNode(new LogicGateNode("NAND", flowForge.flowPanel, "NAND"));
+                        break;
+                    case "NOR" : flowForge.flowPanel.addNode(new LogicGateNode("NOR", flowForge.flowPanel, "NOR"));
+                        break;
+                    case "XOR" : flowForge.flowPanel.addNode(new LogicGateNode("XOR", flowForge.flowPanel, "XOR"));
+                        break;
                 }
 
             }
@@ -160,13 +207,28 @@ public class ControlPanel {
     public void addComponent() {
         root.add(commonNode);
             commonNode.add(print);
-        root.add(basicNode);
-            basicNode.add(print);
-        root.add(arithmeticNode);
-            arithmeticNode.add(add);
-            arithmeticNode.add(subtract);
-            arithmeticNode.add(multiply);
-            arithmeticNode.add(divide);
+        root.add(flowNode);
+        flowNode.add(print);
+        flowNode.add(branch);
+            flowNode.add(arithmeticNode);
+                arithmeticNode.add(add);
+                arithmeticNode.add(subtract);
+                arithmeticNode.add(multiply);
+                arithmeticNode.add(divide);
+            flowNode.add(comparators);
+                comparators.add(equalto);
+                comparators.add(greaterThan);
+                comparators.add(lessThan);
+                comparators.add(greaterThanEqualTo);
+                comparators.add(lessThanEqualTo);
+                comparators.add(notEqualTo);
+            flowNode.add(logicGates);
+                logicGates.add(notGate);
+                logicGates.add(andGate);
+                logicGates.add(orGate);
+                logicGates.add(nandGate);
+                logicGates.add(norGate);
+                logicGates.add(xorGate);
         root.add(arduinoNode);
 
         variableRoot.add(integerNode);

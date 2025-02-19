@@ -1,6 +1,7 @@
 package flowforge.core;
 
 import flowforge.FlowForge;
+import flowforge.nodes.Node;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,6 +33,11 @@ public class Console {
 
     public JPanel getRootPanel() {
         return rootPanel;
+    }
+
+    public void throwError(String error, Node node) {
+        consoleTextPane.setForeground(Color.RED);
+        print("Error at Node : " + node.getTitle() + " : " + error);
     }
 
 }

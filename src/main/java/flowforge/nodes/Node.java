@@ -25,6 +25,7 @@ public abstract class Node extends JInternalFrame {
     public JPanel contentPanel;
     public JPanel topPanel;
     public JPanel outputsPanel;
+    public JPanel inputsPanel;
 
     public Node(String title, FlowPanel flowPanel) {
         super(title, true, true, false, false);
@@ -34,13 +35,14 @@ public abstract class Node extends JInternalFrame {
     }
 
     private void loadUI() {
-        contentPanel = new JPanel(new BorderLayout());
+
         setSize(200, 200);
         setLocation(300, 300);
 
+        contentPanel = new JPanel(new BorderLayout());
         topPanel = new JPanel();
         outputsPanel = new JPanel();
-        JPanel inputsPanel = new JPanel();
+        inputsPanel = new JPanel();
 
         inputButton = new JRadioButton("Input");
         outputButton = new JRadioButton("Output");
@@ -50,7 +52,6 @@ public abstract class Node extends JInternalFrame {
         resetConnectionsButton = new JButton("↺");
 
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
-
         topPanel.add(resetConnectionsButton);
 
         inputsPanel.setLayout(new BoxLayout(inputsPanel, BoxLayout.Y_AXIS));

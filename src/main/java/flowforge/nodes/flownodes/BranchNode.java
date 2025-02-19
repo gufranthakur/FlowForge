@@ -1,7 +1,8 @@
-package flowforge.nodes.logics;
+package flowforge.nodes.flownodes;
 
 import flowforge.core.FlowPanel;
 import flowforge.nodes.Node;
+import flowforge.nodes.flownodes.comparators.EqualToNode;
 import flowforge.nodes.variables.BooleanNode;
 
 import javax.swing.*;
@@ -9,7 +10,6 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class BranchNode extends Node {
-
 
     private JRadioButton outputFalseButton;
     private ArrayList<Node> trueNodes = new ArrayList<>();
@@ -87,19 +87,13 @@ public class BranchNode extends Node {
     public void execute() {
         boolean condition = false;
 
-        // Get condition value from connected condition node
         for (Node node : inputXNodes) {
             if (node != null) {
-                try {
-                    condition = ((BooleanNode)node).getBooleanValue();
-                } catch (ClassCastException e) {
-                    System.err.println("Invalid input type for Branch node");
-                    return;
-                }
+                if (node instanceof BooleanNode) condition = ((BooleanNode)node).getBooleanValue();
+                else if (node instanceof EqualToNode) condition = ((EqualToNode) node).getIsEqual();
             }
         }
 
-        // Execute appropriate nodes based on condition
         if (condition) {
             for (Node node : trueNodes) {
                 if (node != null) {

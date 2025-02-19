@@ -22,14 +22,13 @@ public class StringNode extends Node {
         textField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Set value...");
         textField.setPreferredSize(new Dimension(150, 30));
 
-
-
         inputButton.setVisible(false);
         outputButton.setVisible(false);
 
         inputXButton.setText("Set");
         outputXButton.setText("Get");
 
+        wrapperPanel.add(resetConnectionsButton);
         wrapperPanel.add(textField);
         contentPanel.add(wrapperPanel, BorderLayout.NORTH);
 
