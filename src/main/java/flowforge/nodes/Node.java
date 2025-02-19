@@ -3,6 +3,7 @@ package flowforge.nodes;
 import flowforge.core.MainPanel;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import java.awt.*;
@@ -40,6 +41,7 @@ public abstract class Node extends JInternalFrame {
         setSize(200, 200);
         setLocation(300, 300);
 
+
         contentPanel = new JPanel(new BorderLayout());
         topPanel = new JPanel();
         outputsPanel = new JPanel();
@@ -67,6 +69,7 @@ public abstract class Node extends JInternalFrame {
         outputsPanel.add(outputXButton);
         outputsPanel.add(Box.createVerticalGlue());
 
+        contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         contentPanel.add(topPanel, BorderLayout.NORTH);
         contentPanel.add(inputsPanel, BorderLayout.WEST);
         contentPanel.add(outputsPanel, BorderLayout.EAST);

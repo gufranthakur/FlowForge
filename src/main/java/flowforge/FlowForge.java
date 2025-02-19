@@ -7,6 +7,8 @@ import flowforge.core.MainPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class FlowForge extends JFrame {
 
@@ -34,12 +36,18 @@ public class FlowForge extends JFrame {
 
         mainPanelContainer = new JPanel(null);
         mainPanel = new MainPanel(this);
+        mainPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                mainPanel.requestFocusInWindow();
+            }
+        });
 
         controlPanel = new ControlPanel(this);
         controlPanel.init();
 
         loop = new Timer(5, e -> {
-            mainPanel.repaint(); mainPanel.requestFocus();
+            mainPanel.repaint();
             mainPanel.moveCamera();
 
         });

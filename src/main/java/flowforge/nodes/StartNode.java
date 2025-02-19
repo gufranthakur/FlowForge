@@ -20,7 +20,7 @@ public class StartNode extends Node{
 
         contentPanel.add(outputsPanel, BorderLayout.CENTER);
 
-        this.setSize(150, 100);
+        this.pack();
         this.setLocation(20, 300);
     }
 

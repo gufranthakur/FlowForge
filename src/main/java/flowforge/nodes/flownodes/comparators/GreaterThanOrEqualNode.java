@@ -20,6 +20,7 @@ public class GreaterThanOrEqualNode extends Node {
         JLabel label = new JLabel(title);
         label.setFont(new Font(FlatInterFont.FAMILY, Font.PLAIN, 28));
         label.setHorizontalAlignment(SwingConstants.CENTER);
+        this.pack();
     }
 
     public boolean getIsGreaterOrEqual() {

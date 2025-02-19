@@ -26,6 +26,7 @@ public class PrintNode extends Node {
         topPanel.add(textField);
 
         this.setSize(200, 140);
+        this.pack();
     }
 
     public void print(String text) {

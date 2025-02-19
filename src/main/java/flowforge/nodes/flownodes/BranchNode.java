@@ -19,6 +19,7 @@ public class BranchNode extends Node {
     public BranchNode(String title, MainPanel mainPanel) {
         super(title, mainPanel);
         this.setSize(200, 100);
+        this.pack();
 
         outputFalseButton = new JRadioButton();
 

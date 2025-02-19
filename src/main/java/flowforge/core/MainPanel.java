@@ -33,6 +33,7 @@ public class MainPanel extends JDesktopPane implements KeyListener {
         this.flowForge = flowForge;
         this.setLocation(0, 0);
         this.setSize(3000, 3000);
+        this.setBackground(new Color(20, 20, 20));
         this.addKeyListener(this);
         setDoubleBuffered(true);
 
