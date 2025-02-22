@@ -62,6 +62,7 @@ public class PrintNode extends Node {
 
                         case InputNode inputNode -> print(textField.getText() + inputNode.getInputString());
 
+                        case LoopNode loopNode -> print(textField.getText() + loopNode.getIterationValue());
 
                         default -> print("ERROR");
                     }

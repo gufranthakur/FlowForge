@@ -3,10 +3,7 @@ package flowforge.core;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.fonts.inter.FlatInterFont;
 import flowforge.FlowForge;
-import flowforge.nodes.flownodes.DelayNode;
-import flowforge.nodes.flownodes.InputNode;
-import flowforge.nodes.flownodes.PrintNode;
-import flowforge.nodes.flownodes.BranchNode;
+import flowforge.nodes.flownodes.*;
 import flowforge.nodes.flownodes.comparators.*;
 import flowforge.nodes.flownodes.logicgates.LogicGateNode;
 import flowforge.nodes.variables.BooleanNode;
@@ -44,7 +41,7 @@ public class ControlPanel {
     private JTree functionsTree;
     private DefaultMutableTreeNode root;
     private DefaultMutableTreeNode commonNode, flowNode, basic, comparators, logicGates, arithmeticNode, arduinoNode;
-    private DefaultMutableTreeNode print, branch, input, delay,
+    private DefaultMutableTreeNode print, branch, input, delay, loop, conditionalLoop,
             equalTo, greaterThan, lessThan,
             greaterThanEqualTo, lessThanEqualTo, notEqualTo,
             notGate, andGate, orGate, nandGate, norGate, xorGate,
@@ -91,6 +88,8 @@ public class ControlPanel {
         branch = new DefaultMutableTreeNode("Branch");
         input = new DefaultMutableTreeNode("Input");
         delay = new DefaultMutableTreeNode("Delay");
+        loop = new DefaultMutableTreeNode("Loop");
+        conditionalLoop = new DefaultMutableTreeNode("Conditional-Loop");
 
             comparators = new DefaultMutableTreeNode("Comparators");
                 equalTo = new DefaultMutableTreeNode("Equals to");
@@ -177,6 +176,10 @@ public class ControlPanel {
                     case "Input" : flowForge.programPanel.addNode(new InputNode("Input", flowForge.programPanel));
                         break;
                     case "Delay" : flowForge.programPanel.addNode(new DelayNode("Delay", flowForge.programPanel));
+                        break;
+                    case "Loop" : flowForge.programPanel.addNode(new LoopNode("Loop", flowForge.programPanel));
+                        break;
+                    case "Conditional-Loop" : flowForge.programPanel.addNode(new ConditionalLoopNode("Conditional Loop", flowForge.programPanel));
                 }
 
             }
@@ -221,6 +224,8 @@ public class ControlPanel {
         flowNode.add(branch);
         flowNode.add(input);
         flowNode.add(delay);
+        flowNode.add(loop);
+        flowNode.add(conditionalLoop);
             flowNode.add(arithmeticNode);
                 arithmeticNode.add(add);
                 arithmeticNode.add(subtract);

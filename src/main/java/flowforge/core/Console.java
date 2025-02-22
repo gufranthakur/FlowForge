@@ -25,6 +25,7 @@ public class Console {
 
     public void print(String value) {
         consoleTextPane.setText(consoleTextPane.getText() + value + "\n");
+        consoleTextPane.setCaretPosition(consoleTextPane.getDocument().getLength());
     }
 
     public void clear() {

@@ -188,7 +188,6 @@ public abstract class Node extends JInternalFrame {
         GradientPaint gp = new GradientPaint(start.x, start.y, startColor, end.x, end.y, endColor);
         g.setPaint(gp);
 
-
         Stroke originalStroke = g.getStroke();
 
         g.setStroke(new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
