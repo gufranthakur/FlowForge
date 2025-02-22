@@ -40,29 +40,30 @@ public class PrintNode extends Node {
             for (Node inputXNode : inputXNodes) {
                 if (inputXNode != null) {
                     switch (inputXNode) {
-                        case IntegerNode integerNode -> print(integerNode.getIntValue() + textField.getText());
+                        case IntegerNode integerNode -> print(textField.getText() + integerNode.getIntValue());
 
-                        case StringNode stringNode -> print(stringNode.getStringValue() + textField.getText());
+                        case StringNode stringNode -> print(textField.getText() + stringNode.getStringValue());
 
-                        case BooleanNode booleanNode -> print(booleanNode.getBooleanValue() + textField.getText());
+                        case BooleanNode booleanNode -> print(textField.getText() + booleanNode.getBooleanValue());
 
-                        case EqualToNode equalToNode -> print(equalToNode.getIsEqual() + textField.getText());
+                        case EqualToNode equalToNode -> print(textField.getText() + equalToNode.getIsEqual());
 
-                        case GreaterThanNode greaterThanNode -> print(greaterThanNode.getIsGreater() + textField.getText());
+                        case GreaterThanNode greaterThanNode -> print(textField.getText() + greaterThanNode.getIsGreater());
 
-                        case LessThanNode lessThanNode -> print(lessThanNode.getIsLess() + textField.getText());
+                        case LessThanNode lessThanNode -> print(textField.getText() + lessThanNode.getIsLess());
 
-                        case GreaterThanOrEqualNode greaterThanOrEqualNode -> print(greaterThanOrEqualNode.getIsGreaterOrEqual() + textField.getText());
+                        case GreaterThanOrEqualNode greaterThanOrEqualNode -> print(textField.getText() + greaterThanOrEqualNode.getIsGreaterOrEqual());
 
-                        case LessThanOrEqualNode lessThanOrEqualNode -> print(lessThanOrEqualNode.getIsLessOrEqual() + textField.getText());
+                        case LessThanOrEqualNode lessThanOrEqualNode -> print(textField.getText() + lessThanOrEqualNode.getIsLessOrEqual());
 
-                        case NotEqualToNode notEqualToNode -> print(notEqualToNode.getIsNotEqual() + textField.getText());
+                        case NotEqualToNode notEqualToNode -> print(textField.getText() + notEqualToNode.getIsNotEqual());
 
-                        case LogicGateNode logicGateNode -> print(logicGateNode.getResult() + textField.getText());
+                        case LogicGateNode logicGateNode -> print(textField.getText() + logicGateNode.getResult());
 
-                        default -> {
-                            print("ERROR");
-                        }
+                        case InputNode inputNode -> print(textField.getText() + inputNode.getInputString());
+
+
+                        default -> print("ERROR");
                     }
                 }
             }

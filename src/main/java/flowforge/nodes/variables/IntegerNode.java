@@ -2,6 +2,7 @@ package flowforge.nodes.variables;
 
 import flowforge.core.ProgramPanel;
 import flowforge.nodes.Node;
+import flowforge.nodes.flownodes.InputNode;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,7 +33,8 @@ public class IntegerNode extends Node {
     public void execute() {
         for (Node node : inputXNodes) {
             if (node != null) {
-                setIntValue((Integer) spinner.getValue());
+                if (node instanceof InputNode) setIntValue(Integer.valueOf(((InputNode) node).getInputString()));
+                else setIntValue((Integer) spinner.getValue());
             }
         }
 

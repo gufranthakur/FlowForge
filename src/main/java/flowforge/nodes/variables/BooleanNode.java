@@ -2,6 +2,7 @@ package flowforge.nodes.variables;
 
 import flowforge.core.ProgramPanel;
 import flowforge.nodes.Node;
+import flowforge.nodes.flownodes.InputNode;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,7 +45,8 @@ public class BooleanNode extends Node {
     public void execute() {
         for (Node node : inputXNodes) {
             if (node != null) {
-                setBooleanValue(checkBox.isSelected());
+                if (node instanceof InputNode) System.out.println("Error");
+                else setBooleanValue(checkBox.isSelected());
             }
         }
 

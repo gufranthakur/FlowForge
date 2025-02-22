@@ -3,6 +3,8 @@ package flowforge.core;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.fonts.inter.FlatInterFont;
 import flowforge.FlowForge;
+import flowforge.nodes.flownodes.DelayNode;
+import flowforge.nodes.flownodes.InputNode;
 import flowforge.nodes.flownodes.PrintNode;
 import flowforge.nodes.flownodes.BranchNode;
 import flowforge.nodes.flownodes.comparators.*;
@@ -42,7 +44,8 @@ public class ControlPanel {
     private JTree functionsTree;
     private DefaultMutableTreeNode root;
     private DefaultMutableTreeNode commonNode, flowNode, basic, comparators, logicGates, arithmeticNode, arduinoNode;
-    private DefaultMutableTreeNode print, branch, equalto, greaterThan, lessThan,
+    private DefaultMutableTreeNode print, branch, input, delay,
+            equalTo, greaterThan, lessThan,
             greaterThanEqualTo, lessThanEqualTo, notEqualTo,
             notGate, andGate, orGate, nandGate, norGate, xorGate,
             add, subtract, multiply, divide;
@@ -86,9 +89,11 @@ public class ControlPanel {
 
         print = new DefaultMutableTreeNode("Print");
         branch = new DefaultMutableTreeNode("Branch");
+        input = new DefaultMutableTreeNode("Input");
+        delay = new DefaultMutableTreeNode("Delay");
 
             comparators = new DefaultMutableTreeNode("Comparators");
-                equalto = new DefaultMutableTreeNode("Equals to");
+                equalTo = new DefaultMutableTreeNode("Equals to");
                 greaterThan = new DefaultMutableTreeNode("Greater than");
                 lessThan = new DefaultMutableTreeNode("Less than");
                 greaterThanEqualTo = new DefaultMutableTreeNode("Greater than equal to");
@@ -133,7 +138,6 @@ public class ControlPanel {
             stopButton.setEnabled(false);
 
             flowForge.stop();
-
         });
 
         functionsTree.addMouseListener(new MouseAdapter() {
@@ -170,6 +174,9 @@ public class ControlPanel {
                         break;
                     case "XOR" : flowForge.programPanel.addNode(new LogicGateNode("XOR", flowForge.programPanel, "XOR"));
                         break;
+                    case "Input" : flowForge.programPanel.addNode(new InputNode("Input", flowForge.programPanel));
+                        break;
+                    case "Delay" : flowForge.programPanel.addNode(new DelayNode("Delay", flowForge.programPanel));
                 }
 
             }
@@ -212,13 +219,15 @@ public class ControlPanel {
         root.add(flowNode);
         flowNode.add(print);
         flowNode.add(branch);
+        flowNode.add(input);
+        flowNode.add(delay);
             flowNode.add(arithmeticNode);
                 arithmeticNode.add(add);
                 arithmeticNode.add(subtract);
                 arithmeticNode.add(multiply);
                 arithmeticNode.add(divide);
             flowNode.add(comparators);
-                comparators.add(equalto);
+                comparators.add(equalTo);
                 comparators.add(greaterThan);
                 comparators.add(lessThan);
                 comparators.add(greaterThanEqualTo);

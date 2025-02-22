@@ -167,42 +167,34 @@ public abstract class Node extends JInternalFrame {
     }
 
     public void drawCurvedGradientLine(Graphics2D g, Point start, Point end, Color startColor, Color endColor) {
-        // Calculate control points for the cubic curve
         int dx = end.x - start.x;
 
         int ctrlX1, ctrlY1, ctrlX2, ctrlY2;
 
-        // Determine if connection is going backward
+
         boolean isBackward = end.x < start.x;
 
-        // Calculate horizontal offset for control points (larger offset for backward connections)
         int offsetX = isBackward ? Math.abs(dx) / 2 + 100 : Math.abs(dx) / 3;
 
-        // Set control points
         ctrlX1 = start.x + offsetX;
         ctrlY1 = start.y;
         ctrlX2 = end.x - offsetX;
         ctrlY2 = end.y;
 
-        // Create the cubic curve path
         Path2D path = new Path2D.Float();
         path.moveTo(start.x, start.y);
         path.curveTo(ctrlX1, ctrlY1, ctrlX2, ctrlY2, end.x, end.y);
 
-        // Set up gradient paint along the path
         GradientPaint gp = new GradientPaint(start.x, start.y, startColor, end.x, end.y, endColor);
         g.setPaint(gp);
 
-        // Save original stroke
+
         Stroke originalStroke = g.getStroke();
 
-        // Set line properties
         g.setStroke(new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 
-        // Draw the path
         g.draw(path);
 
-        // Restore original stroke
         g.setStroke(originalStroke);
     }
 

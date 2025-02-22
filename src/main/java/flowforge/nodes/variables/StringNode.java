@@ -3,6 +3,7 @@ package flowforge.nodes.variables;
 import com.formdev.flatlaf.FlatClientProperties;
 import flowforge.core.ProgramPanel;
 import flowforge.nodes.Node;
+import flowforge.nodes.flownodes.InputNode;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,9 +38,13 @@ public class StringNode extends Node {
     @Override
     public void execute() {
 
+
+
         for (Node node : inputXNodes) {
+
             if (node != null) {
-                setStringValue(textField.getText());
+                if (node instanceof InputNode) setStringValue(((InputNode) node).getInputString());
+                else setStringValue(textField.getText());
             }
         }
 
