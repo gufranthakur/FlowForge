@@ -4,6 +4,7 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.fonts.inter.FlatInterFont;
 import flowforge.FlowForge;
 import flowforge.nodes.flownodes.*;
+import flowforge.nodes.flownodes.arithmetic.AddNode;
 import flowforge.nodes.flownodes.comparators.*;
 import flowforge.nodes.flownodes.logicgates.LogicGateNode;
 import flowforge.nodes.variables.BooleanNode;
@@ -80,7 +81,6 @@ public class ControlPanel {
 
     public void initFunctionNodes() {
         commonNode = new DefaultMutableTreeNode("Common");
-
 
         flowNode = new DefaultMutableTreeNode("Flow");
 
@@ -178,6 +178,8 @@ public class ControlPanel {
                     case "Delay" : flowForge.programPanel.addNode(new DelayNode("Delay", flowForge.programPanel));
                         break;
                     case "Loop" : flowForge.programPanel.addNode(new LoopNode("Loop", flowForge.programPanel));
+                        break;
+                    case "Add" : flowForge.programPanel.addNode(new AddNode("Add", flowForge.programPanel));
                         break;
                     case "Conditional-Loop" : flowForge.programPanel.addNode(new ConditionalLoopNode("Conditional Loop", flowForge.programPanel));
                 }

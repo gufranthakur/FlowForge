@@ -3,6 +3,7 @@ package flowforge.nodes.variables;
 import flowforge.core.ProgramPanel;
 import flowforge.nodes.Node;
 import flowforge.nodes.flownodes.InputNode;
+import flowforge.nodes.flownodes.arithmetic.AddNode;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,6 +35,7 @@ public class IntegerNode extends Node {
         for (Node node : inputXNodes) {
             if (node != null) {
                 if (node instanceof InputNode) setIntValue(Integer.valueOf(((InputNode) node).getInputString()));
+                else if (node instanceof AddNode) setIntValue(((AddNode) node).getResult());
                 else setIntValue((Integer) spinner.getValue());
             }
         }
