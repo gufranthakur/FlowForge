@@ -55,6 +55,8 @@ public class ControlPanel {
     private JTree variableTree;
     private DefaultMutableTreeNode variableRoot;
     private DefaultMutableTreeNode integerNode, stringNode, booleanNode, floatNode;
+
+    private boolean programIsRunning = false;
     
     public ControlPanel(FlowForge flowForge) {
         this.flowForge = flowForge;
@@ -127,11 +129,12 @@ public class ControlPanel {
 
     public void initListeners() {
         compileButton.addActionListener(e -> {
-
+            flowForge.compile();
         });
 
         runStopButton.addActionListener(e -> {
             flowForge.run();
+
         });
 
         functionsTree.addMouseListener(new MouseAdapter() {

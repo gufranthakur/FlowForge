@@ -42,6 +42,8 @@ public class ConditionalLoopNode extends Node {
                 }
             }
         }
+        for (Node node : outputXNodes) if (node != null) node.compile();
+        for (Node node : outputNodes) if (node != null) node.compile();
     }
 
     @Override

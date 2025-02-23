@@ -12,11 +12,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ProgramPanel extends JDesktopPane implements Runnable, KeyListener {
+public class ProgramPanel extends JDesktopPane implements KeyListener {
 
     public FlowForge flowForge;
     public StartNode startNode;
     private Node sourceNode;
+
 
     public List<Node> nodes = new ArrayList<>();
 
@@ -138,8 +139,4 @@ public class ProgramPanel extends JDesktopPane implements Runnable, KeyListener 
         if (e.getKeyChar() == 'd') isRight = false;
     }
 
-    @Override
-    public void run() {
-
-    }
 }

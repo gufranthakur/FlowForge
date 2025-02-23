@@ -33,6 +33,8 @@ public class StartNode extends Node{
         if (outputNodes.isEmpty()) {
             print("No nodes connected to start node.");
         }
+        for (Node node : outputXNodes) if (node != null) node.compile();
+        for (Node node : outputNodes) if (node != null) node.compile();
     }
 
     @Override

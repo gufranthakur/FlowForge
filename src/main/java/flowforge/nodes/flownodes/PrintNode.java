@@ -15,7 +15,7 @@ import javax.swing.*;
 
 public class PrintNode extends Node {
 
-    private final JTextField textField;
+    public JTextField textField;
     private final ProgramPanel programPanel;
 
     public PrintNode(String title, ProgramPanel programPanel) {
@@ -37,7 +37,8 @@ public class PrintNode extends Node {
 
     @Override
     public void compile() {
-
+        for (Node node : outputXNodes) if (node != null) node.compile();
+        for (Node node : outputNodes) if (node != null) node.compile();
     }
 
     @Override

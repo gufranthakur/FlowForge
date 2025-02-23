@@ -21,7 +21,8 @@ public class InputNode extends Node {
 
     @Override
     public void compile() {
-
+        for (Node node : outputXNodes) if (node != null) node.compile();
+        for (Node node : outputNodes) if (node != null) node.compile();
     }
 
     @Override

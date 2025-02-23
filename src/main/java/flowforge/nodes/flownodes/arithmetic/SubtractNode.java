@@ -31,6 +31,8 @@ public class SubtractNode extends Node {
                 programPanel.flowForge.console.throwError("Invalid variable being passed to Subtract node. \n" +
                         "Expected Integer node, found " + node.getTitle() + "Node", node);
         }
+        for (Node node : outputXNodes) if (node != null) node.compile();
+        for (Node node : outputNodes) if (node != null) node.compile();
     }
 
     @Override
