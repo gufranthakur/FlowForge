@@ -4,6 +4,7 @@ import com.formdev.flatlaf.fonts.inter.FlatInterFont;
 import flowforge.core.ProgramPanel;
 import flowforge.nodes.Node;
 import flowforge.nodes.variables.BooleanNode;
+import flowforge.nodes.variables.IntegerNode;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,6 +35,15 @@ public class LogicGateNode extends Node {
 
     public void setResult(boolean result) {
         this.result = result;
+    }
+
+    @Override
+    public void compile() {
+        for (Node node : inputXNodes) {
+            if (node != null) if (!(node instanceof BooleanNode))
+                programPanel.flowForge.console.throwError("Invalid variable being passed to " + title + " node. \n" +
+                        "Expected Integer node, found " + node.getTitle() + "Node", node);
+        }
     }
 
     @Override

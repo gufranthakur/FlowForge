@@ -16,8 +16,11 @@ public class BranchNode extends Node {
     private ArrayList<Node> trueNodes = new ArrayList<>();
     private ArrayList<Node> falseNodes = new ArrayList<>();
 
+    private ProgramPanel programPanel;
+
     public BranchNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
+        this.programPanel = programPanel;
         this.setSize(200, 100);
         this.pack();
 
@@ -83,6 +86,21 @@ public class BranchNode extends Node {
         outputButton.setSelected(false);
         inputXButton.setSelected(false);
         outputFalseButton.setSelected(false);
+    }
+
+    @Override
+    public void compile() {
+        for (Node node : inputXNodes) {
+            if (node !=null) {
+                if (!(node instanceof BooleanNode || node instanceof EqualToNode ||
+                node instanceof GreaterThanNode || node instanceof  LessThanNode ||
+                node instanceof GreaterThanOrEqualNode || node instanceof  LessThanOrEqualNode ||
+                node instanceof NotEqualToNode)) {
+                    programPanel.flowForge.console.throwError("Expected external input : Boolean output \n" +
+                            "Found " + node.getTitle() + " Node", node);
+                }
+            }
+        }
     }
 
     @Override

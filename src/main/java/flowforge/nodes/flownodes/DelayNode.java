@@ -35,6 +35,15 @@ public class DelayNode extends Node {
     }
 
     @Override
+    public void compile() {
+        for (Node node : inputXNodes) {
+            if (node != null) if (!(node instanceof IntegerNode))
+                programPanel.flowForge.console.throwError("Invalid variable being passed to Delay node. \n" +
+                        "Expected Integer node, found " + node.getTitle() + "Node", node);
+        }
+    }
+
+    @Override
     public void execute() {
         int delay = (Integer) delaySpinner.getValue();
 

@@ -20,6 +20,11 @@ public class InputNode extends Node {
     }
 
     @Override
+    public void compile() {
+
+    }
+
+    @Override
     public void execute() {
         for (Node node : outputXNodes) {
             node.execute();

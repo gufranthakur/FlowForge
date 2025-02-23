@@ -46,6 +46,15 @@ public class LoopNode extends Node {
     }
 
     @Override
+    public void compile() {
+        for (Node node : inputXNodes) {
+            if (node != null) if (!(node instanceof IntegerNode))
+                programPanel.flowForge.console.throwError("Invalid variable being passed to Add node. \n" +
+                        "Expected Integer node, found " + node.getTitle() + "Node", node);
+        }
+    }
+
+    @Override
     public void execute() {
         loops = (Integer) loopSpinner.getValue();
 

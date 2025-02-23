@@ -3,6 +3,7 @@ package flowforge.nodes.flownodes.comparators;
 import com.formdev.flatlaf.fonts.inter.FlatInterFont;
 import flowforge.core.ProgramPanel;
 import flowforge.nodes.Node;
+import flowforge.nodes.StartNode;
 import flowforge.nodes.variables.BooleanNode;
 import flowforge.nodes.variables.IntegerNode;
 import flowforge.nodes.variables.StringNode;
@@ -30,6 +31,15 @@ public class EqualToNode extends Node {
 
     public void setIsEqual(boolean isEqual) {
         this.isEqual = isEqual;
+    }
+
+    @Override
+    public void compile() {
+        for (Node node : inputXNodes) {
+            if (node != null) if (!(node instanceof IntegerNode))
+                programPanel.flowForge.console.throwError("Invalid variable being passed to " + title + " node. \n" +
+                        "Expected Integer node, found " + node.getTitle() + "Node", node);
+        }
     }
 
     @Override

@@ -3,6 +3,7 @@ package flowforge.nodes.variables;
 import com.formdev.flatlaf.FlatClientProperties;
 import flowforge.core.ProgramPanel;
 import flowforge.nodes.Node;
+import flowforge.nodes.StartNode;
 import flowforge.nodes.flownodes.InputNode;
 
 import javax.swing.*;
@@ -36,10 +37,16 @@ public class StringNode extends Node {
     }
 
     @Override
+    public void compile() {
+        for (Node node : inputXNodes) {
+            if (node != null) if (!(node instanceof StringNode || node instanceof StartNode))
+                programPanel.flowForge.console.throwError("Invalid variable being passed to String node. \n" +
+                        "Expected Integer node, found " + node.getTitle() + "Node", node);
+        }
+    }
+
+    @Override
     public void execute() {
-
-
-
         for (Node node : inputXNodes) {
 
             if (node != null) {

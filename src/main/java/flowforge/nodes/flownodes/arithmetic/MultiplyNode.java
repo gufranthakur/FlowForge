@@ -5,17 +5,17 @@ import flowforge.core.ProgramPanel;
 import flowforge.nodes.Node;
 import flowforge.nodes.variables.IntegerNode;
 
-public class AddNode extends Node {
+public class MultiplyNode extends Node {
 
     private ProgramPanel programPanel;
     private Integer result;
 
-    public AddNode(String title, ProgramPanel programPanel) {
+    public MultiplyNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
         this.programPanel = programPanel;
 
         inputXButton.setText("Integers");
-        outputXButton.setText("Sum");
+        outputXButton.setText("Result");
     }
 
     public Integer getResult() {
@@ -30,22 +30,25 @@ public class AddNode extends Node {
     public void compile() {
         for (Node node : inputXNodes) {
             if (node != null) if (!(node instanceof IntegerNode))
-                programPanel.flowForge.console.throwError("Invalid variable being passed to Add node. \n" +
-                        "Expected Integer node, found " + node.getTitle() + "Node", node);
+                programPanel.flowForge.console.throwError("Invalid variable being passed to Multiply node. \n" +
+                        "Expected Integer node, found " + node.getTitle() + " Node", node);
         }
     }
 
     @Override
     public void execute() {
-        int sum = 0;
+        int res = 0;
+        if (inputXNodes.getFirst() != null && inputXNodes.get(0) instanceof IntegerNode)
+            res = ((IntegerNode) inputXNodes.get(0)).getIntValue();
+
 
         for (Node node : inputXNodes) {
             if (node != null) if (node instanceof IntegerNode) {
-                sum += ((IntegerNode) node).getIntValue();
+                res *= ((IntegerNode) node).getIntValue();
             }
         }
 
-        setResult(sum);
+        setResult(res);
 
         for (Node node : outputXNodes) {
             if (node != null) node.execute();

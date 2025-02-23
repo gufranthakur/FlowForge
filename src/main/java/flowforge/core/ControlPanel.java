@@ -5,6 +5,8 @@ import com.formdev.flatlaf.fonts.inter.FlatInterFont;
 import flowforge.FlowForge;
 import flowforge.nodes.flownodes.*;
 import flowforge.nodes.flownodes.arithmetic.AddNode;
+import flowforge.nodes.flownodes.arithmetic.MultiplyNode;
+import flowforge.nodes.flownodes.arithmetic.SubtractNode;
 import flowforge.nodes.flownodes.comparators.*;
 import flowforge.nodes.flownodes.logicgates.LogicGateNode;
 import flowforge.nodes.variables.BooleanNode;
@@ -23,18 +25,20 @@ public class ControlPanel {
     private JPanel rootPanel;
     private JTextField searchField;
     private JButton addNodeButton;
-    private JPanel nodeControlPanel;
-    private JScrollPane nodesScrollPanel;
     private JPanel nodesListPanel;
-    private JPanel variableControlPanel;
     private JTextField variableNameField;
     public JComboBox variableBox;
-    private JScrollPane variableScrollPanel;
     private JPanel variableListPanel;
     private JPanel executePanel;
-    private JButton runButton;
-    private JButton stopButton;
+    private JButton compileButton;
+    private JButton runStopButton;
     private JButton addButton;
+    private JTabbedPane rootTabbedPane;
+    private JPanel nodeControlPanel;
+    private JScrollPane nodesScrollPanel;
+    private JPanel variableControlPanel;
+    private JScrollPane variableScrollPanel;
+    private JPanel propertiesPanel;
     private JComboBox nodeBox;
 
     private FlowForge flowForge;
@@ -65,9 +69,7 @@ public class ControlPanel {
     }
 
     public void init() {
-        runButton.setBackground(flowForge.theme);
-        stopButton.setBackground(flowForge.errorTheme);
-        stopButton.setEnabled(false);
+        compileButton.setBackground(flowForge.theme);
 
         searchField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Search...");
 
@@ -124,19 +126,12 @@ public class ControlPanel {
     }
 
     public void initListeners() {
-        runButton.addActionListener(e -> {
-            stopButton.setEnabled(true);
-            runButton.setEnabled(false);
-
-            flowForge.run();
+        compileButton.addActionListener(e -> {
 
         });
 
-        stopButton.addActionListener(e -> {
-            runButton.setEnabled(true);
-            stopButton.setEnabled(false);
-
-            flowForge.stop();
+        runStopButton.addActionListener(e -> {
+            flowForge.run();
         });
 
         functionsTree.addMouseListener(new MouseAdapter() {
@@ -179,9 +174,14 @@ public class ControlPanel {
                         break;
                     case "Loop" : flowForge.programPanel.addNode(new LoopNode("Loop", flowForge.programPanel));
                         break;
+                    case "Conditional-Loop" : flowForge.programPanel.addNode(new ConditionalLoopNode("Conditional Loop", flowForge.programPanel));
+                        break;
                     case "Add" : flowForge.programPanel.addNode(new AddNode("Add", flowForge.programPanel));
                         break;
-                    case "Conditional-Loop" : flowForge.programPanel.addNode(new ConditionalLoopNode("Conditional Loop", flowForge.programPanel));
+                    case "Subtract" : flowForge.programPanel.addNode(new SubtractNode("Subtract", flowForge.programPanel));
+                        break;
+                    case "Multiply" : flowForge.programPanel.addNode(new MultiplyNode("Multiply", flowForge.programPanel));
+                        break;
                 }
 
             }

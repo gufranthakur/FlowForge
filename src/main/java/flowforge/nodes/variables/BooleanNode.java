@@ -2,6 +2,7 @@ package flowforge.nodes.variables;
 
 import flowforge.core.ProgramPanel;
 import flowforge.nodes.Node;
+import flowforge.nodes.StartNode;
 import flowforge.nodes.flownodes.InputNode;
 
 import javax.swing.*;
@@ -39,6 +40,15 @@ public class BooleanNode extends Node {
         contentPanel.add(wrapperPanel, BorderLayout.NORTH);
 
         this.setSize(260, 90);
+    }
+
+    @Override
+    public void compile() {
+        for (Node node : inputXNodes) {
+            if (node != null) if (!(node instanceof BooleanNode || node instanceof StartNode))
+                programPanel.flowForge.console.throwError("Invalid variable being passed to Add node. \n" +
+                        "Expected Integer node, found " + node.getTitle() + "Node", node);
+        }
     }
 
     @Override

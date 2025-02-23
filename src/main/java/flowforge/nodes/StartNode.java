@@ -29,6 +29,13 @@ public class StartNode extends Node{
     }
 
     @Override
+    public void compile() {
+        if (outputNodes.isEmpty()) {
+            print("No nodes connected to start node.");
+        }
+    }
+
+    @Override
     public void execute() {
         programPanel.flowForge.console.clear();
         print("Program Execution started");

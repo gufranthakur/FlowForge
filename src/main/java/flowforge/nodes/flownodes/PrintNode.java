@@ -4,6 +4,7 @@ import com.formdev.flatlaf.FlatClientProperties;
 import flowforge.core.ProgramPanel;
 import flowforge.nodes.Node;
 import flowforge.nodes.flownodes.arithmetic.AddNode;
+import flowforge.nodes.flownodes.arithmetic.SubtractNode;
 import flowforge.nodes.flownodes.comparators.*;
 import flowforge.nodes.flownodes.logicgates.LogicGateNode;
 import flowforge.nodes.variables.BooleanNode;
@@ -32,6 +33,11 @@ public class PrintNode extends Node {
 
     public void print(String text) {
         programPanel.flowForge.console.print(text);
+    }
+
+    @Override
+    public void compile() {
+
     }
 
     @Override
@@ -66,6 +72,8 @@ public class PrintNode extends Node {
                         case LoopNode loopNode -> print(textField.getText() + loopNode.getIterationValue());
 
                         case AddNode addNode -> print(textField.getText() + addNode.getResult());
+
+                        case SubtractNode subtractNode -> print(textField.getText() + subtractNode.getResult());
 
                         default -> print("ERROR");
                     }

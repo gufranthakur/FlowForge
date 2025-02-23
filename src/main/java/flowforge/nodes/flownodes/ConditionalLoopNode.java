@@ -2,6 +2,7 @@ package flowforge.nodes.flownodes;
 
 import flowforge.core.ProgramPanel;
 import flowforge.nodes.Node;
+import flowforge.nodes.flownodes.comparators.*;
 import flowforge.nodes.variables.BooleanNode;
 
 import javax.swing.*;
@@ -26,6 +27,21 @@ public class ConditionalLoopNode extends Node {
 
         wrapperPanel.add(resetConnectionsButton);
         contentPanel.add(wrapperPanel, BorderLayout.NORTH);
+    }
+
+    @Override
+    public void compile() {
+        for (Node node : inputXNodes) {
+            if (node !=null) {
+                if (!(node instanceof BooleanNode || node instanceof EqualToNode ||
+                        node instanceof GreaterThanNode || node instanceof LessThanNode ||
+                        node instanceof GreaterThanOrEqualNode || node instanceof LessThanOrEqualNode ||
+                        node instanceof NotEqualToNode)) {
+                    programPanel.flowForge.console.throwError("Expected external input : Boolean output \n" +
+                            "Found " + node.getTitle() + " Node", node);
+                }
+            }
+        }
     }
 
     @Override

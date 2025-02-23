@@ -5,17 +5,15 @@ import flowforge.core.ProgramPanel;
 import flowforge.nodes.Node;
 import flowforge.nodes.variables.IntegerNode;
 
-public class AddNode extends Node {
-
+public class SubtractNode extends Node {
     private ProgramPanel programPanel;
     private Integer result;
 
-    public AddNode(String title, ProgramPanel programPanel) {
+    public SubtractNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
         this.programPanel = programPanel;
-
         inputXButton.setText("Integers");
-        outputXButton.setText("Sum");
+        outputXButton.setText("Difference");
     }
 
     public Integer getResult() {
@@ -30,22 +28,24 @@ public class AddNode extends Node {
     public void compile() {
         for (Node node : inputXNodes) {
             if (node != null) if (!(node instanceof IntegerNode))
-                programPanel.flowForge.console.throwError("Invalid variable being passed to Add node. \n" +
+                programPanel.flowForge.console.throwError("Invalid variable being passed to Subtract node. \n" +
                         "Expected Integer node, found " + node.getTitle() + "Node", node);
         }
     }
 
     @Override
     public void execute() {
-        int sum = 0;
+        if (inputXNodes.isEmpty()) return;
+        int difference = ((IntegerNode)inputXNodes.get(0)).getIntValue();
 
-        for (Node node : inputXNodes) {
-            if (node != null) if (node instanceof IntegerNode) {
-                sum += ((IntegerNode) node).getIntValue();
+        for (int i = 1; i < inputXNodes.size(); i++) {
+            Node node = inputXNodes.get(i);
+            if (node != null && node instanceof IntegerNode) {
+                difference -= ((IntegerNode)node).getIntValue();
             }
         }
 
-        setResult(sum);
+        setResult(difference);
 
         for (Node node : outputXNodes) {
             if (node != null) node.execute();
@@ -55,5 +55,4 @@ public class AddNode extends Node {
             if (node != null) node.execute();
         }
     }
-
 }

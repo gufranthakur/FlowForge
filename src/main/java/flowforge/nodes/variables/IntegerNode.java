@@ -2,8 +2,11 @@ package flowforge.nodes.variables;
 
 import flowforge.core.ProgramPanel;
 import flowforge.nodes.Node;
+import flowforge.nodes.StartNode;
 import flowforge.nodes.flownodes.InputNode;
 import flowforge.nodes.flownodes.arithmetic.AddNode;
+import flowforge.nodes.flownodes.arithmetic.MultiplyNode;
+import flowforge.nodes.flownodes.arithmetic.SubtractNode;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,11 +34,22 @@ public class IntegerNode extends Node {
     }
 
     @Override
+    public void compile() {
+        for (Node node : inputXNodes) {
+            if (node != null) if (!(node instanceof IntegerNode || node instanceof AddNode ||
+                    node instanceof SubtractNode || node instanceof MultiplyNode || node instanceof StartNode))
+                programPanel.flowForge.console.throwError("Invalid variable being passed to Integer node. \n" +
+                        "Expected Integer node, found " + node.getTitle() + "Node", node);
+        }
+    }
+
+    @Override
     public void execute() {
         for (Node node : inputXNodes) {
             if (node != null) {
                 if (node instanceof InputNode) setIntValue(Integer.valueOf(((InputNode) node).getInputString()));
                 else if (node instanceof AddNode) setIntValue(((AddNode) node).getResult());
+                else if (node instanceof SubtractNode) setIntValue(((SubtractNode) node).getResult());
                 else setIntValue((Integer) spinner.getValue());
             }
         }
