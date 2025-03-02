@@ -58,4 +58,23 @@ public class AddNode extends Node {
         }
     }
 
+    @Override
+    public String compileToC() {
+
+        String sumNodeName = outputXNodes.getFirst().getName();
+
+        StringBuilder expression = new StringBuilder();
+
+        for (int i = 0; i < inputXNodes.size(); i++) {
+
+            if (i > 0) {
+                expression.append(" + ");
+            }
+            expression.append(inputXNodes.get(i).getName());
+        }
+
+        return sumNodeName + " = " + expression + ";";
+    }
+
+
 }

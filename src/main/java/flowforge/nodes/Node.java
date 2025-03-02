@@ -223,7 +223,6 @@ public abstract class Node extends JInternalFrame {
         inputXButton.setSelected(false);
         outputXButton.setSelected(false);
 
-
     }
 
     public Point getInputPoint() {
@@ -242,15 +241,9 @@ public abstract class Node extends JInternalFrame {
         return new Point(getX() + getWidth(), getY() + getHeight()/2 + 20);
     }
 
-    public Point getExternalInputPoint() {
-        return new Point(getX(), getY() + getHeight()/4);
-    }
-
-    public Point getExternalOutputPoint() {
-        return new Point(getX() + getWidth(), getY() + getHeight()/4);
-    }
-
     public abstract void execute();
 
     public abstract void compile();
+
+    public abstract String compileToC();
 }

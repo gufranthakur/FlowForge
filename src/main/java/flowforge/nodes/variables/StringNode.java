@@ -68,5 +68,9 @@ public class StringNode extends Node {
         programPanel.strings.put(title, stringValue);
         System.out.println(programPanel.strings);
     }
+    @Override
+    public String compileToC() {
+        return null;
+    }
 
 }

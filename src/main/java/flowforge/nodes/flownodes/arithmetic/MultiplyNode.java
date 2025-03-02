@@ -61,4 +61,21 @@ public class MultiplyNode extends Node {
         }
     }
 
+    @Override
+    public String compileToC() {
+        String resultNodeName = outputXNodes.getFirst().getName();
+
+        StringBuilder expression = new StringBuilder();
+
+        for (int i = 0; i < inputXNodes.size(); i++) {
+            if (i > 0) {
+                expression.append(" * "); // Add "*" between node names
+            }
+            expression.append(inputXNodes.get(i).getName());
+        }
+
+         return resultNodeName + " = " + expression + ";";
+    }
+
+
 }

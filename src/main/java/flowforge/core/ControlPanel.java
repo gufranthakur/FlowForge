@@ -222,8 +222,7 @@ public class ControlPanel {
     }
 
     public void addComponent() {
-        root.add(commonNode);
-            commonNode.add(print);
+
         root.add(flowNode);
         flowNode.add(print);
         flowNode.add(branch);

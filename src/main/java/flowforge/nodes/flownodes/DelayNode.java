@@ -67,4 +67,9 @@ public class DelayNode extends Node {
             if (node != null) node.execute();
         }
     }
+
+    @Override
+    public String compileToC() {
+        return null;
+    }
 }

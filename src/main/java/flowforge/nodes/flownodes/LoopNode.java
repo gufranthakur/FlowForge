@@ -81,6 +81,33 @@ public class LoopNode extends Node {
             }
         };
         worker.execute();
+        System.out.println(compileToC());
+    }
 
+    boolean b = false;
+    @Override
+    public String compileToC() {
+        StringBuilder expression = new StringBuilder();
+
+        if (!inputXNodes.isEmpty()) {
+            expression.append("for (int i = 0; i < " + inputXNodes.getFirst().getTitle() + "; i++ { \n");
+            for (Node node : outputNodes) {
+                if (!b)expression.append("\t" + node.compileToC() + "\n");
+                b = true;
+
+            }
+        } else {
+            expression.append("for (int i = 0; i < " + loopSpinner.getValue().toString() + "; i++ { \n");
+            for (Node node : outputNodes) {
+                if (!b)expression.append("\t" + node.compileToC() + "\n");
+                b = true;
+
+            }
+        }
+
+
+        expression.append("}");
+
+        return expression.toString();
     }
 }

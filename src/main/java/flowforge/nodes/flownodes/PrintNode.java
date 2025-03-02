@@ -81,12 +81,34 @@ public class PrintNode extends Node {
                 }
             }
         } else {
-
             print(textField.getText());
         }
 
         for (Node nodes : outputNodes) {
             if (nodes != null) nodes.execute();
         }
+
+        System.out.println(compileToC());
+    }
+
+    @Override
+    public String compileToC() {
+        StringBuilder expression = new StringBuilder();
+
+        if (inputXNodes.isEmpty()) {
+            String stringValue = textField.getText();
+            expression.append("printf(\"" + stringValue + "\\n\");\n");
+        } else {
+            if (inputXNodes.getFirst() instanceof StringNode) {
+                String stringValue = ((StringNode) inputXNodes.getFirst()).getStringValue();
+                expression.append("printf(\"" + stringValue + "\\n\");\n");
+            }
+        }
+
+        for (Node node : outputNodes) {
+            expression.append("\t" + node.compileToC() + "\n");
+        }
+
+        return expression.toString();
     }
 }

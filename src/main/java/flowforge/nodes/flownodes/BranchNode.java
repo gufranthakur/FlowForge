@@ -167,6 +167,11 @@ public class BranchNode extends Node {
         }
     }
 
+    @Override
+    public String compileToC() {
+        return null;
+    }
+
     private Point getFalseOutputPoint() {
         return new Point(getX() + getWidth(), getY() + getHeight()*2/3);
     }

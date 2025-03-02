@@ -16,7 +16,7 @@ public class BooleanNode extends Node {
     public BooleanNode(String title, ProgramPanel programPanel, Boolean booleanValue) {
         super(title, programPanel);
         this.programPanel = programPanel;
-        this.setSize(240, 70);
+        this.setSize(240, 90);
 
         checkBox = new JCheckBox("Set value : False");
 
@@ -39,7 +39,7 @@ public class BooleanNode extends Node {
 
         contentPanel.add(wrapperPanel, BorderLayout.NORTH);
 
-        this.setSize(260, 90);
+        this.setSize(260, 100);
     }
 
     @Override
@@ -72,5 +72,9 @@ public class BooleanNode extends Node {
     public void setBooleanValue(Boolean booleanValue) {
         programPanel.booleans.put(title, booleanValue);
         System.out.println(programPanel.booleans);
+    }
+    @Override
+    public String compileToC() {
+        return null;
     }
 }

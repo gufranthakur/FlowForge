@@ -47,4 +47,8 @@ public class StartNode extends Node{
         for (Node outputNode : outputNodes) outputNode.execute();
 
     }
+    @Override
+    public String compileToC() {
+        return null;
+    }
 }

@@ -114,4 +114,9 @@ public class LogicGateNode extends Node {
     private interface BooleanOperator {
         boolean apply(boolean a, boolean b);
     }
+
+    @Override
+    public String compileToC() {
+        return null;
+    }
 }

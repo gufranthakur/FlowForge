@@ -67,4 +67,8 @@ public class IntegerNode extends Node {
         programPanel.integers.put(title, intValue);
         System.out.println(programPanel.integers);
     }
+    @Override
+    public String compileToC() {
+        return null;
+    }
 }

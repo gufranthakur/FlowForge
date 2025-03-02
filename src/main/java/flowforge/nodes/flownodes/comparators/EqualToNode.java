@@ -74,7 +74,11 @@ public class EqualToNode extends Node {
             oNode.execute();
         }
 
+    }
 
+    @Override
+    public String compileToC() {
+        return null;
     }
 
 }
