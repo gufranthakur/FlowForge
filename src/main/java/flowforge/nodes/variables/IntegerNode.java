@@ -34,16 +34,6 @@ public class IntegerNode extends Node {
     }
 
     @Override
-    public void compile() {
-        for (Node node : inputXNodes) {
-            if (node != null) if (!(node instanceof IntegerNode || node instanceof AddNode ||
-                    node instanceof SubtractNode || node instanceof MultiplyNode || node instanceof StartNode))
-                programPanel.flowForge.console.throwError("Invalid variable being passed to Integer node. \n" +
-                        "Expected Integer node, found " + node.getTitle() + "Node", node);
-        }
-    }
-
-    @Override
     public void execute() {
         for (Node node : inputXNodes) {
             if (node != null) {
@@ -57,6 +47,8 @@ public class IntegerNode extends Node {
         for (Node nodes : outputNodes) {
             if (nodes != null) nodes.execute();
         }
+
+        System.out.println(compileToC());
     }
 
     public Integer getIntValue() {
@@ -69,6 +61,13 @@ public class IntegerNode extends Node {
     }
     @Override
     public String compileToC() {
-        return null;
+        // For a variable node, we need to declare it and initialize it
+        String varName = "int_" + title;
+        int value = getIntValue();
+
+        StringBuilder code = new StringBuilder();
+        code.append("int ").append(varName).append(" = ").append(value).append(";\n");
+
+        return code.toString();
     }
 }

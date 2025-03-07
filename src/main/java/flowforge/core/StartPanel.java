@@ -49,18 +49,22 @@ public class StartPanel extends JPanel implements ComponentListener {
         openProjectButton = new JButton("Open Project");
         openProjectButton.setForeground(Color.WHITE);
         openProjectButton.setFont(new Font(FlatJetBrainsMonoFont.FAMILY, Font.PLAIN, 18));
+        openProjectButton.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                String filePath = fileChooser.getSelectedFile().getAbsolutePath();
+
+                flowForge.launch();
+                flowForge.dataManager.loadProgram(filePath);
+            }
+        });
 
         openProjectButton.setBackground(new Color(12, 100, 181));
 
-        openProjectButton.addActionListener(e -> {
-
-        });
 
         createProjectButton.addActionListener(e -> {
             flowForge.launch();
         });
-
-
 
         this.add(titleLabel);
         this.add(mottoLabel);

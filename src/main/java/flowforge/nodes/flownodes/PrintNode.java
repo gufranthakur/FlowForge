@@ -36,12 +36,6 @@ public class PrintNode extends Node {
     }
 
     @Override
-    public void compile() {
-        for (Node node : outputXNodes) if (node != null) node.compile();
-        for (Node node : outputNodes) if (node != null) node.compile();
-    }
-
-    @Override
     public void execute() {
 
         if (!inputXNodes.isEmpty()) {

@@ -43,15 +43,6 @@ public class BooleanNode extends Node {
     }
 
     @Override
-    public void compile() {
-        for (Node node : inputXNodes) {
-            if (node != null) if (!(node instanceof BooleanNode || node instanceof StartNode))
-                programPanel.flowForge.console.throwError("Invalid variable being passed to Add node. \n" +
-                        "Expected Integer node, found " + node.getTitle() + "Node", node);
-        }
-    }
-
-    @Override
     public void execute() {
         for (Node node : inputXNodes) {
             if (node != null) {
@@ -63,6 +54,8 @@ public class BooleanNode extends Node {
         for (Node nodes : outputNodes) {
             if (nodes != null) nodes.execute();
         }
+
+        System.out.println(compileToC());
     }
 
     public Boolean getBooleanValue() {
@@ -75,6 +68,12 @@ public class BooleanNode extends Node {
     }
     @Override
     public String compileToC() {
-        return null;
+        String varName = "bool_" + title;
+
+        StringBuilder code = new StringBuilder();
+        code.append("boolean " + varName + " = " + getBooleanValue());
+
+        return code.toString();
+
     }
 }

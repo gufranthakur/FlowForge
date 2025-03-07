@@ -13,6 +13,7 @@ public class FlowForge extends JFrame {
 
     public Console console;
     public Timer loop;
+    public DataManager dataManager;
 
     public JPanel programPanelContainer;
     public StartPanel startPanel;
@@ -25,6 +26,7 @@ public class FlowForge extends JFrame {
     public Color errorTheme = new Color(198, 17, 17);
 
     public FlowForge() {
+
         this.setTitle("FlowForge");
         this.setSize(1200, 700);
         this.setExtendedState(MAXIMIZED_BOTH);
@@ -47,6 +49,8 @@ public class FlowForge extends JFrame {
             }
         });
 
+        dataManager = new DataManager(programPanel);
+
         controlPanel = new ControlPanel(this);
         controlPanel.init();
 
@@ -68,7 +72,6 @@ public class FlowForge extends JFrame {
     }
 
     public void compile() {
-        programPanel.startNode.compile();
         console.getRootPanel().setVisible(true);
     }
 

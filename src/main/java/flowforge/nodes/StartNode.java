@@ -29,15 +29,6 @@ public class StartNode extends Node{
     }
 
     @Override
-    public void compile() {
-        if (outputNodes.isEmpty()) {
-            print("No nodes connected to start node.");
-        }
-        for (Node node : outputXNodes) if (node != null) node.compile();
-        for (Node node : outputNodes) if (node != null) node.compile();
-    }
-
-    @Override
     public void execute() {
         programPanel.flowForge.console.clear();
         print("Program Execution started");
@@ -49,6 +40,10 @@ public class StartNode extends Node{
     }
     @Override
     public String compileToC() {
-        return null;
+        StringBuilder string = new StringBuilder();
+
+        string.append("");
+
+        return string.toString();
     }
 }

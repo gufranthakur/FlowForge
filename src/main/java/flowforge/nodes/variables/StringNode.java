@@ -37,15 +37,6 @@ public class StringNode extends Node {
     }
 
     @Override
-    public void compile() {
-        for (Node node : inputXNodes) {
-            if (node != null) if (!(node instanceof StringNode || node instanceof StartNode))
-                programPanel.flowForge.console.throwError("Invalid variable being passed to String node. \n" +
-                        "Expected Integer node, found " + node.getTitle() + "Node", node);
-        }
-    }
-
-    @Override
     public void execute() {
         for (Node node : inputXNodes) {
 
@@ -58,6 +49,8 @@ public class StringNode extends Node {
         for (Node nodes : outputNodes) {
             if (nodes != null) nodes.execute();
         }
+
+        System.out.println(compileToC());
     }
 
     public String getStringValue() {
@@ -70,7 +63,13 @@ public class StringNode extends Node {
     }
     @Override
     public String compileToC() {
-        return null;
+        String varName = "str_" + title;
+
+        StringBuilder code = new StringBuilder();
+        code.append("char " + varName + "[50] = " + " \" " + getStringValue() + " \" "  );
+
+        return code.toString();
+
     }
 
 }

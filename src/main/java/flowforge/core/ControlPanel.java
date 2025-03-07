@@ -39,6 +39,7 @@ public class ControlPanel {
     private JPanel variableControlPanel;
     private JScrollPane variableScrollPanel;
     private JPanel propertiesPanel;
+    private JButton saveButton;
     private JComboBox nodeBox;
 
     private FlowForge flowForge;
@@ -134,7 +135,17 @@ public class ControlPanel {
 
         runStopButton.addActionListener(e -> {
             flowForge.run();
+        });
 
+        saveButton.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+                String filePath = fileChooser.getSelectedFile().getAbsolutePath();
+                if (!filePath.endsWith(".json")) {
+                    filePath += ".json";
+                }
+                flowForge.dataManager.saveProgram(filePath);
+            }
         });
 
         functionsTree.addMouseListener(new MouseAdapter() {

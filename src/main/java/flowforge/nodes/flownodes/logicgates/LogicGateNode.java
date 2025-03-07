@@ -38,15 +38,6 @@ public class LogicGateNode extends Node {
     }
 
     @Override
-    public void compile() {
-        for (Node node : inputXNodes) {
-            if (node != null) if (!(node instanceof BooleanNode))
-                programPanel.flowForge.console.throwError("Invalid variable being passed to " + title + " node. \n" +
-                        "Expected Integer node, found " + node.getTitle() + "Node", node);
-        }
-    }
-
-    @Override
     public void execute() {
         switch(gateType) {
             case "NOT":

@@ -30,23 +30,6 @@ public class ConditionalLoopNode extends Node {
     }
 
     @Override
-    public void compile() {
-        for (Node node : inputXNodes) {
-            if (node !=null) {
-                if (!(node instanceof BooleanNode || node instanceof EqualToNode ||
-                        node instanceof GreaterThanNode || node instanceof LessThanNode ||
-                        node instanceof GreaterThanOrEqualNode || node instanceof LessThanOrEqualNode ||
-                        node instanceof NotEqualToNode)) {
-                    programPanel.flowForge.console.throwError("Expected external input : Boolean output \n" +
-                            "Found " + node.getTitle() + " Node", node);
-                }
-            }
-        }
-        for (Node node : outputXNodes) if (node != null) node.compile();
-        for (Node node : outputNodes) if (node != null) node.compile();
-    }
-
-    @Override
     public void execute() {
         if (inputXNodes.size() != 1) return;
 

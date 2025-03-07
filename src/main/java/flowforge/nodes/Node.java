@@ -7,6 +7,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.geom.Path2D;
 import java.util.ArrayList;
 
@@ -29,11 +31,27 @@ public abstract class Node extends JInternalFrame {
     public JPanel outputsPanel;
     public JPanel inputsPanel;
 
+    private int nodeX;
+    private int nodeY;
+    private int nodeWidth;
+    private int nodeHeight;
+
     public Node(String title, ProgramPanel programPanel) {
         super(title, true, true, false, false);
         this.programPanel = programPanel;
         loadUI();
         loadActionListeners();
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentMoved(ComponentEvent e) {
+                updateNodeDimensions();
+            }
+
+            @Override
+            public void componentResized(ComponentEvent e) {
+                updateNodeDimensions();
+            }
+        });
     }
 
     private void loadUI() {
@@ -197,8 +215,6 @@ public abstract class Node extends JInternalFrame {
         g.setStroke(originalStroke);
     }
 
-
-
     public void disconnectAll() {
         for (Node input : inputNodes) {
             input.outputNodes.remove(this);
@@ -225,6 +241,24 @@ public abstract class Node extends JInternalFrame {
 
     }
 
+    private void updateNodeDimensions() {
+        nodeX = getX();
+        nodeY = getY();
+        nodeWidth = getWidth();
+        nodeHeight = getHeight();
+    }
+
+    public void restoreDimensions(int x, int y, int width, int height) {
+        setLocation(x, y);
+        setSize(width, height);
+        updateNodeDimensions();
+    }
+
+    public int getNodeX() { return nodeX; }
+    public int getNodeY() { return nodeY; }
+    public int getNodeWidth() { return nodeWidth; }
+    public int getNodeHeight() { return nodeHeight; }
+
     public Point getInputPoint() {
         return new Point(getX(), getY() + getHeight()/2 - 20);
     }
@@ -242,8 +276,6 @@ public abstract class Node extends JInternalFrame {
     }
 
     public abstract void execute();
-
-    public abstract void compile();
 
     public abstract String compileToC();
 }
