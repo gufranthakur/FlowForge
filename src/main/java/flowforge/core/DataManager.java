@@ -436,6 +436,15 @@ public class DataManager {
                 case "MultiplyNode":
                     return new MultiplyNode(title, programPanel);
 
+                case "DivideNode" :
+                    return new DivideNode(title, programPanel);
+
+                case "ModulusNode" :
+                    return new ModulusNode(title, programPanel);
+
+                case "RandomNode" :
+                    return new RandomNode(title, programPanel);
+
                 case "IntegerNode":
                     String intName = properties.get("name").getAsString();
                     int intValue = properties.get("value").getAsInt();

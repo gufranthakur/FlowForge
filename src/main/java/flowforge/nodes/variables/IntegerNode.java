@@ -3,8 +3,7 @@ package flowforge.nodes.variables;
 import flowforge.core.ProgramPanel;
 import flowforge.nodes.Node;
 import flowforge.nodes.flownodes.InputNode;
-import flowforge.nodes.flownodes.arithmetic.AddNode;
-import flowforge.nodes.flownodes.arithmetic.SubtractNode;
+import flowforge.nodes.flownodes.arithmetic.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,6 +37,9 @@ public class IntegerNode extends Node {
                 if (node instanceof InputNode) setIntValue(Integer.valueOf(((InputNode) node).getInputString()));
                 else if (node instanceof AddNode) setIntValue(((AddNode) node).getResult());
                 else if (node instanceof SubtractNode) setIntValue(((SubtractNode) node).getResult());
+                else if (node instanceof MultiplyNode) setIntValue(((MultiplyNode) node).getResult());
+                else if (node instanceof DivideNode) setIntValue(((DivideNode) node).getResult());
+                else if (node instanceof ModulusNode) setIntValue(((ModulusNode) node).getResult());
                 else setIntValue((Integer) spinner.getValue());
             }
         }

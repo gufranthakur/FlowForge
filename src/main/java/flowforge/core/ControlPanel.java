@@ -4,9 +4,7 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.fonts.inter.FlatInterFont;
 import flowforge.FlowForge;
 import flowforge.nodes.flownodes.*;
-import flowforge.nodes.flownodes.arithmetic.AddNode;
-import flowforge.nodes.flownodes.arithmetic.MultiplyNode;
-import flowforge.nodes.flownodes.arithmetic.SubtractNode;
+import flowforge.nodes.flownodes.arithmetic.*;
 import flowforge.nodes.flownodes.comparators.*;
 import flowforge.nodes.flownodes.logicgates.LogicGateNode;
 import flowforge.nodes.variables.BooleanNode;
@@ -52,7 +50,7 @@ public class ControlPanel {
             equalTo, greaterThan, lessThan,
             greaterThanEqualTo, lessThanEqualTo, notEqualTo,
             notGate, andGate, orGate, nandGate, norGate, xorGate,
-            add, subtract, multiply, divide;
+            add, subtract, multiply, divide, modulus, random;
 
     private JTree variableTree;
     private DefaultMutableTreeNode variableRoot;
@@ -118,6 +116,8 @@ public class ControlPanel {
                 subtract = new DefaultMutableTreeNode("Subtract");
                 multiply = new DefaultMutableTreeNode("Multiply");
                 divide = new DefaultMutableTreeNode("Divide");
+                modulus = new DefaultMutableTreeNode("Modulus");
+                random = new DefaultMutableTreeNode("Random");
 
         arduinoNode = new DefaultMutableTreeNode("Arduino");
     }
@@ -199,6 +199,11 @@ public class ControlPanel {
                         break;
                     case "Multiply" : flowForge.programPanel.addNode(new MultiplyNode("Multiply", flowForge.programPanel));
                         break;
+                    case "Divide" : flowForge.programPanel.addNode(new DivideNode("Divide", flowForge.programPanel));
+                        break;
+                    case "Modulus" : flowForge.programPanel.addNode(new ModulusNode("Modulus", flowForge.programPanel));
+                        break;
+                    case "Random" : flowForge.programPanel.addNode(new RandomNode("Random", flowForge.programPanel));
                 }
 
             }
@@ -237,33 +242,33 @@ public class ControlPanel {
 
     public void addComponent() {
 
-        root.add(flowNode);
-        flowNode.add(print);
-        flowNode.add(branch);
-        flowNode.add(input);
-        flowNode.add(delay);
-        flowNode.add(loop);
-        flowNode.add(conditionalLoop);
-            flowNode.add(arithmeticNode);
-                arithmeticNode.add(add);
-                arithmeticNode.add(subtract);
-                arithmeticNode.add(multiply);
-                arithmeticNode.add(divide);
-            flowNode.add(comparators);
-                comparators.add(equalTo);
-                comparators.add(greaterThan);
-                comparators.add(lessThan);
-                comparators.add(greaterThanEqualTo);
-                comparators.add(lessThanEqualTo);
-                comparators.add(notEqualTo);
-            flowNode.add(logicGates);
-                logicGates.add(notGate);
-                logicGates.add(andGate);
-                logicGates.add(orGate);
-                logicGates.add(nandGate);
-                logicGates.add(norGate);
-                logicGates.add(xorGate);
-        root.add(arduinoNode);
+        root.add(print);
+        root.add(branch);
+        root.add(input);
+        root.add(delay);
+        root.add(loop);
+        root.add(conditionalLoop);
+        root.add(arithmeticNode);
+            arithmeticNode.add(add);
+            arithmeticNode.add(subtract);
+            arithmeticNode.add(multiply);
+            arithmeticNode.add(divide);
+            arithmeticNode.add(modulus);
+            arithmeticNode.add(random);
+        root.add(comparators);
+            comparators.add(equalTo);
+            comparators.add(greaterThan);
+            comparators.add(lessThan);
+            comparators.add(greaterThanEqualTo);
+            comparators.add(lessThanEqualTo);
+            comparators.add(notEqualTo);
+        root.add(logicGates);
+            logicGates.add(notGate);
+            logicGates.add(andGate);
+            logicGates.add(orGate);
+            logicGates.add(nandGate);
+            logicGates.add(norGate);
+            logicGates.add(xorGate);
 
         variableRoot.add(integerNode);
         variableRoot.add(stringNode);

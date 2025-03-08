@@ -48,8 +48,7 @@ public class StringNode extends Node {
         for (Node nodes : outputNodes) {
             if (nodes != null) nodes.execute();
         }
-
-        System.out.println(compileToC());
+        
     }
 
     public String getValue() {
