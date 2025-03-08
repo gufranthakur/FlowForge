@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="FlowForge:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/FlowForge_jar</output-path>
+    <root id="archive" name="FlowForge.jar">
+      <element id="module-output" name="FlowForge" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/formdev/flatlaf-fonts-jetbrains-mono/2.304/flatlaf-fonts-jetbrains-mono-2.304.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/google/code/gson/gson/2.10.1/gson-2.10.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/formdev/flatlaf/3.5.1/flatlaf-3.5.1.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
