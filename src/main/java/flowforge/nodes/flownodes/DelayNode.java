@@ -14,7 +14,7 @@ public class DelayNode extends Node {
     public DelayNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
         this.programPanel = programPanel;
-        this.setSize(260, 100);
+        this.setSize(260, 150);
 
         JPanel wrapperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1000, 0, Integer.MAX_VALUE, 100);

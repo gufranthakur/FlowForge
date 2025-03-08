@@ -13,6 +13,7 @@ public class SubtractNode extends Node {
     public SubtractNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
         this.programPanel = programPanel;
+        this.setSize(240, 180);
         inputXButton.setText("Integers");
         outputXButton.setText("Difference");
     }

@@ -14,7 +14,7 @@ public class ConditionalLoopNode extends Node {
     public ConditionalLoopNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
         this.programPanel = programPanel;
-        this.setSize(170, 90);
+        this.setSize(170, 150);
 
         JPanel wrapperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 

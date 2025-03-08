@@ -98,8 +98,8 @@ public class ControlPanel {
                 equalTo = new DefaultMutableTreeNode("Equals to");
                 greaterThan = new DefaultMutableTreeNode("Greater than");
                 lessThan = new DefaultMutableTreeNode("Less than");
-                greaterThanEqualTo = new DefaultMutableTreeNode("Greater than equal to");
-                lessThanEqualTo = new DefaultMutableTreeNode("Less than equal to");
+                greaterThanEqualTo = new DefaultMutableTreeNode("Greater than or equal to");
+                lessThanEqualTo = new DefaultMutableTreeNode("Less than or equal to");
                 notEqualTo = new DefaultMutableTreeNode("Not equal to");
 
             logicGates = new DefaultMutableTreeNode("Logic gates");
@@ -228,11 +228,11 @@ public class ControlPanel {
 
                     String variableName = (String) selectedNode.getUserObject();
                     if (parentNode.getUserObject().equals("Integers")) {
-                        flowForge.programPanel.addNode(new IntegerNode(variableName, flowForge.programPanel, 0));
+                        flowForge.programPanel.addNewNode(new IntegerNode(variableName, flowForge.programPanel, 0));
                     } else if (parentNode.getUserObject().equals("Strings")) {
-                        flowForge.programPanel.addNode(new StringNode(variableName, flowForge.programPanel, ""));
+                        flowForge.programPanel.addNewNode(new StringNode(variableName, flowForge.programPanel, ""));
                     } else if (parentNode.getUserObject().equals("Booleans")) {
-                        flowForge.programPanel.addNode(new BooleanNode(variableName, flowForge.programPanel, false));
+                        flowForge.programPanel.addNewNode(new BooleanNode(variableName, flowForge.programPanel, false));
                     }
                 }
 

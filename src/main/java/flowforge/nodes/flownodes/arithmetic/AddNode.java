@@ -14,6 +14,7 @@ public class AddNode extends Node {
     public AddNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
         this.programPanel = programPanel;
+        this.setSize(210, 150);
 
         inputXButton.setText("Integers");
         outputXButton.setText("Sum");

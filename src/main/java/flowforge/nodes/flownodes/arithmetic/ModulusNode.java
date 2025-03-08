@@ -13,6 +13,7 @@ public class ModulusNode extends Node {
     public ModulusNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
         this.programPanel = programPanel;
+        this.setSize(230, 150);
 
         inputXButton.setText("Divisor / Dividend");
         outputXButton.setText("Remainder");

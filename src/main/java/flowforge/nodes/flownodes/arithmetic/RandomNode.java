@@ -15,6 +15,7 @@ public class RandomNode extends Node {
     public RandomNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
         this.programPanel = programPanel;
+        this.setSize(220, 170);
 
         inputXButton.setText("Range");
         outputXButton.setText("Random Value");

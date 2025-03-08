@@ -16,7 +16,7 @@ public class LoopNode extends Node {
     public LoopNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
         this.programPanel = programPanel;
-        this.setSize(260, 100);
+        this.setSize(260, 150);
 
         JPanel wrapperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1);
