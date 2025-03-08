@@ -50,21 +50,6 @@ public class ConditionalLoopNode extends Node {
             }
         };
         worker.execute();
-        System.out.println(compileToC());
-    }
-
-    @Override
-    public String compileToC() {
-
-        StringBuilder expression = new StringBuilder();
-
-        expression.append("while(" + inputXNodes.getFirst().getName() + ") { \n");
-        for (Node node : outputNodes) {
-            expression.append("\t" + node.compileToC() + "\n");
-        }
-        expression.append("}");
-
-        return expression.toString();
     }
 
 }

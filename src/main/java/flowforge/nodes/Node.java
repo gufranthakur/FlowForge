@@ -277,5 +277,4 @@ public abstract class Node extends JInternalFrame {
 
     public abstract void execute();
 
-    public abstract String compileToC();
 }

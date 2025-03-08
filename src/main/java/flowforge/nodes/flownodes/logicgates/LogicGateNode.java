@@ -109,8 +109,4 @@ public class LogicGateNode extends Node {
         boolean apply(boolean a, boolean b);
     }
 
-    @Override
-    public String compileToC() {
-        return null;
-    }
 }

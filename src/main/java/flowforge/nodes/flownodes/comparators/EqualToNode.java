@@ -66,9 +66,4 @@ public class EqualToNode extends Node {
 
     }
 
-    @Override
-    public String compileToC() {
-        return null;
-    }
-
 }

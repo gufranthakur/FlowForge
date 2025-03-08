@@ -167,11 +167,6 @@ public class BranchNode extends Node {
         }
     }
 
-    @Override
-    public String compileToC() {
-        return null;
-    }
-
     /**
      * Gets the connection point for the false output.
      * @return Point coordinates for false output connection

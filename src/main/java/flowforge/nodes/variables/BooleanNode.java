@@ -54,7 +54,6 @@ public class BooleanNode extends Node {
             if (nodes != null) nodes.execute();
         }
 
-        System.out.println(compileToC());
     }
 
     public Boolean getValue() {
@@ -65,14 +64,5 @@ public class BooleanNode extends Node {
         programPanel.booleans.put(title, booleanValue);
         System.out.println(programPanel.booleans);
     }
-    @Override
-    public String compileToC() {
-        String varName = "bool_" + title;
 
-        StringBuilder code = new StringBuilder();
-        code.append("boolean " + varName + " = " + getValue());
-
-        return code.toString();
-
-    }
 }

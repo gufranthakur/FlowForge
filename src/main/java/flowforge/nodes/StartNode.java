@@ -40,12 +40,4 @@ public class StartNode extends Node{
         for (Node outputNode : outputNodes) outputNode.execute();
 
     }
-    @Override
-    public String compileToC() {
-        StringBuilder string = new StringBuilder();
-
-        string.append("");
-
-        return string.toString();
-    }
 }

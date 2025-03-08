@@ -46,7 +46,6 @@ public class IntegerNode extends Node {
             if (nodes != null) nodes.execute();
         }
 
-        System.out.println(compileToC());
     }
 
     public Integer getValue() {
@@ -57,15 +56,5 @@ public class IntegerNode extends Node {
         programPanel.integers.put(title, intValue);
         System.out.println(programPanel.integers);
     }
-    @Override
-    public String compileToC() {
-        // For a variable node, we need to declare it and initialize it
-        String varName = "int_" + title;
-        int value = getValue();
 
-        StringBuilder code = new StringBuilder();
-        code.append("int ").append(varName).append(" = ").append(value).append(";\n");
-
-        return code.toString();
-    }
 }

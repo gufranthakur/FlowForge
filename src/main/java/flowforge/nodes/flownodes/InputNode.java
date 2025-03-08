@@ -34,16 +34,10 @@ public class InputNode extends Node {
 
     @Override
     public void execute() {
-
         for (Node node : outputNodes) {
             node.execute();
         }
-        System.out.println(compileToC());
     }
 
-    @Override
-    public String compileToC() {
-       return "";
-    }
 
 }

@@ -60,15 +60,5 @@ public class StringNode extends Node {
         programPanel.strings.put(title, stringValue);
         System.out.println(programPanel.strings);
     }
-    @Override
-    public String compileToC() {
-        String varName = "str_" + title;
-
-        StringBuilder code = new StringBuilder();
-        code.append("char " + varName + "[50] = " + " \" " + getValue() + " \" "  );
-
-        return code.toString();
-
-    }
 
 }
