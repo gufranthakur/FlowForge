@@ -3,6 +3,7 @@ package flowforge.nodes.flownodes.arithmetic;
 
 import flowforge.core.ProgramPanel;
 import flowforge.nodes.Node;
+import flowforge.nodes.flownodes.PrintNode;
 import flowforge.nodes.variables.IntegerNode;
 
 public class SubtractNode extends Node {
@@ -40,7 +41,7 @@ public class SubtractNode extends Node {
         setResult(difference);
 
         for (Node node : outputXNodes) {
-            if (node != null) node.execute();
+            if (node != null && !(node instanceof PrintNode)) node.execute();
         }
 
         for (Node node : outputNodes) {
