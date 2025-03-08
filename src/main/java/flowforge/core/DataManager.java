@@ -79,6 +79,25 @@ public class DataManager {
                 nodeObj.add("properties", properties);
 
                 nodesArray.add(nodeObj);
+
+                // Special handling for BranchNode connections
+                if (node instanceof BranchNode) {
+                    BranchNode branchNode = (BranchNode) node;
+
+                    // Save true branch connections
+                    JsonArray trueConnections = new JsonArray();
+                    for (Node trueNode : branchNode.getTrueNodes()) {
+                        trueConnections.add(programPanel.nodes.indexOf(trueNode));
+                    }
+                    nodeObj.add("trueConnections", trueConnections);
+
+                    // Save false branch connections
+                    JsonArray falseConnections = new JsonArray();
+                    for (Node falseNode : branchNode.getFalseNodes()) {
+                        falseConnections.add(programPanel.nodes.indexOf(falseNode));
+                    }
+                    nodeObj.add("falseConnections", falseConnections);
+                }
             }
             programData.add("nodes", nodesArray);
 
@@ -283,6 +302,37 @@ public class DataManager {
                                 currentNode.connectToX(targetNode);
                                 currentNode.outputXButton.setSelected(true);
                                 targetNode.inputXButton.setSelected(true);
+                            }
+                        }
+                    }
+
+                    // Restore branch node-specific connections
+                    if (currentNode instanceof BranchNode) {
+                        BranchNode branchNode = (BranchNode) currentNode;
+
+                        // Restore true branch connections
+                        if (nodeObj.has("trueConnections")) {
+                            JsonArray trueConnections = nodeObj.getAsJsonArray("trueConnections");
+                            for (JsonElement connectionElement : trueConnections) {
+                                int targetId = connectionElement.getAsInt();
+                                Node targetNode = idToNodeMap.get(targetId);
+
+                                if (targetNode != null) {
+                                    branchNode.addTrueNode(targetNode);
+                                }
+                            }
+                        }
+
+                        // Restore false branch connections
+                        if (nodeObj.has("falseConnections")) {
+                            JsonArray falseConnections = nodeObj.getAsJsonArray("falseConnections");
+                            for (JsonElement connectionElement : falseConnections) {
+                                int targetId = connectionElement.getAsInt();
+                                Node targetNode = idToNodeMap.get(targetId);
+
+                                if (targetNode != null) {
+                                    branchNode.addFalseNode(targetNode);
+                                }
                             }
                         }
                     }

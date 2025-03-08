@@ -14,6 +14,7 @@ import flowforge.nodes.variables.IntegerNode;
 import flowforge.nodes.variables.StringNode;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
@@ -139,10 +140,12 @@ public class ControlPanel {
 
         saveButton.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("FlowForge Programs (*.flow)", "flow");
+            fileChooser.setFileFilter(filter);
             if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
                 String filePath = fileChooser.getSelectedFile().getAbsolutePath();
-                if (!filePath.endsWith(".json")) {
-                    filePath += ".json";
+                if (!filePath.endsWith(".flow")) {
+                    filePath += ".flow";
                 }
                 flowForge.dataManager.saveProgram(filePath);
             }

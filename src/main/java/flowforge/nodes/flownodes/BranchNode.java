@@ -10,6 +10,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * Implements conditional branching (if-else) functionality.
+ * Routes execution flow based on a boolean condition from a connected node.
+ */
 public class BranchNode extends Node {
 
     private JRadioButton outputFalseButton;
@@ -18,6 +22,11 @@ public class BranchNode extends Node {
 
     private ProgramPanel programPanel;
 
+    /**
+     * Creates a new branch node with true and false output paths.
+     * @param title The display title for the node
+     * @param programPanel Reference to the main program panel
+     */
     public BranchNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
         this.programPanel = programPanel;
@@ -56,6 +65,11 @@ public class BranchNode extends Node {
         outputsPanel.add(outputFalseButton);
     }
 
+    /**
+     * Connects this node to a target node based on selected output type (true/false).
+     * Adds the target to either trueNodes or falseNodes depending on which output is selected.
+     * @param target The node to connect to
+     */
     @Override
     public void connectTo(Node target) {
         if (outputButton.isSelected()) {
@@ -67,9 +81,12 @@ public class BranchNode extends Node {
             target.inputNodes.add(this);
             outputFalseButton.setSelected(false);
         }
-
     }
 
+    /**
+     * Disconnects all input and output connections.
+     * Clears both true and false connection lists.
+     */
     @Override
     public void disconnectAll() {
         for (Node node : trueNodes) {
@@ -88,6 +105,11 @@ public class BranchNode extends Node {
         outputFalseButton.setSelected(false);
     }
 
+    /**
+     * Executes the branch logic.
+     * Evaluates the condition from the connected input node and
+     * executes either the true or false branch accordingly.
+     */
     @Override
     public void execute() {
         boolean condition = false;
@@ -96,24 +118,14 @@ public class BranchNode extends Node {
             if (node != null) {
                 switch (node) {
                     case BooleanNode booleanNode -> condition = booleanNode.getValue();
-
                     case EqualToNode equalToNode -> condition = equalToNode.getIsEqual();
-
                     case GreaterThanNode greaterThanNode -> condition = greaterThanNode.getIsGreater();
-
                     case LessThanNode lessThanNode -> condition = lessThanNode.getIsLess();
-
                     case GreaterThanOrEqualNode greaterThanOrEqualNode -> condition = greaterThanOrEqualNode.getIsGreaterOrEqual();
-
                     case LessThanOrEqualNode lessThanOrEqualNode -> condition = lessThanOrEqualNode.getIsLessOrEqual();
-
                     case NotEqualToNode notEqualToNode -> condition = notEqualToNode.getIsNotEqual();
-
                     case LogicGateNode logicGateNode -> condition = logicGateNode.getResult();
-
-                    default -> {
-                        System.out.println("Error");
-                    }
+                    default -> { /* Unsupported condition node type */ }
                 }
             }
         }
@@ -133,6 +145,11 @@ public class BranchNode extends Node {
         }
     }
 
+    /**
+     * Draws connections to true and false branch targets with distinct colors.
+     * True path: blue gradient, False path: red gradient
+     * @param g Graphics context to draw on
+     */
     @Override
     public void drawConnection(Graphics2D g) {
         // Draw True connections
@@ -155,7 +172,53 @@ public class BranchNode extends Node {
         return null;
     }
 
+    /**
+     * Gets the connection point for the false output.
+     * @return Point coordinates for false output connection
+     */
     private Point getFalseOutputPoint() {
         return new Point(getX() + getWidth(), getY() + getHeight()*2/3);
+    }
+
+    /**
+     * Gets all true branch target nodes.
+     * Used during program saving to preserve branch structure.
+     * @return List of nodes in the true branch
+     */
+    public ArrayList<Node> getTrueNodes() {
+        return trueNodes;
+    }
+
+    /**
+     * Gets all false branch target nodes.
+     * Used during program saving to preserve branch structure.
+     * @return List of nodes in the false branch
+     */
+    public ArrayList<Node> getFalseNodes() {
+        return falseNodes;
+    }
+
+    /**
+     * Adds a node to the true branch without UI interaction.
+     * Used during program loading to reconstruct connections.
+     * @param node Node to add to the true branch
+     */
+    public void addTrueNode(Node node) {
+        if (node != null && !trueNodes.contains(node)) {
+            trueNodes.add(node);
+            node.inputNodes.add(this);
+        }
+    }
+
+    /**
+     * Adds a node to the false branch without UI interaction.
+     * Used during program loading to reconstruct connections.
+     * @param node Node to add to the false branch
+     */
+    public void addFalseNode(Node node) {
+        if (node != null && !falseNodes.contains(node)) {
+            falseNodes.add(node);
+            node.inputNodes.add(this);
+        }
     }
 }
