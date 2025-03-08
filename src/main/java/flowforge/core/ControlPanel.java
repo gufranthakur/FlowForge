@@ -29,7 +29,7 @@ public class ControlPanel {
     public JComboBox variableBox;
     private JPanel variableListPanel;
     private JPanel executePanel;
-    private JButton compileButton;
+    private JButton consoleButton;
     private JButton runStopButton;
     private JButton addButton;
     private JTabbedPane rootTabbedPane;
@@ -37,7 +37,6 @@ public class ControlPanel {
     private JScrollPane nodesScrollPanel;
     private JPanel variableControlPanel;
     private JScrollPane variableScrollPanel;
-    private JPanel propertiesPanel;
     private JButton saveButton;
     private JComboBox nodeBox;
 
@@ -71,7 +70,7 @@ public class ControlPanel {
     }
 
     public void init() {
-        compileButton.setBackground(flowForge.theme);
+        saveButton.setBackground(flowForge.theme);
 
         searchField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Search...");
 
@@ -130,8 +129,8 @@ public class ControlPanel {
     }
 
     public void initListeners() {
-        compileButton.addActionListener(e -> {
-            flowForge.compile();
+        consoleButton.addActionListener(e -> {
+            flowForge.console.getRootPanel().setVisible(!flowForge.console.getRootPanel().isVisible());
         });
 
         runStopButton.addActionListener(e -> {
@@ -321,6 +320,11 @@ public class ControlPanel {
             }
         }
         variableTree.expandRow(0);
+    }
+
+    public void updateVariableTree() {
+        loadVariables();
+        refreshTree();
     }
 
     public JPanel getRootPanel() {

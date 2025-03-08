@@ -46,7 +46,14 @@ public class RandomNode extends Node {
         if (firstInt == null || secondInt == null) return;
 
         Random random = new Random();
-        setResult(random.nextInt(firstInt, secondInt));
+
+        if (firstInt < secondInt) {
+            setResult(random.nextInt(firstInt, secondInt));
+        } else if (firstInt > secondInt) {
+            setResult(random.nextInt(secondInt, firstInt));
+        } else {
+            setResult(firstInt);
+        }
 
         for (Node node : outputXNodes) {
             if (node != null && !(node instanceof PrintNode)) node.execute();

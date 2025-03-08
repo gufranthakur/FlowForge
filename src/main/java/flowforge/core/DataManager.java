@@ -222,12 +222,13 @@ public class DataManager {
                     }
                 }
 
-                if (variables.has("floats")) {
+                if  (variables.has("floats")) {
                     JsonObject floats = variables.getAsJsonObject("floats");
                     for (Map.Entry<String, JsonElement> entry : floats.entrySet()) {
                         programPanel.floats.put(entry.getKey(), entry.getValue().getAsFloat());
                     }
                 }
+                programPanel.flowForge.controlPanel.updateVariableTree();
             }
 
             // Track nodes for connection reconstruction
@@ -448,17 +449,23 @@ public class DataManager {
                 case "IntegerNode":
                     String intName = properties.get("name").getAsString();
                     int intValue = properties.get("value").getAsInt();
-                    return new IntegerNode(intName, programPanel, intValue);
+                    IntegerNode intNode = new IntegerNode(intName, programPanel, intValue);
+                    intNode.spinner.setValue(intValue); // Update the spinner with the loaded value
+                    return intNode;
 
                 case "StringNode":
                     String strName = properties.get("name").getAsString();
                     String strValue = properties.get("value").getAsString();
-                    return new StringNode(strName, programPanel, strValue);
+                    StringNode strNode = new StringNode(strName, programPanel, strValue);
+                    strNode.textField.setText(strValue);
+                    return strNode;
 
                 case "BooleanNode":
                     String boolName = properties.get("name").getAsString();
                     boolean boolValue = properties.get("value").getAsBoolean();
-                    return new BooleanNode(boolName, programPanel, boolValue);
+                    BooleanNode boolNode = new BooleanNode(boolName, programPanel, boolValue);
+                    boolNode.checkBox.setSelected(boolValue   );
+                    return boolNode;
 
                 default:
                     return null;

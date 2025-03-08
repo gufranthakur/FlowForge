@@ -18,6 +18,8 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
     public StartNode startNode;
     private Node sourceNode;
 
+    public Node selectedNode;
+
     public List<Node> nodes = new ArrayList<>();
 
     public HashMap<String, Integer> integers = new HashMap<>(20);

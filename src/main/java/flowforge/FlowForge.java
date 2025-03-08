@@ -85,6 +85,8 @@ public class FlowForge extends JFrame {
         this.add(programPanelContainer, BorderLayout.CENTER);
         this.add(console.getRootPanel(), BorderLayout.SOUTH);
 
+        console.print("Welcome to FlowForge!");
+
         this.repaint();
         this.revalidate();
     }
