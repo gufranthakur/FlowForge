@@ -8,6 +8,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,8 +19,6 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
     public FlowForge flowForge;
     public StartNode startNode;
     private Node sourceNode;
-
-    public Node selectedNode;
 
     public List<Node> nodes = new ArrayList<>();
 
@@ -30,13 +30,42 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
     private boolean isUp, isDown, isLeft, isRight;
     private int cameraX, cameraY;
     private int cameraSpeed = 5;
+    private Point dragStart;
 
     public ProgramPanel(FlowForge flowForge) {
         this.flowForge = flowForge;
         this.setLocation(0, 0);
         this.setSize(3000, 3000);
-        this.setBackground(new Color(35, 35, 35));
+        this.setBackground(new Color(30, 30, 30));
         this.addKeyListener(this);
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                dragStart = e.getPoint();
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                dragStart = null;
+            }
+        });
+        this.addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                if (dragStart != null) {
+                    // Slow down movement a bit for smoother feel
+                    int deltaX = (e.getX() - dragStart.x);
+                    int deltaY = (e.getY() - dragStart.y);
+
+                    setLocation(getX() + deltaX, getY() + deltaY);
+                    cameraX -= deltaX;
+                    cameraY -= deltaY;
+
+                    dragStart = e.getPoint();
+                    repaint();
+                }
+            }
+        });
         setDoubleBuffered(true);
 
         cameraX = 0;
@@ -48,6 +77,21 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
 
     public void addNode(Node node) {
         nodes.add(node);
+        this.add(node);
+    }
+
+    public void addNewNode(Node node) {
+        nodes.add(node);
+
+        // Get the visible viewport center
+        Rectangle visibleRect = this.getVisibleRect();
+        int viewportCenterX = visibleRect.x + visibleRect.width/2;
+        int viewportCenterY = visibleRect.y + visibleRect.height/2;
+
+        // Set node position at the viewport center
+        node.setLocation(viewportCenterX - node.getNodeWidth()/2,
+                viewportCenterY - node.getNodeHeight()/2);
+
         this.add(node);
     }
 
@@ -81,10 +125,22 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
     }
 
     public void moveCamera() {
-        if (isUp) this.setLocation(this.getX(), this.getY() + cameraSpeed);
-        if (isDown) this.setLocation(this.getX(), this.getY() - cameraSpeed);
-        if (isLeft) this.setLocation(this.getX() + cameraSpeed, this.getY());
-        if (isRight) this.setLocation(this.getX() - cameraSpeed, this.getY());
+        if (isUp) {
+            this.setLocation(this.getX(), this.getY() + cameraSpeed);
+            cameraY -= cameraSpeed;
+        }
+        if (isDown) {
+            this.setLocation(this.getX(), this.getY() - cameraSpeed);
+            cameraY += cameraSpeed;
+        }
+        if (isLeft) {
+            this.setLocation(this.getX() + cameraSpeed, this.getY());
+            cameraX -= cameraSpeed;
+        }
+        if (isRight) {
+            this.setLocation(this.getX() - cameraSpeed, this.getY());
+            cameraX += cameraSpeed;
+        }
     }
 
     // Add this to your ProgramPanel class

@@ -138,16 +138,25 @@ public class ControlPanel {
         });
 
         saveButton.addActionListener(e -> {
-            JFileChooser fileChooser = new JFileChooser();
-            FileNameExtensionFilter filter = new FileNameExtensionFilter("FlowForge Programs (*.flow)", "flow");
-            fileChooser.setFileFilter(filter);
-            if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-                String filePath = fileChooser.getSelectedFile().getAbsolutePath();
-                if (!filePath.endsWith(".flow")) {
-                    filePath += ".flow";
+            if (flowForge.projectFilePath.isBlank()) {
+                JFileChooser fileChooser = new JFileChooser();
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("FlowForge Programs (*.flow)", "flow");
+                fileChooser.setFileFilter(filter);
+                if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+                    String filePath = fileChooser.getSelectedFile().getAbsolutePath();
+                    if (!filePath.endsWith(".flow")) {
+                        filePath += ".flow";
+                    }
+                    flowForge.dataManager.saveProgram(filePath);
+                    flowForge.projectFilePath = filePath;
                 }
-                flowForge.dataManager.saveProgram(filePath);
+            } else {
+                flowForge.dataManager.saveProgram(flowForge.projectFilePath);
             }
+
+            flowForge.console.clear();
+            flowForge.console.print("Project saved succesfully at location : \n" + flowForge.projectFilePath);
+
         });
 
         functionsTree.addMouseListener(new MouseAdapter() {
@@ -156,53 +165,53 @@ public class ControlPanel {
                 super.mouseClicked(e);
                 DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) functionsTree.getLastSelectedPathComponent();
                 switch (selectedNode.getUserObject().toString()) {
-                    case "Print" : flowForge.programPanel.addNode(new PrintNode("Print", flowForge.programPanel));
+                    case "Print" : flowForge.programPanel.addNewNode(new PrintNode("Print", flowForge.programPanel));
                         break;
-                    case "Branch" : flowForge.programPanel.addNode(new BranchNode("Branch", flowForge.programPanel));
+                    case "Branch" : flowForge.programPanel.addNewNode(new BranchNode("Branch", flowForge.programPanel));
                         break;
-                    case "Equals to" : flowForge.programPanel.addNode(new EqualToNode("Equals to", flowForge.programPanel));
+                    case "Equals to" : flowForge.programPanel.addNewNode(new EqualToNode("Equals to", flowForge.programPanel));
                         break;
-                    case "Greater than" : flowForge.programPanel.addNode(new GreaterThanNode("Greater than", flowForge.programPanel));
+                    case "Greater than" : flowForge.programPanel.addNewNode(new GreaterThanNode("Greater than", flowForge.programPanel));
                         break;
-                    case "Less than" : flowForge.programPanel.addNode(new LessThanNode("Less than", flowForge.programPanel));
+                    case "Less than" : flowForge.programPanel.addNewNode(new LessThanNode("Less than", flowForge.programPanel));
                         break;
-                    case "Greater than or equal to" : flowForge.programPanel.addNode(new GreaterThanOrEqualNode("Greater than equal to", flowForge.programPanel));
+                    case "Greater than or equal to" : flowForge.programPanel.addNewNode(new GreaterThanOrEqualNode("Greater than equal to", flowForge.programPanel));
                         break;
-                    case "Less than or equal to" : flowForge.programPanel.addNode(new LessThanOrEqualNode("Less than equal to", flowForge.programPanel));
+                    case "Less than or equal to" : flowForge.programPanel.addNewNode(new LessThanOrEqualNode("Less than equal to", flowForge.programPanel));
                         break;
-                    case "Not equal to" : flowForge.programPanel.addNode(new NotEqualToNode("Not equal to", flowForge.programPanel));
+                    case "Not equal to" : flowForge.programPanel.addNewNode(new NotEqualToNode("Not equal to", flowForge.programPanel));
                         break;
-                    case "NOT" : flowForge.programPanel.addNode(new LogicGateNode("NOT", flowForge.programPanel, "NOT"));
+                    case "NOT" : flowForge.programPanel.addNewNode(new LogicGateNode("NOT", flowForge.programPanel, "NOT"));
                         break;
-                    case "AND" : flowForge.programPanel.addNode(new LogicGateNode("AND", flowForge.programPanel, "AND"));
+                    case "AND" : flowForge.programPanel.addNewNode(new LogicGateNode("AND", flowForge.programPanel, "AND"));
                         break;
-                    case "OR" : flowForge.programPanel.addNode(new LogicGateNode("OR", flowForge.programPanel, "OR"));
+                    case "OR" : flowForge.programPanel.addNewNode(new LogicGateNode("OR", flowForge.programPanel, "OR"));
                         break;
-                    case "NAND" : flowForge.programPanel.addNode(new LogicGateNode("NAND", flowForge.programPanel, "NAND"));
+                    case "NAND" : flowForge.programPanel.addNewNode(new LogicGateNode("NAND", flowForge.programPanel, "NAND"));
                         break;
-                    case "NOR" : flowForge.programPanel.addNode(new LogicGateNode("NOR", flowForge.programPanel, "NOR"));
+                    case "NOR" : flowForge.programPanel.addNewNode(new LogicGateNode("NOR", flowForge.programPanel, "NOR"));
                         break;
-                    case "XOR" : flowForge.programPanel.addNode(new LogicGateNode("XOR", flowForge.programPanel, "XOR"));
+                    case "XOR" : flowForge.programPanel.addNewNode(new LogicGateNode("XOR", flowForge.programPanel, "XOR"));
                         break;
-                    case "Input" : flowForge.programPanel.addNode(new InputNode("Input", flowForge.programPanel));
+                    case "Input" : flowForge.programPanel.addNewNode(new InputNode("Input", flowForge.programPanel));
                         break;
-                    case "Delay" : flowForge.programPanel.addNode(new DelayNode("Delay", flowForge.programPanel));
+                    case "Delay" : flowForge.programPanel.addNewNode(new DelayNode("Delay", flowForge.programPanel));
                         break;
-                    case "Loop" : flowForge.programPanel.addNode(new LoopNode("Loop", flowForge.programPanel));
+                    case "Loop" : flowForge.programPanel.addNewNode(new LoopNode("Loop", flowForge.programPanel));
                         break;
-                    case "Conditional-Loop" : flowForge.programPanel.addNode(new ConditionalLoopNode("Conditional Loop", flowForge.programPanel));
+                    case "Conditional-Loop" : flowForge.programPanel.addNewNode(new ConditionalLoopNode("Conditional Loop", flowForge.programPanel));
                         break;
-                    case "Add" : flowForge.programPanel.addNode(new AddNode("Add", flowForge.programPanel));
+                    case "Add" : flowForge.programPanel.addNewNode(new AddNode("Add", flowForge.programPanel));
                         break;
-                    case "Subtract" : flowForge.programPanel.addNode(new SubtractNode("Subtract", flowForge.programPanel));
+                    case "Subtract" : flowForge.programPanel.addNewNode(new SubtractNode("Subtract", flowForge.programPanel));
                         break;
-                    case "Multiply" : flowForge.programPanel.addNode(new MultiplyNode("Multiply", flowForge.programPanel));
+                    case "Multiply" : flowForge.programPanel.addNewNode(new MultiplyNode("Multiply", flowForge.programPanel));
                         break;
-                    case "Divide" : flowForge.programPanel.addNode(new DivideNode("Divide", flowForge.programPanel));
+                    case "Divide" : flowForge.programPanel.addNewNode(new DivideNode("Divide", flowForge.programPanel));
                         break;
-                    case "Modulus" : flowForge.programPanel.addNode(new ModulusNode("Modulus", flowForge.programPanel));
+                    case "Modulus" : flowForge.programPanel.addNewNode(new ModulusNode("Modulus", flowForge.programPanel));
                         break;
-                    case "Random" : flowForge.programPanel.addNode(new RandomNode("Random", flowForge.programPanel));
+                    case "Random" : flowForge.programPanel.addNewNode(new RandomNode("Random", flowForge.programPanel));
                 }
 
             }

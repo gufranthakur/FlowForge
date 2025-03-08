@@ -55,10 +55,7 @@ public abstract class Node extends JInternalFrame {
     }
 
     private void loadUI() {
-
-        setSize(200, 200);
         setLocation(300, 300);
-
 
         contentPanel = new JPanel(new BorderLayout());
         topPanel = new JPanel();

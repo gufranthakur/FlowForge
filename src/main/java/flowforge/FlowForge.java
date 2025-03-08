@@ -26,8 +26,7 @@ public class FlowForge extends JFrame {
 
     public FlowForge() {
         this.setTitle("FlowForge");
-        this.setSize(1200, 700);
-        this.setExtendedState(MAXIMIZED_BOTH);
+        this.setSize(1000, 600);
         this.setLocationRelativeTo(null);
         this.setLayout(new BorderLayout());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -67,10 +66,6 @@ public class FlowForge extends JFrame {
         loop.start();
     }
 
-    public void compile() {
-        console.getRootPanel().setVisible(true);
-    }
-
     public void run() {
         programPanel.startNode.execute();
         console.getRootPanel().setVisible(true);
@@ -87,6 +82,7 @@ public class FlowForge extends JFrame {
 
         console.print("Welcome to FlowForge!");
 
+        this.setExtendedState(MAXIMIZED_BOTH);
         this.repaint();
         this.revalidate();
     }

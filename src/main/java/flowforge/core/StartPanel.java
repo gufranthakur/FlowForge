@@ -59,6 +59,7 @@ public class StartPanel extends JPanel implements ComponentListener {
 
                 flowForge.launch();
                 flowForge.dataManager.loadProgram(filePath);
+                flowForge.projectFilePath = filePath;
             }
         });
 
