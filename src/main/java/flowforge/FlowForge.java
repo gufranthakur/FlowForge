@@ -10,7 +10,6 @@ import java.awt.event.MouseEvent;
 
 public class FlowForge extends JFrame {
 
-
     public Console console;
     public Timer loop;
     public DataManager dataManager;
@@ -21,12 +20,11 @@ public class FlowForge extends JFrame {
     public ControlPanel controlPanel;
     public ProgramPanel programPanel;
 
+    public String projectFilePath;
 
     public Color theme = new Color(26, 77, 236);
-    public Color errorTheme = new Color(198, 17, 17);
 
     public FlowForge() {
-
         this.setTitle("FlowForge");
         this.setSize(1200, 700);
         this.setExtendedState(MAXIMIZED_BOTH);
@@ -36,20 +34,19 @@ public class FlowForge extends JFrame {
     }
 
     public void init() {
-
         console = new Console(this);
         startPanel = new StartPanel(this);
+        programPanel = new ProgramPanel(this);
+        dataManager = new DataManager(programPanel);
 
         programPanelContainer = new JPanel(null);
-        programPanel = new ProgramPanel(this);
+
         programPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 programPanel.requestFocusInWindow();
             }
         });
-
-        dataManager = new DataManager(programPanel);
 
         controlPanel = new ControlPanel(this);
         controlPanel.init();
@@ -59,7 +56,6 @@ public class FlowForge extends JFrame {
             programPanel.moveCamera();
 
         });
-
     }
 
     public void addComponent() {
