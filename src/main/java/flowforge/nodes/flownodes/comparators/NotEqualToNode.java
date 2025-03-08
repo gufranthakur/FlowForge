@@ -42,12 +42,12 @@ public class NotEqualToNode extends Node {
             }
 
             if (firstNode instanceof IntegerNode) {
-                Integer a = ((IntegerNode) firstNode).getIntValue();
-                Integer b = ((IntegerNode) secondNode).getIntValue();
+                Integer a = ((IntegerNode) firstNode).getValue();
+                Integer b = ((IntegerNode) secondNode).getValue();
                 setIsNotEqual(!a.equals(b));
             } else if (firstNode instanceof BooleanNode) {
-                Boolean a = ((BooleanNode) firstNode).getBooleanValue();
-                Boolean b = ((BooleanNode) secondNode).getBooleanValue();
+                Boolean a = ((BooleanNode) firstNode).getValue();
+                Boolean b = ((BooleanNode) secondNode).getValue();
                 setIsNotEqual(!a.equals(b));
             }
         } else {

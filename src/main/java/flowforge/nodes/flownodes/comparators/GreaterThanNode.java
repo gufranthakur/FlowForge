@@ -42,13 +42,13 @@ public class GreaterThanNode extends Node {
             }
 
             if (firstNode instanceof IntegerNode) {
-                Integer a = ((IntegerNode) firstNode).getIntValue();
-                Integer b = ((IntegerNode) secondNode).getIntValue();
+                Integer a = ((IntegerNode) firstNode).getValue();
+                Integer b = ((IntegerNode) secondNode).getValue();
                 setIsGreater(a > b);
             } else if (firstNode instanceof BooleanNode) {
                 // For booleans, true is considered greater than false
-                Boolean a = ((BooleanNode) firstNode).getBooleanValue();
-                Boolean b = ((BooleanNode) secondNode).getBooleanValue();
+                Boolean a = ((BooleanNode) firstNode).getValue();
+                Boolean b = ((BooleanNode) secondNode).getValue();
                 setIsGreater(a && !b);
             }
         } else {

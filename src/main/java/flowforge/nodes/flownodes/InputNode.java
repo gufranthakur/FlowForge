@@ -28,6 +28,10 @@ public class InputNode extends Node {
         return JOptionPane.showInputDialog(inputField.getText());
     }
 
+    public void setInputString(String string) {
+        inputField.setText(string);
+    }
+
     @Override
     public void execute() {
 

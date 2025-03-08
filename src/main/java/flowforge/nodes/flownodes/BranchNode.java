@@ -95,7 +95,7 @@ public class BranchNode extends Node {
         for (Node node : inputXNodes) {
             if (node != null) {
                 switch (node) {
-                    case BooleanNode booleanNode -> condition = booleanNode.getBooleanValue();
+                    case BooleanNode booleanNode -> condition = booleanNode.getValue();
 
                     case EqualToNode equalToNode -> condition = equalToNode.getIsEqual();
 

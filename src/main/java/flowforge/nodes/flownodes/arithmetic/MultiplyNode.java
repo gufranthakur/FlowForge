@@ -30,12 +30,12 @@ public class MultiplyNode extends Node {
     public void execute() {
         int res = 0;
         if (inputXNodes.getFirst() != null && inputXNodes.get(0) instanceof IntegerNode)
-            res = ((IntegerNode) inputXNodes.get(0)).getIntValue();
+            res = ((IntegerNode) inputXNodes.get(0)).getValue();
 
 
         for (Node node : inputXNodes) {
             if (node != null) if (node instanceof IntegerNode) {
-                res *= ((IntegerNode) node).getIntValue();
+                res *= ((IntegerNode) node).getValue();
             }
         }
 

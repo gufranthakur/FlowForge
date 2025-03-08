@@ -2,10 +2,8 @@ package flowforge.nodes.variables;
 
 import flowforge.core.ProgramPanel;
 import flowforge.nodes.Node;
-import flowforge.nodes.StartNode;
 import flowforge.nodes.flownodes.InputNode;
 import flowforge.nodes.flownodes.arithmetic.AddNode;
-import flowforge.nodes.flownodes.arithmetic.MultiplyNode;
 import flowforge.nodes.flownodes.arithmetic.SubtractNode;
 
 import javax.swing.*;
@@ -51,7 +49,7 @@ public class IntegerNode extends Node {
         System.out.println(compileToC());
     }
 
-    public Integer getIntValue() {
+    public Integer getValue() {
         return programPanel.integers.get(title);
     }
 
@@ -63,7 +61,7 @@ public class IntegerNode extends Node {
     public String compileToC() {
         // For a variable node, we need to declare it and initialize it
         String varName = "int_" + title;
-        int value = getIntValue();
+        int value = getValue();
 
         StringBuilder code = new StringBuilder();
         code.append("int ").append(varName).append(" = ").append(value).append(";\n");

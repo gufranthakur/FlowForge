@@ -85,6 +85,26 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
         if (isRight) this.setLocation(this.getX() - cameraSpeed, this.getY());
     }
 
+    // Add this to your ProgramPanel class
+    public void clearAll() {
+        // Create a copy of the nodes list to avoid concurrent modification
+        ArrayList<Node> nodesToRemove = new ArrayList<>(nodes);
+
+        // Remove all nodes
+        for (Node node : nodesToRemove) {
+            removeNode(node);
+        }
+
+        // Clear all variables
+        integers.clear();
+        strings.clear();
+        booleans.clear();
+        floats.clear();
+
+        // Repaint the panel
+        repaint();
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

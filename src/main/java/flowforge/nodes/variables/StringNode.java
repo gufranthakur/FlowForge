@@ -3,7 +3,6 @@ package flowforge.nodes.variables;
 import com.formdev.flatlaf.FlatClientProperties;
 import flowforge.core.ProgramPanel;
 import flowforge.nodes.Node;
-import flowforge.nodes.StartNode;
 import flowforge.nodes.flownodes.InputNode;
 
 import javax.swing.*;
@@ -53,7 +52,7 @@ public class StringNode extends Node {
         System.out.println(compileToC());
     }
 
-    public String getStringValue() {
+    public String getValue() {
         return programPanel.strings.get(title);
     }
 
@@ -66,7 +65,7 @@ public class StringNode extends Node {
         String varName = "str_" + title;
 
         StringBuilder code = new StringBuilder();
-        code.append("char " + varName + "[50] = " + " \" " + getStringValue() + " \" "  );
+        code.append("char " + varName + "[50] = " + " \" " + getValue() + " \" "  );
 
         return code.toString();
 

@@ -3,7 +3,6 @@ package flowforge.nodes.flownodes.comparators;
 import com.formdev.flatlaf.fonts.inter.FlatInterFont;
 import flowforge.core.ProgramPanel;
 import flowforge.nodes.Node;
-import flowforge.nodes.StartNode;
 import flowforge.nodes.variables.BooleanNode;
 import flowforge.nodes.variables.IntegerNode;
 import flowforge.nodes.variables.StringNode;
@@ -45,16 +44,16 @@ public class EqualToNode extends Node {
             }
 
             if (firstNode instanceof IntegerNode) {
-                Integer a = ((IntegerNode) firstNode).getIntValue();
-                Integer b = ((IntegerNode) secondNode).getIntValue();
+                Integer a = ((IntegerNode) firstNode).getValue();
+                Integer b = ((IntegerNode) secondNode).getValue();
                 setIsEqual(a.equals(b));
             } else if (firstNode instanceof StringNode) {
-                String a = ((StringNode) firstNode).getStringValue();
-                String b = ((StringNode) secondNode).getStringValue();
+                String a = ((StringNode) firstNode).getValue();
+                String b = ((StringNode) secondNode).getValue();
                 setIsEqual(a.equals(b));
             } else if (firstNode instanceof BooleanNode) {
-                Boolean a = ((BooleanNode) firstNode).getBooleanValue();
-                Boolean b = ((BooleanNode) secondNode).getBooleanValue();
+                Boolean a = ((BooleanNode) firstNode).getValue();
+                Boolean b = ((BooleanNode) secondNode).getValue();
                 setIsEqual(a.equals(b));
             }
         } else {

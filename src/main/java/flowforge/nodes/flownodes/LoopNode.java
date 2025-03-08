@@ -9,7 +9,7 @@ import java.awt.*;
 
 public class LoopNode extends Node {
     private ProgramPanel programPanel;
-    private JSpinner loopSpinner;
+    public JSpinner loopSpinner;
     private Integer iterationValue;
     private int loops;
 
@@ -52,7 +52,7 @@ public class LoopNode extends Node {
         for (Node node : inputXNodes) {
             if (node != null) {
                 if (node instanceof InputNode) loops = Integer.parseInt(((InputNode) node).getInputString());
-                else if (node instanceof IntegerNode) loops = ((IntegerNode) node).getIntValue();
+                else if (node instanceof IntegerNode) loops = ((IntegerNode) node).getValue();
                 else loops = (Integer) loopSpinner.getValue();
             }
         }

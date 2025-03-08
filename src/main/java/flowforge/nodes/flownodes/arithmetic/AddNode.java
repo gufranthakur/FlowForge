@@ -32,7 +32,7 @@ public class AddNode extends Node {
 
         for (Node node : inputXNodes) {
             if (node != null) if (node instanceof IntegerNode) {
-                sum += ((IntegerNode) node).getIntValue();
+                sum += ((IntegerNode) node).getValue();
             }
         }
 

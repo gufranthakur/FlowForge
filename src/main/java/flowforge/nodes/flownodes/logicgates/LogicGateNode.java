@@ -4,7 +4,6 @@ import com.formdev.flatlaf.fonts.inter.FlatInterFont;
 import flowforge.core.ProgramPanel;
 import flowforge.nodes.Node;
 import flowforge.nodes.variables.BooleanNode;
-import flowforge.nodes.variables.IntegerNode;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,6 +26,10 @@ public class LogicGateNode extends Node {
         contentPanel.add(label, BorderLayout.CENTER);
 
         this.setSize(240, 130);
+    }
+
+    public String getGateType() {
+        return gateType;
     }
 
     public boolean getResult() {
@@ -76,7 +79,7 @@ public class LogicGateNode extends Node {
 
         Node inputNode = inputXNodes.get(0);
         if (inputNode instanceof BooleanNode) {
-            Boolean a = ((BooleanNode) inputNode).getBooleanValue();
+            Boolean a = ((BooleanNode) inputNode).getValue();
             setResult(!a);
         } else {
             System.out.println("Error: Input must be boolean");
@@ -93,8 +96,8 @@ public class LogicGateNode extends Node {
         Node secondNode = inputXNodes.get(1);
 
         if (firstNode instanceof BooleanNode && secondNode instanceof BooleanNode) {
-            Boolean a = ((BooleanNode) firstNode).getBooleanValue();
-            Boolean b = ((BooleanNode) secondNode).getBooleanValue();
+            Boolean a = ((BooleanNode) firstNode).getValue();
+            Boolean b = ((BooleanNode) secondNode).getValue();
             setResult(operator.apply(a, b));
         } else {
             System.out.println("Error: Inputs must be boolean");

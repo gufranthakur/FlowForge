@@ -42,11 +42,11 @@ public class PrintNode extends Node {
             for (Node inputXNode : inputXNodes) {
                 if (inputXNode != null) {
                     switch (inputXNode) {
-                        case IntegerNode integerNode -> print(textField.getText() + integerNode.getIntValue());
+                        case IntegerNode integerNode -> print(textField.getText() + integerNode.getValue());
 
-                        case StringNode stringNode -> print(textField.getText() + stringNode.getStringValue());
+                        case StringNode stringNode -> print(textField.getText() + stringNode.getValue());
 
-                        case BooleanNode booleanNode -> print(textField.getText() + booleanNode.getBooleanValue());
+                        case BooleanNode booleanNode -> print(textField.getText() + booleanNode.getValue());
 
                         case EqualToNode equalToNode -> print(textField.getText() + equalToNode.getIsEqual());
 
@@ -94,7 +94,7 @@ public class PrintNode extends Node {
             expression.append("printf(\"" + stringValue + "\\n\");\n");
         } else {
             if (inputXNodes.getFirst() instanceof StringNode) {
-                String stringValue = ((StringNode) inputXNodes.getFirst()).getStringValue();
+                String stringValue = ((StringNode) inputXNodes.getFirst()).getValue();
                 expression.append("printf(\"" + stringValue + "\\n\");\n");
             }
         }

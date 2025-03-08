@@ -2,7 +2,6 @@ package flowforge.nodes.flownodes;
 
 import flowforge.core.ProgramPanel;
 import flowforge.nodes.Node;
-import flowforge.nodes.flownodes.comparators.*;
 import flowforge.nodes.variables.BooleanNode;
 
 import javax.swing.*;
@@ -38,7 +37,7 @@ public class ConditionalLoopNode extends Node {
             protected Void doInBackground() {
                 Node node = inputXNodes.get(0);
                 if (node instanceof BooleanNode boolNode) {
-                    while (boolNode.getBooleanValue()) {
+                    while (boolNode.getValue()) {
                         for (Node outputNode : outputNodes) {
                             if (outputNode != null) {
                                 outputNode.execute();

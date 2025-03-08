@@ -28,12 +28,12 @@ public class SubtractNode extends Node {
     @Override
     public void execute() {
         if (inputXNodes.isEmpty()) return;
-        int difference = ((IntegerNode)inputXNodes.get(0)).getIntValue();
+        int difference = ((IntegerNode)inputXNodes.get(0)).getValue();
 
         for (int i = 1; i < inputXNodes.size(); i++) {
             Node node = inputXNodes.get(i);
             if (node != null && node instanceof IntegerNode) {
-                difference -= ((IntegerNode)node).getIntValue();
+                difference -= ((IntegerNode)node).getValue();
             }
         }
 

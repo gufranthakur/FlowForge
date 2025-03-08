@@ -2,7 +2,6 @@ package flowforge.nodes.variables;
 
 import flowforge.core.ProgramPanel;
 import flowforge.nodes.Node;
-import flowforge.nodes.StartNode;
 import flowforge.nodes.flownodes.InputNode;
 
 import javax.swing.*;
@@ -58,7 +57,7 @@ public class BooleanNode extends Node {
         System.out.println(compileToC());
     }
 
-    public Boolean getBooleanValue() {
+    public Boolean getValue() {
         return programPanel.booleans.get(title);
     }
 
@@ -71,7 +70,7 @@ public class BooleanNode extends Node {
         String varName = "bool_" + title;
 
         StringBuilder code = new StringBuilder();
-        code.append("boolean " + varName + " = " + getBooleanValue());
+        code.append("boolean " + varName + " = " + getValue());
 
         return code.toString();
 

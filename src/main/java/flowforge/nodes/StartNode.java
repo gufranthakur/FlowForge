@@ -34,6 +34,8 @@ public class StartNode extends Node{
         print("Program Execution started");
         print("Total nodes : " + programPanel.getNodeAmount());
 
+        System.out.println(outputNodes.size());
+
         for (Node outputXNode : outputXNodes) if (outputXNode != null) outputXNode.execute();
         for (Node outputNode : outputNodes) outputNode.execute();
 
