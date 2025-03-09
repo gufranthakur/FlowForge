@@ -23,7 +23,7 @@ learn the logic building skills in programming.
 * Download the FlowForge.jar file from releases
 * From a CLI, Navigate to the directory where the JAR file is installed, and enter the following command :
 *  ``` java -jar FlowForge_v1.0.0.jar ```
-* The program should launch succesfully. 
+* The program should launch successfully. 
 
 Alternatively, you can also run the project via the source code.
 * Copy the project via the CLI, or by downloading the .zip file
