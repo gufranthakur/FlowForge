@@ -14,8 +14,19 @@ learn the logic building skills in programming.
 * Logic Gates: Provides NOT, AND, OR, NAND, NOR, and XOR gates for logical operations.
 
 # Snapshots
-
-
-
 ![Screenshot 2025-03-08 172256](https://github.com/user-attachments/assets/ee34b549-e34a-4527-a3af-979783f2d0aa)
 ![Screenshot 2025-03-08 173540](https://github.com/user-attachments/assets/122d3bd1-5b68-4a60-9e01-8b62d697bc7a)
+
+# How to run FlowForge
+
+* Make sure you have Java installed (JDK 21+)
+* Download the FlowForge.jar file from releases
+* From a CLI, Navigate to the directory where the JAR file is installed, and enter the following command :
+*  ``` java -jar FlowForge_v1.0.0.jar ```
+* The program should launch succesfully. 
+
+Alternatively, you can also run the project via the source code.
+* Copy the project via the CLI, or by downloading the .zip file
+* extract the zip and open the project in IntelliJ IDEA
+* Navigate to FlowForge.java (which contains the main method)
+* Click on run to execute the program
