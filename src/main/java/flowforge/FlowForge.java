@@ -89,6 +89,7 @@ public class FlowForge extends JFrame {
 
     public static void main(String[] args)  {
         FlatMacDarkLaf.setup();
+        
         SwingUtilities.invokeLater(() -> {
             FlowForge flowForge = new FlowForge();
             flowForge.init();

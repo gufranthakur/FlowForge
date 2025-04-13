@@ -138,10 +138,11 @@ public class ControlPanel {
         });
 
         saveButton.addActionListener(e -> {
-            if (flowForge.projectFilePath.isBlank()) {
+            try {
+                flowForge.dataManager.saveProgram(flowForge.projectFilePath);
+            } catch (NullPointerException ex) {
                 JFileChooser fileChooser = new JFileChooser();
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("FlowForge Programs (*.flow)", "flow");
-                fileChooser.setFileFilter(filter);
+
                 if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
                     String filePath = fileChooser.getSelectedFile().getAbsolutePath();
                     if (!filePath.endsWith(".flow")) {
@@ -150,9 +151,8 @@ public class ControlPanel {
                     flowForge.dataManager.saveProgram(filePath);
                     flowForge.projectFilePath = filePath;
                 }
-            } else {
-                flowForge.dataManager.saveProgram(flowForge.projectFilePath);
             }
+
 
             flowForge.console.clear();
             flowForge.console.print("Project saved succesfully at location : \n" + flowForge.projectFilePath);
