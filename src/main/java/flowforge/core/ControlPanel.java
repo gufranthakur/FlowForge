@@ -59,6 +59,7 @@ public class ControlPanel {
     
     public ControlPanel(FlowForge flowForge) {
         this.flowForge = flowForge;
+        rootPanel.setOpaque(true);
 
         root = new DefaultMutableTreeNode("Functions");
         functionsTree = new JTree(root);
@@ -140,6 +141,7 @@ public class ControlPanel {
         saveButton.addActionListener(e -> {
             try {
                 flowForge.dataManager.saveProgram(flowForge.projectFilePath);
+
             } catch (NullPointerException ex) {
                 JFileChooser fileChooser = new JFileChooser();
 
@@ -154,8 +156,7 @@ public class ControlPanel {
             }
 
 
-            flowForge.console.clear();
-            flowForge.console.print("Project saved succesfully at location : \n" + flowForge.projectFilePath);
+            flowForge.console.printSaveStatement();
 
         });
 

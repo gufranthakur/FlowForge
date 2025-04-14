@@ -13,7 +13,11 @@ public class Console {
     private JScrollPane scrollPane;
     private JTextPane consoleTextPane;
 
+    private FlowForge flowForge;
+
     public Console(FlowForge flowForge) {
+        this.flowForge = flowForge;
+
         rootPanel.setPreferredSize(new Dimension(flowForge.getWidth(), 250));
         toolbar.setBackground(flowForge.getBackground().darker());
         minimiseButton.setBackground(toolbar.getBackground());
@@ -39,6 +43,11 @@ public class Console {
     public void throwError(String error, Node node) {
         consoleTextPane.setForeground(Color.RED);
         print("Error at Node : " + node.getTitle() + " : " + error);
+    }
+
+    public void printSaveStatement() {
+        clear();
+        print("Project saved succesfully at location : \n" + flowForge.projectFilePath);
     }
 
 }

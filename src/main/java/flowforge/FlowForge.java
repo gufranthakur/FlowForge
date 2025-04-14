@@ -1,5 +1,6 @@
 package flowforge;
 
+import com.formdev.flatlaf.extras.FlatInspector;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import flowforge.core.*;
 
@@ -10,17 +11,18 @@ import java.awt.event.MouseEvent;
 
 public class FlowForge extends JFrame {
 
-    public Console console;
     public Timer loop;
     public DataManager dataManager;
+    public String projectFilePath;
 
     public JPanel programPanelContainer;
     public StartPanel startPanel;
 
+    public AppMenuBar menuBar;
+
     public ControlPanel controlPanel;
     public ProgramPanel programPanel;
-
-    public String projectFilePath;
+    public Console console;
 
     public Color theme = new Color(26, 77, 236);
 
@@ -35,8 +37,10 @@ public class FlowForge extends JFrame {
     public void init() {
         console = new Console(this);
         startPanel = new StartPanel(this);
+        controlPanel = new ControlPanel(this);
         programPanel = new ProgramPanel(this);
         dataManager = new DataManager(programPanel);
+        menuBar = new AppMenuBar(this);
 
         programPanelContainer = new JPanel(null);
 
@@ -47,18 +51,20 @@ public class FlowForge extends JFrame {
             }
         });
 
-        controlPanel = new ControlPanel(this);
-        controlPanel.init();
-
         loop = new Timer(5, e -> {
             programPanel.repaint();
             programPanel.moveCamera();
-
         });
+
+        controlPanel.init();
+        menuBar.init();
+        menuBar.initListeners();
+
     }
 
     public void addComponent() {
         controlPanel.addComponent();
+        menuBar.addComponent();
 
         this.add(startPanel, BorderLayout.CENTER);
         this.setVisible(true);
@@ -75,6 +81,7 @@ public class FlowForge extends JFrame {
         programPanelContainer.add(programPanel);
 
         startPanel.setVisible(false);
+        menuBar.launch();
 
         this.add(controlPanel.getRootPanel(), BorderLayout.WEST);
         this.add(programPanelContainer, BorderLayout.CENTER);
@@ -87,9 +94,10 @@ public class FlowForge extends JFrame {
         this.revalidate();
     }
 
-    public static void main(String[] args)  {
-        FlatMacDarkLaf.setup();
-        
+    public static void main(String[] args) throws UnsupportedLookAndFeelException {
+        UIManager.setLookAndFeel(new FlatMacDarkLaf());
+        FlatInspector.install( "ctrl shift V" );
+
         SwingUtilities.invokeLater(() -> {
             FlowForge flowForge = new FlowForge();
             flowForge.init();

@@ -141,6 +141,7 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
             this.setLocation(this.getX() - cameraSpeed, this.getY());
             cameraX += cameraSpeed;
         }
+
     }
 
     // Add this to your ProgramPanel class
