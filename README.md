@@ -30,3 +30,7 @@ Alternatively, you can also run the project via the source code.
 * extract the zip and open the project in IntelliJ IDEA
 * Navigate to FlowForge.java (which contains the main method)
 * Click on run to execute the program
+
+## License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
