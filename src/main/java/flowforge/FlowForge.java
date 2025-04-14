@@ -1,3 +1,10 @@
+/*
+ * Copyright 2025 Gufran Thakur
+ *
+ * Licensed under the MIT License. See the LICENSE file for details.
+ */
+
+
 package flowforge;
 
 import com.formdev.flatlaf.extras.FlatInspector;
