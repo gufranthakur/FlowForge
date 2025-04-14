@@ -70,10 +70,10 @@ public class StartPanel extends JPanel implements ComponentListener {
             flowForge.launch();
         });
 
-        //this.add(titleLabel);
-        //this.add(mottoLabel);
-        //this.add(openProjectButton);
-        //this.add(createProjectButton);
+        this.add(titleLabel);
+        this.add(mottoLabel);
+        this.add(openProjectButton);
+        this.add(createProjectButton);
     }
 
 
