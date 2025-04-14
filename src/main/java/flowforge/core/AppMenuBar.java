@@ -4,12 +4,17 @@ import flowforge.FlowForge;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.plaf.FontUIResource;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Set;
 
 public class AppMenuBar extends JMenuBar {
 
     private FlowForge flowForge;
+    private GraphicsEnvironment environment;
+    private GraphicsDevice device;
 
     private JMenu aboutItem;
     private JMenu projectItem;
@@ -21,9 +26,13 @@ public class AppMenuBar extends JMenuBar {
     private JMenuItem fullscreenItem, presentationModeItem,
             showHideSideBar, showHideConsole, showHideToolbar;
 
+    private boolean isFullScreen, isPresentationMode;
 
     public AppMenuBar(FlowForge flowForge) {
         this.flowForge = flowForge;
+
+        environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        device = environment.getDefaultScreenDevice();
     }
 
     public void init() {
@@ -75,6 +84,10 @@ public class AppMenuBar extends JMenuBar {
     }
 
     public void initListeners() {
+        aboutItem.addActionListener(e -> {
+
+        });
+
         newProjectItem.addActionListener(e -> {
             flowForge.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             getNewInstance(true);
@@ -125,7 +138,52 @@ public class AppMenuBar extends JMenuBar {
                 getNewInstance(false);
                 flowForge.dispose();
             }
+        });
 
+        fullscreenItem.addActionListener(e -> {
+            if (!isFullScreen) {
+                flowForge.dispose();
+                flowForge.setUndecorated(true);
+                device.setFullScreenWindow(flowForge);
+            } else {
+                device.setFullScreenWindow(null);
+                flowForge.dispose();
+                flowForge.setUndecorated(false);
+                flowForge.setVisible(true);
+            }
+            isFullScreen = !isFullScreen;
+        });
+
+        presentationModeItem.addActionListener(e -> {
+            var controlPanel = flowForge.controlPanel.getRootPanel();
+            var console = flowForge.console.getRootPanel();
+            var toolbar = flowForge.controlPanel.toolBar;
+
+            if (!isPresentationMode) {
+                controlPanel.setVisible(false);
+                console.setVisible(false);
+                toolbar.setVisible(false);
+            } else {
+                controlPanel.setVisible(true);
+                console.setVisible(true);
+                toolbar.setVisible(true);
+            }
+            isPresentationMode = !isPresentationMode;
+        });
+
+        showHideSideBar.addActionListener(e -> {
+            var controlPanel = flowForge.controlPanel.getRootPanel();
+            controlPanel.setVisible(!controlPanel.isVisible());
+        });
+
+        showHideConsole.addActionListener(e -> {
+            var console = flowForge.console.getRootPanel();
+            console.setVisible(!console.isVisible());
+        });
+
+        showHideToolbar.addActionListener(e -> {
+            var toolbar = flowForge.controlPanel.toolBar;
+            toolbar.setVisible(!toolbar.isVisible());
         });
     }
 

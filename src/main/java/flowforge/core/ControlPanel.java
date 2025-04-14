@@ -12,7 +12,6 @@ import flowforge.nodes.variables.IntegerNode;
 import flowforge.nodes.variables.StringNode;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
@@ -28,7 +27,7 @@ public class ControlPanel {
     private JTextField variableNameField;
     public JComboBox variableBox;
     private JPanel variableListPanel;
-    private JPanel executePanel;
+    public JPanel toolBar;
     private JButton consoleButton;
     private JButton runStopButton;
     private JButton addButton;
