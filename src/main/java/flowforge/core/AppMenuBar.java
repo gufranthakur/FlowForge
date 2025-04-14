@@ -1,14 +1,13 @@
 package flowforge.core;
 
+import flowforge.AboutWindow;
 import flowforge.FlowForge;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.plaf.FontUIResource;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Set;
 
 public class AppMenuBar extends JMenuBar {
 
@@ -16,13 +15,14 @@ public class AppMenuBar extends JMenuBar {
     private GraphicsEnvironment environment;
     private GraphicsDevice device;
 
-    private JMenu aboutItem;
-    private JMenu projectItem;
+    private JMenu aboutMenu;
+    private JMenu projectMenu;
     private JMenuItem newProjectItem, openProjectItem, exitProjectItem,
             saveProjectItem, saveAsProjectItem,
             projectPropertiesItem, settingsItem;
 
-    private JMenu viewItem;
+    private JMenuItem aboutItem;
+    private JMenu viewMenu;
     private JMenuItem fullscreenItem, presentationModeItem,
             showHideSideBar, showHideConsole, showHideToolbar;
 
@@ -37,9 +37,12 @@ public class AppMenuBar extends JMenuBar {
 
     public void init() {
         // Initialize main menu items
-        aboutItem = new JMenu("About");
-        projectItem = new JMenu("Project");
-        viewItem = new JMenu("View");
+        aboutMenu = new JMenu("About");
+        projectMenu = new JMenu("Project");
+        viewMenu = new JMenu("View");
+
+        //about
+        aboutItem = new JMenuItem("About FlowForge");
 
         // Initialize Project menu items
         newProjectItem = new JMenuItem("New Project");
@@ -60,32 +63,33 @@ public class AppMenuBar extends JMenuBar {
     }
 
     public void addComponent() {
-        this.add(aboutItem);
+        this.add(aboutMenu);
+        aboutMenu.add(aboutItem);
 
-        projectItem.add(newProjectItem);
-        projectItem.add(openProjectItem);
-        projectItem.addSeparator();
-        projectItem.add(saveProjectItem);
-        projectItem.add(saveAsProjectItem);
-        projectItem.addSeparator();
+        projectMenu.add(newProjectItem);
+        projectMenu.add(openProjectItem);
+        projectMenu.addSeparator();
+        projectMenu.add(saveProjectItem);
+        projectMenu.add(saveAsProjectItem);
+        projectMenu.addSeparator();
         //projectItem.add(projectPropertiesItem);
         //projectItem.add(settingsItem);
         //projectItem.addSeparator();
-        projectItem.add(exitProjectItem);
+        projectMenu.add(exitProjectItem);
 
-        viewItem.add(fullscreenItem);
-        viewItem.add(presentationModeItem);
-        viewItem.addSeparator();
-        viewItem.add(showHideSideBar);
-        viewItem.add(showHideConsole);
-        viewItem.add(showHideToolbar);
+        viewMenu.add(fullscreenItem);
+        viewMenu.add(presentationModeItem);
+        viewMenu.addSeparator();
+        viewMenu.add(showHideSideBar);
+        viewMenu.add(showHideConsole);
+        viewMenu.add(showHideToolbar);
 
         flowForge.setJMenuBar(this);
     }
 
     public void initListeners() {
         aboutItem.addActionListener(e -> {
-
+            new AboutWindow(flowForge);
         });
 
         newProjectItem.addActionListener(e -> {
@@ -214,9 +218,9 @@ public class AppMenuBar extends JMenuBar {
     }
 
     public void launch() {
-        this.remove(aboutItem);
+        this.remove(aboutMenu);
 
-        this.add(projectItem);
-        this.add(viewItem);
+        this.add(projectMenu);
+        this.add(viewMenu);
     }
 }
