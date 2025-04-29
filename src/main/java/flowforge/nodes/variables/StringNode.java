@@ -16,15 +16,15 @@ public class StringNode extends Node {
     public StringNode(String title, ProgramPanel programPanel, String stringValue) {
         super(title, programPanel);
         this.programPanel = programPanel;
-        this.setSize(260, 100);
+        this.setSize(360, 140);
 
         JPanel wrapperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         textField = new JTextField();
         textField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Set value...");
         textField.setPreferredSize(new Dimension(150, 30));
 
-        inputButton.setVisible(false);
-        outputButton.setVisible(false);
+        inputButton.setVisible(true);
+        outputButton.setVisible(true);
 
         inputXButton.setText("Set");
         outputXButton.setText("Get");
@@ -40,7 +40,7 @@ public class StringNode extends Node {
         for (Node node : inputXNodes) {
 
             if (node != null) {
-                if (node instanceof InputNode) setStringValue(((InputNode) node).getInputString());
+                if (node instanceof InputNode) setStringValue(((InputNode) node).inputValue);
                 else setStringValue(textField.getText());
             }
         }

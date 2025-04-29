@@ -61,7 +61,7 @@ public class PrintNode extends Node {
 
                         case LogicGateNode logicGateNode -> print(textField.getText() + logicGateNode.getResult());
 
-                        case InputNode inputNode -> print(textField.getText() + inputNode.getInputString());
+                        case InputNode inputNode -> print(textField.getText() + inputNode.inputValue);
 
                         case LoopNode loopNode -> print(textField.getText() + loopNode.getIterationValue());
 

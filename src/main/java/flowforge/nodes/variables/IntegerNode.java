@@ -15,13 +15,13 @@ public class IntegerNode extends Node {
     public IntegerNode(String title, ProgramPanel programPanel, Integer intValue) {
         super(title, programPanel);
         this.programPanel = programPanel;
-        this.setSize(170, 90);
+        this.setSize(170, 140);
 
         JPanel wrapperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         spinner = new JSpinner();
 
-        inputButton.setVisible(false);
-        outputButton.setVisible(false);
+        inputButton.setVisible(true);
+        outputButton.setVisible(true);
 
         inputXButton.setText("Set");
         outputXButton.setText("Get");
@@ -34,13 +34,15 @@ public class IntegerNode extends Node {
     public void execute() {
         for (Node node : inputXNodes) {
             if (node != null) {
-                if (node instanceof InputNode) setIntValue(Integer.valueOf(((InputNode) node).getInputString()));
-                else if (node instanceof AddNode) setIntValue(((AddNode) node).getResult());
-                else if (node instanceof SubtractNode) setIntValue(((SubtractNode) node).getResult());
-                else if (node instanceof MultiplyNode) setIntValue(((MultiplyNode) node).getResult());
-                else if (node instanceof DivideNode) setIntValue(((DivideNode) node).getResult());
-                else if (node instanceof ModulusNode) setIntValue(((ModulusNode) node).getResult());
-                else setIntValue((Integer) spinner.getValue());
+                switch (node) {
+                    case InputNode inputNode -> setIntValue(Integer.valueOf(inputNode.inputValue));
+                    case AddNode addNode -> setIntValue(addNode.getResult());
+                    case SubtractNode subtractNode -> setIntValue(subtractNode.getResult());
+                    case MultiplyNode multiplyNode -> setIntValue(multiplyNode.getResult());
+                    case DivideNode divideNode -> setIntValue(divideNode.getResult());
+                    case ModulusNode modulusNode -> setIntValue(modulusNode.getResult());
+                    default -> setIntValue((Integer) spinner.getValue());
+                }
             }
         }
 
