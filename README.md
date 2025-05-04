@@ -31,6 +31,13 @@ Alternatively, you can also run the project via the source code.
 * Navigate to FlowForge.java (which contains the main method)
 * Click on run to execute the program
 
+## To Contribute to FlowForge
+
+We welcome contributions of all kinds — from bug reports and feature suggestions to code, design, and documentation!
+
+Check out our [Contributing Guidelines](CONTRIBUTING.md) to get started.
+
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
