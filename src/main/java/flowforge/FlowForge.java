@@ -10,6 +10,7 @@ package flowforge;
 import com.formdev.flatlaf.extras.FlatInspector;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import flowforge.core.*;
+import flowforge.nodes.Node;
 
 import javax.swing.*;
 import java.awt.*;
@@ -55,6 +56,12 @@ public class FlowForge extends JFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 programPanel.requestFocusInWindow();
+                for (Node node : programPanel.nodes) {
+                    node.inputButton.setEnabled(true);
+                    node.outputButton.setEnabled(true);
+                    node.inputXButton.setEnabled(true);
+                    node.outputXButton.setEnabled(true);
+                }
             }
         });
 

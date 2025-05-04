@@ -12,11 +12,12 @@ public class StringNode extends Node {
 
     private ProgramPanel programPanel;
     public JTextField textField;
+    private String value;
 
     public StringNode(String title, ProgramPanel programPanel, String stringValue) {
         super(title, programPanel);
         this.programPanel = programPanel;
-        this.setSize(260, 100);
+        this.setSize(260, 110);
 
         JPanel wrapperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         textField = new JTextField();
@@ -57,7 +58,6 @@ public class StringNode extends Node {
 
     public void setStringValue(String stringValue) {
         programPanel.strings.put(title, stringValue);
-        System.out.println(programPanel.strings);
     }
 
 }

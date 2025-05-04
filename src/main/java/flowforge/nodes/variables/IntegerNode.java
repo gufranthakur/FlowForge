@@ -15,7 +15,7 @@ public class IntegerNode extends Node {
     public IntegerNode(String title, ProgramPanel programPanel, Integer intValue) {
         super(title, programPanel);
         this.programPanel = programPanel;
-        this.setSize(170, 90);
+        this.setSize(180, 100);
 
         JPanel wrapperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         spinner = new JSpinner();
