@@ -41,7 +41,7 @@ public class StringNode extends Node {
         for (Node node : inputXNodes) {
 
             if (node != null) {
-                if (node instanceof InputNode) setStringValue(((InputNode) node).getInputString());
+                if (node instanceof InputNode) setStringValue(((InputNode) node).inputValue);
                 else setStringValue(textField.getText());
             }
         }

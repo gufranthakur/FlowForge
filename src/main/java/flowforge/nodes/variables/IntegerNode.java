@@ -15,13 +15,13 @@ public class IntegerNode extends Node {
     public IntegerNode(String title, ProgramPanel programPanel, Integer intValue) {
         super(title, programPanel);
         this.programPanel = programPanel;
-        this.setSize(170, 140);
+        this.setSize(170, 100);
 
         JPanel wrapperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         spinner = new JSpinner();
 
-        inputButton.setVisible(true);
-        outputButton.setVisible(true);
+        inputButton.setVisible(false);
+        outputButton.setVisible(false);
 
         inputXButton.setText("Set");
         outputXButton.setText("Get");
