@@ -62,7 +62,7 @@ public class FlowForge extends JFrame {
             programPanel.repaint();
             programPanel.moveCamera();
         });
-
+        //..
         controlPanel.init();
         menuBar.init();
         menuBar.initListeners();
