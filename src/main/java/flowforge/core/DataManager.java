@@ -177,8 +177,8 @@ public class DataManager {
             properties.addProperty("value", boolNode.getValue());
         } else if (node instanceof InputNode) {
             InputNode inputNode = (InputNode) node;
-            if (inputNode.getInputString() != null) {
-                properties.addProperty("inputString", inputNode.getInputString());
+            if (inputNode.inputValue != null) {
+                properties.addProperty("inputString", inputNode.inputValue);
             }
         }
         // Additional node types can be handled here as needed
@@ -381,7 +381,7 @@ public class DataManager {
                 case "InputNode":
                     InputNode inputNode = new InputNode(title, programPanel);
                     if (properties.has("inputString")) {
-                        inputNode.setInputString(properties.get("inputString").getAsString());
+                        inputNode.inputValue = (properties.get("inputString").getAsString());
                     }
                     return inputNode;
 

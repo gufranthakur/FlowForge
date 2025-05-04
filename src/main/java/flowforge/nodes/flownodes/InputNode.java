@@ -12,6 +12,7 @@ public class InputNode extends Node {
 
     private ProgramPanel programPanel;
     private JTextField inputField;
+    public String inputValue;
 
     public InputNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
@@ -25,16 +26,11 @@ public class InputNode extends Node {
         topPanel.add(inputField);
     }
 
-    public String getInputString() {
-        return JOptionPane.showInputDialog(inputField.getText());
-    }
-
-    public void setInputString(String string) {
-        inputField.setText(string);
-    }
 
     @Override
     public void execute() {
+        inputValue = JOptionPane.showInputDialog(inputField.getText());
+
         for (Node node : outputNodes) {
             node.execute();
         }

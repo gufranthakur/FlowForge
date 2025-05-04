@@ -4,17 +4,19 @@
  * Licensed under the MIT License. See the LICENSE file for details.
  */
 
-
 package flowforge;
 
 import com.formdev.flatlaf.extras.FlatInspector;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import flowforge.core.*;
+import flowforge.nodes.Node;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 public class FlowForge extends JFrame {
 
@@ -30,6 +32,8 @@ public class FlowForge extends JFrame {
     public ControlPanel controlPanel;
     public ProgramPanel programPanel;
     public Console console;
+
+    public JPanel consoleOverlayPanel;
 
     public Color theme = new Color(26, 77, 236);
 
@@ -49,12 +53,24 @@ public class FlowForge extends JFrame {
         dataManager = new DataManager(programPanel);
         menuBar = new AppMenuBar(this);
 
-        programPanelContainer = new JPanel(null);
+        // Modified: Use null layout for overlay panel
+        consoleOverlayPanel = new JPanel(null);
+        consoleOverlayPanel.setOpaque(false);
+        consoleOverlayPanel.setVisible(true);
+
+        programPanelContainer = new JPanel(new BorderLayout());
+        programPanelContainer.add(programPanel, BorderLayout.CENTER);
 
         programPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 programPanel.requestFocusInWindow();
+                for (Node node : programPanel.nodes) {
+                    node.inputButton.setEnabled(true);
+                    node.outputButton.setEnabled(true);
+                    node.inputXButton.setEnabled(true);
+                    node.outputXButton.setEnabled(true);
+                }
             }
         });
 
@@ -67,6 +83,32 @@ public class FlowForge extends JFrame {
         menuBar.init();
         menuBar.initListeners();
 
+        this.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                updateConsolePosition();
+            }
+        });
+    }
+
+    private void updateConsolePosition() {
+        if (console != null && console.getRootPanel() != null && consoleOverlayPanel != null) {
+            switch (console.getCurrentDockPosition()) {
+                case "SOUTH":
+                    console.getRootPanel().setBounds(0, getHeight() - console.getPreferredHeight(),
+                            getWidth(), console.getPreferredHeight());
+                    break;
+                case "EAST":
+                    console.getRootPanel().setBounds(getWidth() - console.getPreferredWidth(), 0,
+                            console.getPreferredWidth(), getHeight());
+                    break;
+                case "CENTER":
+                    console.getRootPanel().setBounds(0, 0, getWidth(), getHeight());
+                    break;
+            }
+            consoleOverlayPanel.revalidate();
+            consoleOverlayPanel.repaint();
+        }
     }
 
     public void addComponent() {
@@ -85,25 +127,28 @@ public class FlowForge extends JFrame {
     }
 
     public void launch() {
-        programPanelContainer.add(programPanel);
-
         startPanel.setVisible(false);
         menuBar.launch();
 
         this.add(controlPanel.getRootPanel(), BorderLayout.WEST);
         this.add(programPanelContainer, BorderLayout.CENTER);
-        this.add(console.getRootPanel(), BorderLayout.SOUTH);
 
-        console.print("Welcome to FlowForge!");
+        consoleOverlayPanel.add(console.getRootPanel());
+        console.getRootPanel().setBounds(0, getHeight() - 250, getWidth(), 250);
+
+        this.setGlassPane(consoleOverlayPanel);
+        consoleOverlayPanel.setVisible(true);
 
         this.setExtendedState(MAXIMIZED_BOTH);
         this.repaint();
         this.revalidate();
+
+        console.print("Welcome to FlowForge!");
     }
 
     public static void main(String[] args) throws UnsupportedLookAndFeelException {
         UIManager.setLookAndFeel(new FlatMacDarkLaf());
-        FlatInspector.install( "ctrl shift V" );
+        FlatInspector.install("ctrl shift V");
 
         SwingUtilities.invokeLater(() -> {
             FlowForge flowForge = new FlowForge();
@@ -111,5 +156,4 @@ public class FlowForge extends JFrame {
             flowForge.addComponent();
         });
     }
-
 }

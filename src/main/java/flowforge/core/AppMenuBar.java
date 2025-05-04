@@ -1,6 +1,5 @@
 package flowforge.core;
 
-import flowforge.AboutWindow;
 import flowforge.FlowForge;
 
 import javax.swing.*;
