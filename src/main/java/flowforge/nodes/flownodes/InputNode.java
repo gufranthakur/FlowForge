@@ -31,6 +31,10 @@ public class InputNode extends Node {
     public void execute() {
         inputValue = JOptionPane.showInputDialog(inputField.getText());
 
+        for (Node node : outputXNodes) {
+            node.execute();
+        }
+
         for (Node node : outputNodes) {
             node.execute();
         }
