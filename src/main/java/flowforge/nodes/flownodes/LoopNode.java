@@ -51,7 +51,7 @@ public class LoopNode extends Node {
 
         for (Node node : inputXNodes) {
             if (node != null) {
-                if (node instanceof InputNode) loops = Integer.parseInt(((InputNode) node).getInputString());
+                if (node instanceof InputNode) loops = Integer.parseInt(((InputNode) node).inputValue);
                 else if (node instanceof IntegerNode) loops = ((IntegerNode) node).getValue();
                 else loops = (Integer) loopSpinner.getValue();
             }
