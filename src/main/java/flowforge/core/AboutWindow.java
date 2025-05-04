@@ -1,4 +1,6 @@
-package flowforge;
+package flowforge.core;
+
+import flowforge.FlowForge;
 
 import javax.swing.*;
 

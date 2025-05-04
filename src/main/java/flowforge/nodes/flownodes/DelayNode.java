@@ -40,7 +40,7 @@ public class DelayNode extends Node {
 
         for (Node node : inputXNodes) {
             if (node != null) {
-                if (node instanceof InputNode) delay = Integer.parseInt(((InputNode) node).getInputString());
+                if (node instanceof InputNode) delay = Integer.parseInt(((InputNode) node).inputValue);
                 else if (node instanceof IntegerNode) delay = ((IntegerNode) node).getValue();
                 else System.out.println("Error");
             }
