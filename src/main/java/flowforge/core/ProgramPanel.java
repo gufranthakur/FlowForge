@@ -21,6 +21,7 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
     private Node sourceNode;
 
     public List<Node> nodes = new ArrayList<>();
+    private Node selectedNode;
 
     public HashMap<String, Integer> integers = new HashMap<>(20);
     public HashMap<String, String> strings = new HashMap<>(20);
@@ -31,6 +32,9 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
     private int cameraX, cameraY;
     private int cameraSpeed = 5;
     private Point dragStart;
+
+    private JPopupMenu nodePopupMenu;
+    private JMenuItem deleteNode, resetConnections, resize;
 
     public ProgramPanel(FlowForge flowForge) {
         this.flowForge = flowForge;
@@ -73,6 +77,9 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
 
         startNode = new StartNode("Start", this);
         addNode(startNode);
+
+        nodePopupMenu = new JPopupMenu();
+        initNodePopupMenu();
     }
 
     public void addNode(Node node) {
@@ -194,6 +201,28 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
         } else if (flowForge.controlPanel.variableBox.getSelectedItem().equals("Float")) {
             floats.put(varName, 0.0f);
         }
+    }
+
+    private void initNodePopupMenu() {
+        resize = new JMenuItem("Resize");
+        resetConnections = new JMenuItem("Disconnect");
+        deleteNode = new JMenuItem("Delete");
+
+        resize.addActionListener(e -> selectedNode.pack());
+        resetConnections.addActionListener(e -> selectedNode.disconnectAll());
+        deleteNode.addActionListener(e ->  {
+            selectedNode.disconnectAll();
+            removeNode(selectedNode);
+        });
+
+        nodePopupMenu.add(resize);
+        nodePopupMenu.add(resetConnections);
+        nodePopupMenu.add(deleteNode);
+    }
+
+    public void showNodePopupMenu(Node node, MouseEvent e) {
+        nodePopupMenu.show(node, e.getX() + 10, e.getY() + 10);
+        selectedNode = node;
     }
 
     @Override

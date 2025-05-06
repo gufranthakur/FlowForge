@@ -9,6 +9,8 @@ import javax.swing.event.InternalFrameEvent;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Path2D;
 import java.util.ArrayList;
 
@@ -37,8 +39,17 @@ public abstract class Node extends JInternalFrame {
     private int nodeHeight;
 
     public Node(String title, ProgramPanel programPanel) {
-        super(title, true, true, false, false);
+        super(title, true, false, false, false);
         this.programPanel = programPanel;
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                    if (SwingUtilities.isRightMouseButton(e)) {
+                        programPanel.showNodePopupMenu(getNode(), e);
+                    }
+            }
+        });
         loadUI();
         loadActionListeners();
         addComponentListener(new ComponentAdapter() {
@@ -143,14 +154,6 @@ public abstract class Node extends JInternalFrame {
                 node.outputXButton.setEnabled(true);
             }
         });
-
-        addInternalFrameListener(new InternalFrameAdapter() {
-            @Override
-            public void internalFrameClosing(InternalFrameEvent e) {
-                programPanel.removeNode(Node.this);
-                disconnectAll();
-            }
-        });
     }
 
     public void connectTo(Node target) {
@@ -249,6 +252,10 @@ public abstract class Node extends JInternalFrame {
         setLocation(x, y);
         setSize(width, height);
         updateNodeDimensions();
+    }
+
+    private Node getNode() {
+        return this;
     }
 
     public int getNodeX() { return nodeX; }

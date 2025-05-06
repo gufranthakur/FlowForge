@@ -30,10 +30,7 @@ public class MultiplyNode extends Node {
 
     @Override
     public void execute() {
-        // Initialize with 1 (multiplicative identity)
         int res = 1;
-
-        // Process all input nodes
         boolean hasInputs = false;
         for (Node node : inputXNodes) {
             if (node != null && node instanceof IntegerNode) {
@@ -41,15 +38,12 @@ public class MultiplyNode extends Node {
                 hasInputs = true;
             }
         }
-
-        // If no valid inputs were found, set result to 0
         if (!hasInputs) {
             res = 0;
         }
 
         setResult(res);
 
-        // Execute output nodes
         for (Node node : outputXNodes) {
             if (node != null && !(node instanceof PrintNode)) node.execute();
         }

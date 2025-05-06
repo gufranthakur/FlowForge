@@ -13,34 +13,19 @@ import java.io.*;
 import java.lang.reflect.Type;
 import java.util.*;
 
-/**
- * Manages serialization and deserialization of the program structure.
- * Handles saving and loading program state including nodes, connections,
- * and variables to/from JSON files.
- */
 public class DataManager {
     private ProgramPanel programPanel;
     private Gson gson;
 
-    /**
-     * Creates a DataManager with custom serialization for Node objects.
-     * @param programPanel The program panel containing nodes and program state
-     */
     public DataManager(ProgramPanel programPanel) {
         this.programPanel = programPanel;
-        // Custom serializers needed to prevent circular reference issues
         this.gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .registerTypeAdapter(Node.class, new NodeSerializer())
                 .registerTypeAdapter(Node.class, new NodeDeserializer())
                 .create();
     }
-
-    /**
-     * Saves the entire program to a JSON file.
-     * Captures node data, connections, properties, and all variable states.
-     * @param filePath Path where the program file will be saved
-     */
+    
     public void  saveProgram(String filePath) {
         try (FileWriter writer = new FileWriter(filePath)) {
             JsonObject programData = new JsonObject();
