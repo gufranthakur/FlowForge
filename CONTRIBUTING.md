@@ -49,8 +49,7 @@ With a modern UI and simplistic approach towards visual programming, beginners c
 - Use Java 21 or later.
 - Follow standard Java naming conventions (CamelCase for classes, camelCase for variables and methods).
 - Keep the UI simple and consistent — stick to Swing components (e.g., JPanel, JButton, JLabel).
-- Separate UI code from logic wherever possible.
-- Always test your changes manually before submitting.
+- Don't change the layout or structure of the codebase.
 - Comment your code where logic isn't obvious — clarity > cleverness.
 - Avoid large PRs; break your work into small, understandable chunks.
 
