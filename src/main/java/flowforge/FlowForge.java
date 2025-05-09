@@ -8,20 +8,18 @@ package flowforge;
 import com.formdev.flatlaf.extras.FlatInspector;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import flowforge.core.*;
-import flowforge.core.panels.Console;
-import flowforge.core.panels.ControlPanel;
-import flowforge.core.panels.ProgramPanel;
-import flowforge.core.panels.StartPanel;
-import flowforge.nodes.Node;
+import flowforge.core.ui.panels.Console;
+import flowforge.core.ui.panels.ControlPanel;
+import flowforge.core.ui.panels.ProgramPanel;
+import flowforge.core.ui.panels.StartPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class FlowForge extends JFrame {
 
     public Timer loop;
+    private Thread loopThread;
     public DataManager dataManager;
     public String projectFilePath;
 
@@ -54,22 +52,8 @@ public class FlowForge extends JFrame {
 
         programPanelContainer = new JPanel(null);
 
-        programPanel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                programPanel.requestFocusInWindow();
-
-                for (Node node : programPanel.nodes) {
-                    node.inputButton.setEnabled(true);
-                    node.outputButton.setEnabled(true);
-                    node.inputXButton.setEnabled(true);
-                    node.outputXButton.setEnabled(true);
-                }
-            }
-        });
-
-        loop = new Timer(5, e -> {
-            programPanel.repaint();
+        loop = new Timer(6, e -> {
+            programPanel.repaint(programPanel.getVisibleRect());
             programPanel.moveCamera();
         });
 
@@ -89,9 +73,21 @@ public class FlowForge extends JFrame {
         loop.start();
     }
 
-    public void run() {
-        programPanel.startNode.execute();
-        console.getRootPanel().setVisible(true);
+    public void execute() {
+
+        SwingWorker<Void, Void> nodeExecutor = new SwingWorker<>() {
+            @Override
+            protected Void doInBackground()  {
+                programPanel.startNode.execute();
+                return null;
+            }
+            @Override
+            protected void done() {
+                console.getRootPanel().setVisible(true);
+            }
+        };
+
+        nodeExecutor.execute();
     }
 
     public void launch() {

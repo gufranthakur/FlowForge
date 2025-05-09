@@ -1,4 +1,4 @@
-package flowforge.core.panels;
+package flowforge.core.ui.panels;
 
 import com.formdev.flatlaf.fonts.jetbrains_mono.FlatJetBrainsMonoFont;
 import flowforge.FlowForge;

@@ -1,7 +1,7 @@
 package flowforge.core;
 
 import com.google.gson.*;
-import flowforge.core.panels.ProgramPanel;
+import flowforge.core.ui.panels.ProgramPanel;
 import flowforge.nodes.Node;
 import flowforge.nodes.StartNode;
 import flowforge.nodes.flownodes.*;
@@ -10,6 +10,7 @@ import flowforge.nodes.flownodes.comparators.*;
 import flowforge.nodes.flownodes.logicgates.LogicGateNode;
 import flowforge.nodes.variables.*;
 
+import javax.swing.*;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.util.*;
@@ -27,104 +28,114 @@ public class DataManager {
                 .create();
     }
     
-    public void  saveProgram(String filePath) {
-        try (FileWriter writer = new FileWriter(filePath)) {
-            JsonObject programData = new JsonObject();
+    public void saveProgram(String filePath) {
+        SwingWorker<Void, Void> dataSaverWorker = new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
 
-            // Store all nodes with their positions, connections and properties
-            JsonArray nodesArray = new JsonArray();
-            for (Node node : programPanel.nodes) {
-                JsonObject nodeObj = new JsonObject();
+                try (FileWriter writer = new FileWriter(filePath)) {
+                    JsonObject programData = new JsonObject();
 
-                // Store basic node metadata
-                nodeObj.addProperty("id", programPanel.nodes.indexOf(node));
-                nodeObj.addProperty("type", node.getClass().getSimpleName());
-                nodeObj.addProperty("title", node.getTitle());
-                nodeObj.addProperty("x", node.getNodeX());
-                nodeObj.addProperty("y", node.getNodeY());
-                nodeObj.addProperty("width", node.getNodeWidth());
-                nodeObj.addProperty("height", node.getNodeHeight());
+                    // Store all nodes with their positions, connections and properties
+                    JsonArray nodesArray = new JsonArray();
+                    for (Node node : programPanel.nodes) {
+                        JsonObject nodeObj = new JsonObject();
 
-                // Store primary output connections (flow path)
-                JsonArray outputConnections = new JsonArray();
-                for (Node outputNode : node.outputNodes) {
-                    outputConnections.add(programPanel.nodes.indexOf(outputNode));
-                }
-                nodeObj.add("outputConnections", outputConnections);
+                        // Store basic node metadata
+                        nodeObj.addProperty("id", programPanel.nodes.indexOf(node));
+                        nodeObj.addProperty("type", node.getClass().getSimpleName());
+                        nodeObj.addProperty("title", node.getTitle());
+                        nodeObj.addProperty("x", node.getNodeX());
+                        nodeObj.addProperty("y", node.getNodeY());
+                        nodeObj.addProperty("width", node.getNodeWidth());
+                        nodeObj.addProperty("height", node.getNodeHeight());
 
-                // Store secondary output connections (alternate flow path)
-                JsonArray outputXConnections = new JsonArray();
-                for (Node outputXNode : node.outputXNodes) {
-                    outputXConnections.add(programPanel.nodes.indexOf(outputXNode));
-                }
-                nodeObj.add("outputXConnections", outputXConnections);
+                        // Store primary output connections (flow path)
+                        JsonArray outputConnections = new JsonArray();
+                        for (Node outputNode : node.outputNodes) {
+                            outputConnections.add(programPanel.nodes.indexOf(outputNode));
+                        }
+                        nodeObj.add("outputConnections", outputConnections);
 
-                // Store node-specific configuration values
-                JsonObject properties = new JsonObject();
-                saveNodeProperties(node, properties);
-                nodeObj.add("properties", properties);
+                        // Store secondary output connections (alternate flow path)
+                        JsonArray outputXConnections = new JsonArray();
+                        for (Node outputXNode : node.outputXNodes) {
+                            outputXConnections.add(programPanel.nodes.indexOf(outputXNode));
+                        }
+                        nodeObj.add("outputXConnections", outputXConnections);
 
-                nodesArray.add(nodeObj);
+                        // Store node-specific configuration values
+                        JsonObject properties = new JsonObject();
+                        saveNodeProperties(node, properties);
+                        nodeObj.add("properties", properties);
 
-                // Special handling for BranchNode connections
-                if (node instanceof BranchNode) {
-                    BranchNode branchNode = (BranchNode) node;
+                        nodesArray.add(nodeObj);
 
-                    // Save true branch connections
-                    JsonArray trueConnections = new JsonArray();
-                    for (Node trueNode : branchNode.getTrueNodes()) {
-                        trueConnections.add(programPanel.nodes.indexOf(trueNode));
+                        // Special handling for BranchNode connections
+                        if (node instanceof BranchNode) {
+                            BranchNode branchNode = (BranchNode) node;
+
+                            // Save true branch connections
+                            JsonArray trueConnections = new JsonArray();
+                            for (Node trueNode : branchNode.getTrueNodes()) {
+                                trueConnections.add(programPanel.nodes.indexOf(trueNode));
+                            }
+                            nodeObj.add("trueConnections", trueConnections);
+
+                            // Save false branch connections
+                            JsonArray falseConnections = new JsonArray();
+                            for (Node falseNode : branchNode.getFalseNodes()) {
+                                falseConnections.add(programPanel.nodes.indexOf(falseNode));
+                            }
+                            nodeObj.add("falseConnections", falseConnections);
+                        }
                     }
-                    nodeObj.add("trueConnections", trueConnections);
+                    programData.add("nodes", nodesArray);
 
-                    // Save false branch connections
-                    JsonArray falseConnections = new JsonArray();
-                    for (Node falseNode : branchNode.getFalseNodes()) {
-                        falseConnections.add(programPanel.nodes.indexOf(falseNode));
+                    // Save all program variables by type
+                    JsonObject variables = new JsonObject();
+
+                    // Integer variables
+                    JsonObject integers = new JsonObject();
+                    for (Map.Entry<String, Integer> entry : programPanel.integers.entrySet()) {
+                        integers.addProperty(entry.getKey(), entry.getValue());
                     }
-                    nodeObj.add("falseConnections", falseConnections);
+                    variables.add("integers", integers);
+
+                    // String variables
+                    JsonObject strings = new JsonObject();
+                    for (Map.Entry<String, String> entry : programPanel.strings.entrySet()) {
+                        strings.addProperty(entry.getKey(), entry.getValue());
+                    }
+                    variables.add("strings", strings);
+
+                    // Boolean variables
+                    JsonObject booleans = new JsonObject();
+                    for (Map.Entry<String, Boolean> entry : programPanel.booleans.entrySet()) {
+                        booleans.addProperty(entry.getKey(), entry.getValue());
+                    }
+                    variables.add("booleans", booleans);
+
+                    // Float variables
+                    JsonObject floats = new JsonObject();
+                    for (Map.Entry<String, Float> entry : programPanel.floats.entrySet()) {
+                        floats.addProperty(entry.getKey(), entry.getValue());
+                    }
+                    variables.add("floats", floats);
+
+                    programData.add("variables", variables);
+
+                    // Write the complete program structure to file
+                    writer.write(gson.toJson(programData));
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
+
+                return null;
             }
-            programData.add("nodes", nodesArray);
 
-            // Save all program variables by type
-            JsonObject variables = new JsonObject();
+        };
 
-            // Integer variables
-            JsonObject integers = new JsonObject();
-            for (Map.Entry<String, Integer> entry : programPanel.integers.entrySet()) {
-                integers.addProperty(entry.getKey(), entry.getValue());
-            }
-            variables.add("integers", integers);
-
-            // String variables
-            JsonObject strings = new JsonObject();
-            for (Map.Entry<String, String> entry : programPanel.strings.entrySet()) {
-                strings.addProperty(entry.getKey(), entry.getValue());
-            }
-            variables.add("strings", strings);
-
-            // Boolean variables
-            JsonObject booleans = new JsonObject();
-            for (Map.Entry<String, Boolean> entry : programPanel.booleans.entrySet()) {
-                booleans.addProperty(entry.getKey(), entry.getValue());
-            }
-            variables.add("booleans", booleans);
-
-            // Float variables
-            JsonObject floats = new JsonObject();
-            for (Map.Entry<String, Float> entry : programPanel.floats.entrySet()) {
-                floats.addProperty(entry.getKey(), entry.getValue());
-            }
-            variables.add("floats", floats);
-
-            programData.add("variables", variables);
-
-            // Write the complete program structure to file
-            writer.write(gson.toJson(programData));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     /**

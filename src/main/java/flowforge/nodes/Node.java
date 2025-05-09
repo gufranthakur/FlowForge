@@ -1,6 +1,6 @@
 package flowforge.nodes;
 
-import flowforge.core.panels.ProgramPanel;
+import flowforge.core.ui.panels.ProgramPanel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -36,6 +36,14 @@ public abstract class Node extends JInternalFrame {
     private int nodeWidth;
     private int nodeHeight;
 
+    public boolean isBeingConnected = false;
+    public boolean isBeingXConnected = false;
+
+    public Color connectionColor = new Color(64, 193, 239);
+    public Color connectionColor2 = new Color(10, 97, 200);
+    public Color connectionXColor = new Color(253, 108, 46);
+    public Color connectionXColor2 = new Color(205, 183, 37);
+
     public Node(String title, ProgramPanel programPanel) {
         super(title, true, false, false, false);
         this.programPanel = programPanel;
@@ -43,6 +51,7 @@ public abstract class Node extends JInternalFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+                    programPanel.selectedNode = Node.this;
                     if (SwingUtilities.isRightMouseButton(e)) {
                         programPanel.showNodePopupMenu(getNode(), e);
                     }
@@ -104,6 +113,7 @@ public abstract class Node extends JInternalFrame {
 
     private void loadActionListeners() {
         inputButton.addActionListener(e -> {
+            programPanel.selectedNode = Node.this;
             for (Node node : programPanel.nodes) {
                 node.inputXButton.setEnabled(true);
                 node.outputXButton.setEnabled(true);
@@ -114,6 +124,10 @@ public abstract class Node extends JInternalFrame {
         });
 
         outputButton.addActionListener(e -> {
+            this.isBeingConnected = true;
+            this.isBeingXConnected = false;
+
+            programPanel.selectedNode = Node.this;
             for (Node node : programPanel.nodes) {
                 node.inputXButton.setEnabled(false);
                 node.outputXButton.setEnabled(false);
@@ -124,6 +138,7 @@ public abstract class Node extends JInternalFrame {
         });
 
         inputXButton.addActionListener(e -> {
+            programPanel.selectedNode = Node.this;
             for (Node node : programPanel.nodes) {
                 node.inputButton.setEnabled(true);
                 node.outputButton.setEnabled(true);
@@ -134,6 +149,11 @@ public abstract class Node extends JInternalFrame {
         });
 
         outputXButton.addActionListener(e -> {
+            this.isBeingXConnected = true;
+            this.isBeingConnected = false;
+
+            programPanel.selectedNode = Node.this;
+            if (outputButton.isSelected()) this.isBeingConnected = true;
             for (Node node : programPanel.nodes) {
                 node.inputButton.setEnabled(false);
                 node.outputButton.setEnabled(false);
@@ -170,7 +190,7 @@ public abstract class Node extends JInternalFrame {
         for (Node output : outputNodes) {
             Point start = getOutputPoint();
             Point end = output.getInputPoint();
-            drawCurvedGradientLine(g, start, end, new Color(64, 193, 239), new Color(10, 97, 200));
+            drawCurvedGradientLine(g, start, end, connectionColor, connectionColor2);
         }
     }
 
@@ -178,7 +198,7 @@ public abstract class Node extends JInternalFrame {
         for (Node output : outputXNodes) {
             Point start = getOutputXPoint();
             Point end = output.getInputXPoint();
-            drawCurvedGradientLine(g, start, end, new Color(253, 108, 46), new Color(205, 183, 37));
+            drawCurvedGradientLine(g, start, end, connectionXColor, connectionXColor2);
         }
     }
 
@@ -186,7 +206,6 @@ public abstract class Node extends JInternalFrame {
         int dx = end.x - start.x;
 
         int ctrlX1, ctrlY1, ctrlX2, ctrlY2;
-
 
         boolean isBackward = end.x < start.x;
 

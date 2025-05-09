@@ -1,6 +1,6 @@
 package flowforge.nodes.flownodes;
 
-import flowforge.core.panels.ProgramPanel;
+import flowforge.core.ui.panels.ProgramPanel;
 import flowforge.nodes.Node;
 import flowforge.nodes.flownodes.comparators.*;
 import flowforge.nodes.flownodes.logicgates.LogicGateNode;

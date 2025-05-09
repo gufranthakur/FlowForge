@@ -2,7 +2,7 @@ package flowforge.nodes.flownodes.comparators;
 
 
 import com.formdev.flatlaf.fonts.inter.FlatInterFont;
-import flowforge.core.panels.ProgramPanel;
+import flowforge.core.ui.panels.ProgramPanel;
 import flowforge.nodes.Node;
 import flowforge.nodes.variables.BooleanNode;
 import flowforge.nodes.variables.IntegerNode;
