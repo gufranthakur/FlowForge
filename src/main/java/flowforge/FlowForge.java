@@ -18,10 +18,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class FlowForge extends JFrame {
 
     public Timer loop;
+    private Thread loopThread;
     public DataManager dataManager;
     public String projectFilePath;
 
@@ -33,6 +36,7 @@ public class FlowForge extends JFrame {
     public ControlPanel controlPanel;
     public ProgramPanel programPanel;
     public Console console;
+
 
     public Color theme = new Color(26, 77, 236);
 
@@ -68,8 +72,8 @@ public class FlowForge extends JFrame {
             }
         });
 
-        loop = new Timer(5, e -> {
-            programPanel.repaint();
+        loop = new Timer(16, e -> {
+            programPanel.repaint(programPanel.getVisibleRect());
             programPanel.moveCamera();
         });
 
@@ -89,9 +93,21 @@ public class FlowForge extends JFrame {
         loop.start();
     }
 
-    public void run() {
-        programPanel.startNode.execute();
-        console.getRootPanel().setVisible(true);
+    public void execute() {
+
+        SwingWorker<Void, Void> nodeExecutor = new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                programPanel.startNode.execute();
+                return null;
+            }
+            @Override
+            protected void done() {
+                console.getRootPanel().setVisible(true);
+            }
+        };
+
+        nodeExecutor.execute();
     }
 
     public void launch() {

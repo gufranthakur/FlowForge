@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,12 +30,13 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
     public HashMap<String, Float> floats = new HashMap<>(20);
 
     private boolean isUp, isDown, isLeft, isRight;
-    private int cameraX, cameraY;
+
     private int cameraSpeed = 5;
-    private Point dragStart;
 
     private JPopupMenu nodePopupMenu;
     private JMenuItem deleteNode, resetConnections, resize;
+
+    private BufferedImage gridImage;
 
     public ProgramPanel(FlowForge flowForge) {
         this.flowForge = flowForge;
@@ -42,38 +44,8 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
         this.setSize(3000, 3000);
         this.setBackground(new Color(30, 30, 30));
         this.addKeyListener(this);
-        this.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                dragStart = e.getPoint();
-            }
 
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                dragStart = null;
-            }
-        });
-        this.addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                if (dragStart != null) {
-                    // Slow down movement a bit for smoother feel
-                    int deltaX = (e.getX() - dragStart.x);
-                    int deltaY = (e.getY() - dragStart.y);
-
-                    setLocation(getX() + deltaX, getY() + deltaY);
-                    cameraX -= deltaX;
-                    cameraY -= deltaY;
-
-                    dragStart = e.getPoint();
-                    repaint();
-                }
-            }
-        });
         setDoubleBuffered(true);
-
-        cameraX = 0;
-        cameraY = 0;
 
         startNode = new StartNode("Start", this);
         addNode(startNode);
@@ -134,40 +106,39 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
     public void moveCamera() {
         if (isUp) {
             this.setLocation(this.getX(), this.getY() + cameraSpeed);
-            cameraY -= cameraSpeed;
+
         }
         if (isDown) {
             this.setLocation(this.getX(), this.getY() - cameraSpeed);
-            cameraY += cameraSpeed;
+
         }
         if (isLeft) {
             this.setLocation(this.getX() + cameraSpeed, this.getY());
-            cameraX -= cameraSpeed;
+
         }
         if (isRight) {
             this.setLocation(this.getX() - cameraSpeed, this.getY());
-            cameraX += cameraSpeed;
+
         }
 
     }
 
-    // Add this to your ProgramPanel class
+    public void moveCameraTo(int x, int y) {
+        this.setLocation(-x, -y);
+    }
+
     public void clearAll() {
-        // Create a copy of the nodes list to avoid concurrent modification
         ArrayList<Node> nodesToRemove = new ArrayList<>(nodes);
 
-        // Remove all nodes
         for (Node node : nodesToRemove) {
             removeNode(node);
         }
 
-        // Clear all variables
         integers.clear();
         strings.clear();
         booleans.clear();
         floats.clear();
 
-        // Repaint the panel
         repaint();
     }
 
@@ -179,13 +150,31 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
+        int cellSize = 25;
+        int width = getWidth();
+        int height = getHeight();
+
+        g2d.setColor(new Color(60, 60, 60));
+
+
+        for (int x = 0; x <= width; x += cellSize) {
+            g2d.drawLine(x, 0, x, height);
+        }
+
+        for (int y = 0; y <= height; y += cellSize) {
+            g2d.drawLine(0, y, width, y);
+        }
+
         g2d.setStroke(new BasicStroke(2.0f));
+        g2d.drawRect(2, 2, getWidth() - 2, getHeight() - 2);
 
         for (Node node : nodes) {
             node.drawConnection(g2d);
             node.drawXConnection(g2d);
         }
+
     }
+
 
     public int getNodeAmount() {
         return nodes.size();

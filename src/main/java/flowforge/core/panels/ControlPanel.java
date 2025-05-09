@@ -134,7 +134,7 @@ public class ControlPanel {
         });
 
         runStopButton.addActionListener(e -> {
-            flowForge.run();
+            flowForge.execute();
         });
 
         saveButton.addActionListener(e -> {
