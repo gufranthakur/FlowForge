@@ -1,4 +1,4 @@
-package flowforge.core;
+package flowforge.core.panels;
 
 import flowforge.FlowForge;
 import flowforge.nodes.Node;

@@ -1,6 +1,6 @@
 package flowforge.nodes;
 
-import flowforge.core.ProgramPanel;
+import flowforge.core.panels.ProgramPanel;
 
 import java.awt.*;
 

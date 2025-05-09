@@ -1,7 +1,6 @@
-package flowforge.core;
+package flowforge.core.panels;
 
 import com.formdev.flatlaf.fonts.jetbrains_mono.FlatJetBrainsMonoFont;
-import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import flowforge.FlowForge;
 
 import javax.swing.*;

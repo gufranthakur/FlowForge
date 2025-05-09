@@ -1,4 +1,4 @@
-package flowforge.core;
+package flowforge.core.panels;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.fonts.inter.FlatInterFont;

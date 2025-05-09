@@ -1,6 +1,6 @@
 package flowforge.nodes.variables;
 
-import flowforge.core.ProgramPanel;
+import flowforge.core.panels.ProgramPanel;
 import flowforge.nodes.Node;
 import flowforge.nodes.flownodes.InputNode;
 import flowforge.nodes.flownodes.arithmetic.*;

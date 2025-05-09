@@ -3,13 +3,15 @@
  *
  * Licensed under the MIT License. See the LICENSE file for details.
  */
-
-
 package flowforge;
 
 import com.formdev.flatlaf.extras.FlatInspector;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import flowforge.core.*;
+import flowforge.core.panels.Console;
+import flowforge.core.panels.ControlPanel;
+import flowforge.core.panels.ProgramPanel;
+import flowforge.core.panels.StartPanel;
 import flowforge.nodes.Node;
 
 import javax.swing.*;

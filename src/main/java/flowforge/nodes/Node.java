@@ -1,11 +1,9 @@
 package flowforge.nodes;
 
-import flowforge.core.ProgramPanel;
+import flowforge.core.panels.ProgramPanel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;

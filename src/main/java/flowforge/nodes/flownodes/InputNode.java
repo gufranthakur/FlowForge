@@ -1,12 +1,10 @@
 package flowforge.nodes.flownodes;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import flowforge.core.ProgramPanel;
+import flowforge.core.panels.ProgramPanel;
 import flowforge.nodes.Node;
-import flowforge.nodes.variables.StringNode;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class InputNode extends Node {
 
