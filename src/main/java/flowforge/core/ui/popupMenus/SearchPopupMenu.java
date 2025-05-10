@@ -82,22 +82,7 @@ public class SearchPopupMenu extends JPopupMenu {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                programPanel.flowForge.controlPanel.getSelectedNodeAtTree(searchTree, false);
-                getThis().setVisible(false);
-
-
-                if (programPanel.selectedNode.isBeingConnected) {
-                    programPanel.startConnection(programPanel.selectedNode);
-                    programPanel.finishConnection(programPanel.nodes.getLast());
-                }
-                if (programPanel.selectedNode.isBeingXConnected) {
-                    programPanel.startXConnection(programPanel.selectedNode);
-                    programPanel.finishXConnection(programPanel.nodes.getLast());
-                }
-                programPanel.selectedNode.outputButton.setSelected(false);
-                programPanel.selectedNode.outputXButton.setSelected(false);
-
-                programPanel.selectedNode = null;
+                addNodeThroughSearch();
             }
         });
         searchTree.addKeyListener(new KeyAdapter() {
@@ -105,22 +90,7 @@ public class SearchPopupMenu extends JPopupMenu {
             public void keyPressed(KeyEvent e) {
                 super.keyPressed(e);
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    programPanel.flowForge.controlPanel.getSelectedNodeAtTree(searchTree, false);
-                    getThis().setVisible(false);
-
-
-                    if (programPanel.selectedNode.isBeingConnected) {
-                        programPanel.startConnection(programPanel.selectedNode);
-                        programPanel.finishConnection(programPanel.nodes.getLast());
-                    }
-                    if (programPanel.selectedNode.isBeingXConnected) {
-                        programPanel.startXConnection(programPanel.selectedNode);
-                        programPanel.finishXConnection(programPanel.nodes.getLast());
-                    }
-                    programPanel.selectedNode.outputButton.setSelected(false);
-                    programPanel.selectedNode.outputXButton.setSelected(false);
-
-                    programPanel.selectedNode = null;
+                    addNodeThroughSearch();
                 }
             }
         });
@@ -196,6 +166,25 @@ public class SearchPopupMenu extends JPopupMenu {
         searchTree.setRootVisible(false);
 
         revalidate();
+    }
+
+    private void addNodeThroughSearch() {
+        programPanel.flowForge.controlPanel.getSelectedNodeAtTree(searchTree, false);
+        getThis().setVisible(false);
+
+
+        if (programPanel.selectedNode.isBeingConnected) {
+            programPanel.startConnection(programPanel.selectedNode);
+            programPanel.finishConnection(programPanel.nodes.getLast());
+        }
+        if (programPanel.selectedNode.isBeingXConnected) {
+            programPanel.startXConnection(programPanel.selectedNode);
+            programPanel.finishXConnection(programPanel.nodes.getLast());
+        }
+        programPanel.selectedNode.outputButton.setSelected(false);
+        programPanel.selectedNode.outputXButton.setSelected(false);
+
+        programPanel.selectedNode = null;
     }
 
     private JPopupMenu getThis() {

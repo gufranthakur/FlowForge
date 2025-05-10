@@ -28,8 +28,7 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
     public HashMap<String, Float> floats = new HashMap<>(20);
 
     private boolean isUp, isDown, isLeft, isRight;
-    private int cameraSpeed = 5;
-
+    private int cameraSpeed = 7;
 
     public NodePopupMenu nodePopupMenu;
     public SearchPopupMenu searchPopupMenu;
@@ -75,6 +74,23 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
             @Override
             public void mouseMoved(MouseEvent e) {
                 currentMouseLocation = e.getPoint();
+            }
+        });
+
+        this.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                super.keyPressed(e);
+                if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
+                    cameraSpeed = 18;
+                }
+            }
+            @Override
+            public void keyReleased(KeyEvent e) {
+                super.keyReleased(e);
+                if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
+                    cameraSpeed = 7;
+                }
             }
         });
 
@@ -181,7 +197,6 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
         int height = getHeight();
 
         g2D.setColor(new Color(60, 60, 60));
-
 
         for (int x = 0; x <= width; x += cellSize) {
             g2D.drawLine(x, 0, x, height);

@@ -1,4 +1,4 @@
-package flowforge.core;
+package flowforge.core.ui.MenuBar;
 
 import flowforge.FlowForge;
 
@@ -88,7 +88,8 @@ public class AppMenuBar extends JMenuBar {
 
     public void initListeners() {
         aboutItem.addActionListener(e -> {
-            new AboutWindow(flowForge);
+            flowForge.startPanel.setVisible(false);
+            flowForge.add(flowForge.aboutPanel.getRootPanel(), BorderLayout.CENTER);
         });
 
         newProjectItem.addActionListener(e -> {
