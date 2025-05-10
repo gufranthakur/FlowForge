@@ -10,6 +10,7 @@ import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import flowforge.core.*;
 import flowforge.core.ui.MenuBar.AboutPanel;
 import flowforge.core.ui.MenuBar.AppMenuBar;
+import flowforge.core.ui.MenuBar.ChangeLogPanel;
 import flowforge.core.ui.panels.Console;
 import flowforge.core.ui.panels.ControlPanel;
 import flowforge.core.ui.panels.ProgramPanel;
@@ -21,7 +22,6 @@ import java.awt.*;
 public class FlowForge extends JFrame {
 
     public Timer loop;
-    private Thread loopThread;
     public DataManager dataManager;
     public String projectFilePath;
 
@@ -30,6 +30,7 @@ public class FlowForge extends JFrame {
 
     public AppMenuBar menuBar;
     public AboutPanel aboutPanel;
+    public ChangeLogPanel changeLogPanel;
 
     public ControlPanel controlPanel;
     public ProgramPanel programPanel;
@@ -51,8 +52,10 @@ public class FlowForge extends JFrame {
         controlPanel = new ControlPanel(this);
         programPanel = new ProgramPanel(this);
         dataManager = new DataManager(programPanel);
+
         menuBar = new AppMenuBar(this);
         aboutPanel = new AboutPanel(this);
+        changeLogPanel = new ChangeLogPanel(this);
 
         programPanelContainer = new JPanel(null);
 

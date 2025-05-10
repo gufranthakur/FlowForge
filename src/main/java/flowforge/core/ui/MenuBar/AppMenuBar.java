@@ -14,17 +14,18 @@ public class AppMenuBar extends JMenuBar {
     private GraphicsEnvironment environment;
     private GraphicsDevice device;
 
-    private JMenu aboutMenu;
+    private JMenu moreMenu;
     private JMenu projectMenu;
     private JMenuItem newProjectItem, openProjectItem, exitProjectItem,
             saveProjectItem, saveAsProjectItem,
             projectPropertiesItem, settingsItem;
 
-    private JMenuItem aboutItem;
+    private JMenuItem aboutItem, chengelogItem;
     private JMenu viewMenu;
     private JMenuItem fullscreenItem, presentationModeItem,
             showHideSideBar, showHideConsole, showHideToolbar;
 
+    public boolean aboutPanelVisible, changelogPanelVisible = false;
     private boolean isFullScreen, isPresentationMode;
 
     public AppMenuBar(FlowForge flowForge) {
@@ -36,12 +37,13 @@ public class AppMenuBar extends JMenuBar {
 
     public void init() {
         // Initialize main menu items
-        aboutMenu = new JMenu("About");
+        moreMenu = new JMenu("More");
         projectMenu = new JMenu("Project");
         viewMenu = new JMenu("View");
 
         //about
         aboutItem = new JMenuItem("About FlowForge");
+        chengelogItem = new JMenuItem("View Changelog");
 
         // Initialize Project menu items
         newProjectItem = new JMenuItem("New Project");
@@ -62,8 +64,9 @@ public class AppMenuBar extends JMenuBar {
     }
 
     public void addComponent() {
-        this.add(aboutMenu);
-        aboutMenu.add(aboutItem);
+        this.add(moreMenu);
+        moreMenu.add(aboutItem);
+        moreMenu.add(chengelogItem);
 
         projectMenu.add(newProjectItem);
         projectMenu.add(openProjectItem);
@@ -88,8 +91,25 @@ public class AppMenuBar extends JMenuBar {
 
     public void initListeners() {
         aboutItem.addActionListener(e -> {
-            flowForge.startPanel.setVisible(false);
+            if (aboutPanelVisible) return;
+            flowForge.remove(flowForge.startPanel);
             flowForge.add(flowForge.aboutPanel.getRootPanel(), BorderLayout.CENTER);
+
+            aboutPanelVisible = true;
+
+            flowForge.revalidate();
+            flowForge.repaint();
+        });
+
+        chengelogItem.addActionListener(e -> {
+            if (changelogPanelVisible) return;
+            flowForge.remove(flowForge.startPanel);
+            flowForge.add(flowForge.changeLogPanel.getRootPanel(), BorderLayout.CENTER);
+
+            changelogPanelVisible = true;
+
+            flowForge.revalidate();
+            flowForge.repaint();
         });
 
         newProjectItem.addActionListener(e -> {
@@ -218,7 +238,7 @@ public class AppMenuBar extends JMenuBar {
     }
 
     public void launch() {
-        this.remove(aboutMenu);
+        this.remove(moreMenu);
 
         this.add(projectMenu);
         this.add(viewMenu);

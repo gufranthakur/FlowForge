@@ -23,10 +23,14 @@ public class AboutPanel {
         confirmButton.addActionListener(e -> {
             flowForge.remove(this.getRootPanel());
             flowForge.add(flowForge.startPanel, BorderLayout.CENTER);
-            flowForge.startPanel.setVisible(true);
+
+            flowForge.menuBar.aboutPanelVisible = false;
+
+            flowForge.revalidate();
+            flowForge.repaint();
         });
 
-
+        scrollPane.getVerticalScrollBar().setUnitIncrement(14);
     }
 
     public JPanel getRootPanel() {
