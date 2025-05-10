@@ -14,8 +14,8 @@ learn the logic building skills in programming.
 * Logic Gates: Provides NOT, AND, OR, NAND, NOR, and XOR gates for logical operations.
 
 # Snapshots
-![Screenshot 2025-03-08 172256](https://github.com/user-attachments/assets/ee34b549-e34a-4527-a3af-979783f2d0aa)
-![Screenshot 2025-03-08 173540](https://github.com/user-attachments/assets/122d3bd1-5b68-4a60-9e01-8b62d697bc7a)
+![Screenshot 2025-05-10 145820](https://github.com/user-attachments/assets/66758878-9545-46c8-b0eb-9c7410c6653e)
+
 
 # How to run FlowForge
 
