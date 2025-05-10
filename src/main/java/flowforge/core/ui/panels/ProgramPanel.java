@@ -1,22 +1,14 @@
 package flowforge.core.ui.panels;
 
-import com.formdev.flatlaf.FlatClientProperties;
-import com.formdev.flatlaf.fonts.inter.FlatInterFont;
 import flowforge.FlowForge;
+import flowforge.core.ui.popupMenus.NodePopupMenu;
+import flowforge.core.ui.popupMenus.SearchPopupMenu;
 import flowforge.nodes.Node;
 import flowforge.nodes.StartNode;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,20 +28,13 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
     public HashMap<String, Float> floats = new HashMap<>(20);
 
     private boolean isUp, isDown, isLeft, isRight;
-
     private int cameraSpeed = 5;
 
-    private JPopupMenu nodePopupMenu;
-    private JMenuItem deleteNode, resetConnections, resize;
-    private JPopupMenu addNodePopupMenu;
 
-    private List<String> nodesList;
-    private JTree searchTree;
-    private DefaultMutableTreeNode root;
+    public NodePopupMenu nodePopupMenu;
+    public SearchPopupMenu searchPopupMenu;
 
     private Point currentMouseLocation;
-
-    private BufferedImage gridImage;
 
     public ProgramPanel(FlowForge flowForge) {
         this.flowForge = flowForge;
@@ -63,48 +48,8 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
         startNode = new StartNode("Start", this);
         addNode(startNode);
 
-        nodesList = new ArrayList<>();
-        nodesList.add("Print");
-        nodesList.add("Branch");
-        nodesList.add("Input");
-        nodesList.add("Delay");
-        nodesList.add("Loop");
-        nodesList.add("Conditional-Loop");
-
-        nodesList.add("Add");
-        nodesList.add("Subtract");
-        nodesList.add("Multiply");
-        nodesList.add("Divide");
-        nodesList.add("Modulus");
-        nodesList.add("Random");
-
-        nodesList.add("Equals to");
-        nodesList.add("Greater than");
-        nodesList.add("Less than");
-        nodesList.add("Greater than or equal to");
-        nodesList.add("Less than or equal to");
-        nodesList.add("Not equal to");
-
-        nodesList.add("NOT");
-        nodesList.add("AND");
-        nodesList.add("OR");
-        nodesList.add("NAND");
-        nodesList.add("NOR");
-        nodesList.add("XOR");
-
-        root = new DefaultMutableTreeNode("Results");
-        for (String s : nodesList) {
-            root.add(new DefaultMutableTreeNode(s));
-        }
-
-        searchTree = new JTree(root);
-        searchTree.setRootVisible(false);
-
-        nodePopupMenu = new JPopupMenu();
-        addNodePopupMenu = new JPopupMenu();
-
-        initNodePopupMenu();
-        initAddNodePopupMenu();
+        nodePopupMenu = new NodePopupMenu(this);
+        searchPopupMenu = new SearchPopupMenu(this);
 
         this.addMouseListener(new MouseAdapter() {
             @Override
@@ -113,7 +58,7 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
 
                 if (selectedNode == null) return;
                 if (selectedNode.isBeingConnected || selectedNode.isBeingXConnected) {
-                    addNodePopupMenu.show(getDesktopPane(), currentMouseLocation.x, currentMouseLocation.y);
+                    searchPopupMenu.show(getDesktopPane(), currentMouseLocation.x, currentMouseLocation.y);
                 }
 
                 for (Node node : nodes) {
@@ -133,53 +78,6 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
             }
         });
 
-        searchTree.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                flowForge.controlPanel.getSelectedNodeAtTree(searchTree, false);
-                addNodePopupMenu.setVisible(false);
-
-
-                if (selectedNode.isBeingConnected) {
-                    startConnection(selectedNode);
-                    finishConnection(nodes.getLast());
-                }
-                if (selectedNode.isBeingXConnected) {
-                    startXConnection(selectedNode);
-                    finishXConnection(nodes.getLast());
-                }
-                selectedNode.outputButton.setSelected(false);
-                selectedNode.outputXButton.setSelected(false);
-
-                selectedNode = null;
-            }
-        });
-        searchTree.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                super.keyPressed(e);
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    flowForge.controlPanel.getSelectedNodeAtTree(searchTree, false);
-
-                    addNodePopupMenu.setVisible(false);
-
-
-                    if (selectedNode.isBeingConnected) {
-                        startConnection(selectedNode);
-                        finishConnection(nodes.getLast());
-                    }
-                    if (selectedNode.isBeingXConnected) {
-                        startXConnection(selectedNode);
-                        finishXConnection(nodes.getLast());
-                    }
-                    selectedNode.outputButton.setSelected(false);
-                    selectedNode.outputXButton.setSelected(false);
-
-                    selectedNode = null;
-                }
-            }
-        });
     }
 
     public void addNode(Node node) {
@@ -195,7 +93,6 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
             int viewportCenterX = visibleRect.x + visibleRect.width / 2;
             int viewportCenterY = visibleRect.y + visibleRect.height / 2;
 
-            // Set node position at the viewport center
             node.setLocation(viewportCenterX - node.getNodeWidth() / 2,
                     viewportCenterY - node.getNodeHeight() / 2);
         } else {
@@ -254,10 +151,6 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
             this.setLocation(this.getX() - cameraSpeed, this.getY());
         }
 
-    }
-
-    public void moveCameraTo(int x, int y) {
-        this.setLocation(-x, -y);
     }
 
     public void clearAll() {
@@ -338,105 +231,6 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
         } else if (flowForge.controlPanel.variableBox.getSelectedItem().equals("Float")) {
             floats.put(varName, 0.0f);
         }
-    }
-
-    private void initNodePopupMenu() {
-        resize = new JMenuItem("Resize");
-        resetConnections = new JMenuItem("Disconnect");
-        deleteNode = new JMenuItem("Delete");
-
-        resize.addActionListener(e -> selectedNode.pack());
-        resetConnections.addActionListener(e -> selectedNode.disconnectAll());
-        deleteNode.addActionListener(e ->  {
-            selectedNode.disconnectAll();
-            removeNode(selectedNode);
-        });
-
-        nodePopupMenu.add(resize);
-        nodePopupMenu.add(resetConnections);
-        nodePopupMenu.add(deleteNode);
-    }
-
-    private void initAddNodePopupMenu() {
-        addNodePopupMenu = new JPopupMenu();
-
-        JPanel contentPanel = new JPanel();
-        JTextField searchField = new JTextField();
-
-
-        contentPanel.setLayout(new BorderLayout());
-        contentPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-        contentPanel.setPreferredSize(new Dimension(300, 300));
-
-        searchTree.setFont(new Font(FlatInterFont.FAMILY, Font.PLAIN, 16));
-        searchTree.setPreferredSize(new Dimension(300, 50));
-        searchTree.setMaximumSize(new Dimension(300, 50));
-
-        searchField.setFont(new Font(FlatInterFont.FAMILY, Font.PLAIN, 16));
-        searchField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Search...");
-        searchField.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                filter(searchField.getText());
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                filter(searchField.getText());
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                filter(searchField.getText());
-            }
-        });
-
-        contentPanel.add(searchField, BorderLayout.NORTH);
-        contentPanel.add(searchTree, BorderLayout.CENTER);
-
-        addNodePopupMenu.add(contentPanel);
-
-        addNodePopupMenu.addPopupMenuListener(new PopupMenuListener() {
-            @Override
-            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-                // When the popup menu is about to be shown
-            }
-
-            @Override
-            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-                selectedNode.inputButton.setSelected(false);
-                selectedNode.outputButton.setSelected(false);
-            }
-
-            @Override
-            public void popupMenuCanceled(PopupMenuEvent e) {
-                selectedNode.inputButton.setSelected(false);
-                selectedNode.outputButton.setSelected(false);
-            }
-        });
-
-
-    }
-
-    private void filter(String search) {
-        search = search.trim().toLowerCase();
-
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Functions");
-        for (String s : nodesList) {
-            if (s.toLowerCase().contains(search) || search.isEmpty()) {
-                root.add(new DefaultMutableTreeNode(s));
-            }
-        }
-
-        searchTree.setModel(new DefaultTreeModel(root));
-        searchTree.setRootVisible(false);
-
-        revalidate();
-    }
-
-    public void showNodePopupMenu(Node node, MouseEvent e) {
-        nodePopupMenu.show(node, e.getX() + 10, e.getY() + 10);
-
     }
 
     public JDesktopPane getDesktopPane() {

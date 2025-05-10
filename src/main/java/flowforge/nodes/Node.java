@@ -1,6 +1,7 @@
 package flowforge.nodes;
 
 import flowforge.core.ui.panels.ProgramPanel;
+import flowforge.core.ui.popupMenus.NodePopupMenu;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -53,7 +54,7 @@ public abstract class Node extends JInternalFrame {
                 super.mouseClicked(e);
                     programPanel.selectedNode = Node.this;
                     if (SwingUtilities.isRightMouseButton(e)) {
-                        programPanel.showNodePopupMenu(getNode(), e);
+                        programPanel.nodePopupMenu.show(Node.this, e.getX() + 10, e.getY() + 10);
                     }
             }
         });
