@@ -89,6 +89,8 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
         nodesList.add("AND");
         nodesList.add("OR");
         nodesList.add("NAND");
+        nodesList.add("NOR");
+        nodesList.add("XOR");
 
         root = new DefaultMutableTreeNode("Results");
         for (String s : nodesList) {
