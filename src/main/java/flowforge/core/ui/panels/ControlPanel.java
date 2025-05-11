@@ -3,6 +3,7 @@ package flowforge.core.ui.panels;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.fonts.inter.FlatInterFont;
 import flowforge.FlowForge;
+import flowforge.nodes.Node;
 import flowforge.nodes.flownodes.*;
 import flowforge.nodes.flownodes.arithmetic.*;
 import flowforge.nodes.flownodes.comparators.*;
@@ -37,6 +38,18 @@ public class ControlPanel {
     private JPanel variableControlPanel;
     private JScrollPane variableScrollPanel;
     private JButton saveButton;
+    private JPanel propertiesPanel;
+    private JPanel detailsPanel;
+    private JPanel connectionPanel;
+    private JLabel connectionsDisplayLabel;
+    private JLabel nodeNameLabel;
+    private JLabel nodeSerialNoLabel;
+    private JLabel nodeLocationLabel;
+    private JLabel nodeSizeLabel;
+    private JLabel inputConnectionsLabel;
+    private JLabel outputConnectionsLabel;
+    private JLabel inputXConnectionsLabel;
+    private JLabel outputXConnectionLabel;
     private JComboBox nodeBox;
 
     private FlowForge flowForge;
@@ -73,6 +86,9 @@ public class ControlPanel {
         saveButton.setBackground(flowForge.theme);
 
         searchField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Search...");
+
+        detailsPanel.setBackground(rootPanel.getBackground().brighter());
+        connectionPanel.setBackground(rootPanel.getBackground().brighter());
 
         for (String s : Arrays.asList("Integer", "String", "Boolean", "Float")) {
             variableBox.addItem(s);
@@ -230,7 +246,6 @@ public class ControlPanel {
 
 
     public void addComponent() {
-
         root.add(print);
         root.add(branch);
         root.add(input);
@@ -315,6 +330,48 @@ public class ControlPanel {
     public void updateVariableTree() {
         loadVariables();
         refreshTree();
+    }
+
+    public void updatePropertiesPanel(Node selectedNode) {
+        nodeNameLabel.setText("Node Name : " + selectedNode.getTitle());
+        nodeSerialNoLabel.setText("Node ID : " + flowForge.programPanel.nodes.indexOf(selectedNode));
+        nodeLocationLabel.setText("Location : " + selectedNode.getX() + ", " + selectedNode.getY());
+        nodeSizeLabel.setText("Size : " + selectedNode.getWidth() + ", " + selectedNode.getHeight());
+
+        inputConnectionsLabel.setText(returnIOConnectionList(selectedNode, "Input"));
+        outputConnectionsLabel.setText(returnIOConnectionList(selectedNode, "Output"));
+        inputXConnectionsLabel.setText(returnIOConnectionList(selectedNode, "InputX"));
+        outputXConnectionLabel.setText(returnIOConnectionList(selectedNode, "OutputX"));
+
+
+    }
+
+    public String returnIOConnectionList(Node selectedNode, String connectionType) {
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("[");
+        switch (connectionType) {
+            case "Input" :
+                for (Node node : selectedNode.inputNodes) builder.append(node.getTitle()).append(", ");
+                break;
+            case "Output" :
+                for (Node node : selectedNode.outputNodes) builder.append(node.getTitle()).append(", ");
+                break;
+            case "InputX" :
+                for (Node node : selectedNode.inputXNodes) builder.append(node.getTitle()).append(", ");
+                break;
+            case "OutputX" :
+                for (Node node : selectedNode.outputXNodes)
+                    builder.append(node.getTitle()).append(", ");
+                break;
+        }
+        try {
+            builder.deleteCharAt(builder.length() - 2);
+            builder.append("]");
+        } catch (StringIndexOutOfBoundsException e) {
+            return "[]";
+        }
+        return builder.toString();
     }
 
     public JPanel getRootPanel() {

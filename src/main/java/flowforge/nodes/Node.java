@@ -45,6 +45,8 @@ public abstract class Node extends JInternalFrame {
     public Color connectionXColor = new Color(253, 108, 46);
     public Color connectionXColor2 = new Color(205, 183, 37);
 
+    public String nodeType;
+
     public Node(String title, ProgramPanel programPanel) {
         super(title, true, false, false, false);
         this.programPanel = programPanel;
@@ -53,6 +55,7 @@ public abstract class Node extends JInternalFrame {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                     programPanel.selectedNode = Node.this;
+                    programPanel.flowForge.controlPanel.updatePropertiesPanel(Node.this);
                     if (SwingUtilities.isRightMouseButton(e)) {
                         programPanel.nodePopupMenu.show(Node.this, e.getX() + 10, e.getY() + 10);
                     }
@@ -115,6 +118,7 @@ public abstract class Node extends JInternalFrame {
     private void loadActionListeners() {
         inputButton.addActionListener(e -> {
             programPanel.selectedNode = Node.this;
+            programPanel.flowForge.controlPanel.updatePropertiesPanel(Node.this);
             for (Node node : programPanel.nodes) {
                 node.inputXButton.setEnabled(true);
                 node.outputXButton.setEnabled(true);
@@ -129,6 +133,7 @@ public abstract class Node extends JInternalFrame {
             this.isBeingXConnected = false;
 
             programPanel.selectedNode = Node.this;
+            programPanel.flowForge.controlPanel.updatePropertiesPanel(Node.this);
             for (Node node : programPanel.nodes) {
                 node.inputXButton.setEnabled(false);
                 node.outputXButton.setEnabled(false);
@@ -140,6 +145,7 @@ public abstract class Node extends JInternalFrame {
 
         inputXButton.addActionListener(e -> {
             programPanel.selectedNode = Node.this;
+            programPanel.flowForge.controlPanel.updatePropertiesPanel(Node.this);
             for (Node node : programPanel.nodes) {
                 node.inputButton.setEnabled(true);
                 node.outputButton.setEnabled(true);
@@ -154,6 +160,7 @@ public abstract class Node extends JInternalFrame {
             this.isBeingConnected = false;
 
             programPanel.selectedNode = Node.this;
+            programPanel.flowForge.controlPanel.updatePropertiesPanel(Node.this);
             if (outputButton.isSelected()) this.isBeingConnected = true;
             for (Node node : programPanel.nodes) {
                 node.inputButton.setEnabled(false);
