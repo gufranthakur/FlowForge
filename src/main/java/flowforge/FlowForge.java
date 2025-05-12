@@ -5,6 +5,8 @@
  */
 package flowforge;
 
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
 import com.formdev.flatlaf.extras.FlatInspector;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import flowforge.core.*;
@@ -36,7 +38,7 @@ public class FlowForge extends JFrame {
     public ProgramPanel programPanel;
     public Console console;
 
-    public Color theme = new Color(26, 77, 236);
+    public Color theme = new Color(26, 77, 236).brighter();
 
     public FlowForge() {
         this.setTitle("FlowForge");
@@ -96,6 +98,20 @@ public class FlowForge extends JFrame {
         nodeExecutor.execute();
     }
 
+    public void changeTheme(LookAndFeel lookAndFeel) {
+        FlatAnimatedLafChange.showSnapshot();
+
+        try {
+            UIManager.setLookAndFeel(lookAndFeel);
+        } catch (UnsupportedLookAndFeelException ex) {
+            throw new RuntimeException(ex);
+        }
+        FlatLaf.updateUI();
+        FlatAnimatedLafChange.hideSnapshotWithAnimation();
+
+        console.updateGUI();
+    }
+
     public void launch() {
         programPanelContainer.add(programPanel);
 
@@ -115,7 +131,7 @@ public class FlowForge extends JFrame {
 
     public static void main(String[] args) throws UnsupportedLookAndFeelException {
         UIManager.setLookAndFeel(new FlatMacDarkLaf());
-        FlatInspector.install( "ctrl shift V" );
+        //FlatInspector.install( "ctrl shift V" );
 
         SwingUtilities.invokeLater(() -> {
             FlowForge flowForge = new FlowForge();

@@ -43,6 +43,7 @@
             <groupId>com.formdev</groupId>
             <artifactId>flatlaf-extras</artifactId>
             <version>3.6</version>
+
         </dependency>
 
     </dependencies>

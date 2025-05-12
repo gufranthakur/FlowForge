@@ -50,4 +50,8 @@ public class Console {
         print("Project saved succesfully at location : \n" + flowForge.projectFilePath);
     }
 
+    public void updateGUI() {
+
+    }
+
 }

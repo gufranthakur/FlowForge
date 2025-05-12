@@ -62,8 +62,7 @@ public class StartPanel extends JPanel implements ComponentListener {
             }
         });
 
-        openProjectButton.setBackground(new Color(12, 100, 181));
-
+        openProjectButton.setBackground(flowForge.theme);
 
         createProjectButton.addActionListener(e -> {
             flowForge.launch();
@@ -82,7 +81,7 @@ public class StartPanel extends JPanel implements ComponentListener {
         super.paintComponent(g);
         Graphics2D g2D = (Graphics2D) g;
 
-        gradient = new GradientPaint(0, 0, new Color(22, 22, 22), getWidth(), getHeight(), new Color(30, 30, 30));
+        gradient = new GradientPaint(0, 0, new Color(18, 18, 18), getWidth(), getHeight(), new Color(30, 30, 30));
 
         g2D.setPaint(gradient);
         g2D.fillRect(0, 0, getWidth(), getHeight());

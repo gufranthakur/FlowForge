@@ -1,5 +1,9 @@
 package flowforge.core.ui.MenuBar;
 
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import flowforge.FlowForge;
 
 import javax.swing.*;
@@ -16,12 +20,18 @@ public class AppMenuBar extends JMenuBar {
 
     private JMenu moreMenu;
     private JMenu projectMenu;
-    private JMenuItem newProjectItem, openProjectItem, exitProjectItem,
-            saveProjectItem, saveAsProjectItem,
+    private JMenuItem newProjectItem, openProjectItem, closeProjectItem,
+            saveProjectItem, saveAsProjectItem, exitAppItem,
             projectPropertiesItem, settingsItem;
 
     private JMenuItem aboutItem, chengelogItem;
     private JMenu viewMenu;
+        private JMenu changeThemeMenu, changeColorSchemeMenu;
+        private JMenuItem lightTheme, darkTheme,
+
+                lightColorScheme, darkColorScheme;
+
+
     private JMenuItem fullscreenItem, presentationModeItem,
             showHideSideBar, showHideConsole, showHideToolbar;
 
@@ -48,11 +58,13 @@ public class AppMenuBar extends JMenuBar {
         // Initialize Project menu items
         newProjectItem = new JMenuItem("New Project");
         openProjectItem = new JMenuItem("Open Project");
+        closeProjectItem = new JMenuItem("Close Project");
         saveProjectItem = new JMenuItem("Save");
         saveAsProjectItem = new JMenuItem("Save As");
         projectPropertiesItem = new JMenuItem("Project Properties");
         settingsItem = new JMenuItem("Settings");
-        exitProjectItem = new JMenuItem("Exit");
+        exitAppItem = new JMenuItem("Exit");
+
 
         // Initialize View menu items
         fullscreenItem = new JMenuItem("Fullscreen");
@@ -61,6 +73,12 @@ public class AppMenuBar extends JMenuBar {
         showHideConsole = new JMenuItem("Toggle Console");
         showHideToolbar = new JMenuItem("Toggle Toolbar");
 
+        changeThemeMenu = new JMenu("Change Theme");
+            darkTheme = new JMenuItem("Dark");
+            lightTheme = new JMenuItem("Light");
+        changeColorSchemeMenu = new JMenu("Change Color Scheme");
+            darkColorScheme = new JMenuItem("Dark");
+            lightColorScheme = new JMenuItem("Light");
     }
 
     public void addComponent() {
@@ -70,6 +88,7 @@ public class AppMenuBar extends JMenuBar {
 
         projectMenu.add(newProjectItem);
         projectMenu.add(openProjectItem);
+        projectMenu.add(closeProjectItem);
         projectMenu.addSeparator();
         projectMenu.add(saveProjectItem);
         projectMenu.add(saveAsProjectItem);
@@ -77,7 +96,8 @@ public class AppMenuBar extends JMenuBar {
         //projectItem.add(projectPropertiesItem);
         //projectItem.add(settingsItem);
         //projectItem.addSeparator();
-        projectMenu.add(exitProjectItem);
+        projectMenu.add(exitAppItem);
+
 
         viewMenu.add(fullscreenItem);
         viewMenu.add(presentationModeItem);
@@ -85,11 +105,22 @@ public class AppMenuBar extends JMenuBar {
         viewMenu.add(showHideSideBar);
         viewMenu.add(showHideConsole);
         viewMenu.add(showHideToolbar);
+        viewMenu.addSeparator();
+        viewMenu.add(changeThemeMenu);
+            changeThemeMenu.add(darkTheme);
+            changeThemeMenu.add(lightTheme);
+        viewMenu.add(changeColorSchemeMenu);
 
         flowForge.setJMenuBar(this);
     }
 
     public void initListeners() {
+        initStartMenuListeners();
+        initProjectMenuListeners();
+        initViewMenuListeners();
+    }
+
+    private void initStartMenuListeners() {
         aboutItem.addActionListener(e -> {
             if (aboutPanelVisible) return;
             flowForge.remove(flowForge.startPanel);
@@ -111,7 +142,9 @@ public class AppMenuBar extends JMenuBar {
             flowForge.revalidate();
             flowForge.repaint();
         });
+    }
 
+    private void initProjectMenuListeners() {
         newProjectItem.addActionListener(e -> {
             flowForge.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             getNewInstance(true);
@@ -151,19 +184,28 @@ public class AppMenuBar extends JMenuBar {
                 }
                 flowForge.dataManager.saveProgram(filePath);
                 flowForge.projectFilePath = filePath;
+                flowForge.console.printSaveStatement();
             }
-            flowForge.console.printSaveStatement();
         });
 
-        exitProjectItem.addActionListener(e -> {
+        closeProjectItem.addActionListener(e -> {
             if (JOptionPane.showConfirmDialog(
-                    null, "Any unsaved changes will be lost", "Exit Program?", JOptionPane.YES_NO_OPTION)
-                    == JOptionPane.YES_OPTION) {
+                    null, "Any unsaved changes will be lost",
+                    "Close Project?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 getNewInstance(false);
                 flowForge.dispose();
             }
         });
 
+        exitAppItem.addActionListener(e -> {
+            if (JOptionPane.showConfirmDialog(null, "Any unsaved changes will be lost",
+                    "Exit FlowForge?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_NO_OPTION) {
+                System.exit(0);
+            }
+        });
+    }
+
+    private void initViewMenuListeners() {
         fullscreenItem.addActionListener(e -> {
             if (!isFullScreen) {
                 flowForge.dispose();
@@ -209,6 +251,11 @@ public class AppMenuBar extends JMenuBar {
             var toolbar = flowForge.controlPanel.toolBar;
             toolbar.setVisible(!toolbar.isVisible());
         });
+
+        //Themes stuff
+
+        darkTheme.addActionListener(e -> flowForge.changeTheme(new FlatMacDarkLaf()));
+        lightTheme.addActionListener(e -> flowForge.changeTheme(new FlatMacLightLaf()));
     }
 
     private FlowForge getNewInstance(boolean launchOnCreation) {
@@ -236,6 +283,8 @@ public class AppMenuBar extends JMenuBar {
 
         return newInstance;
     }
+
+
 
     public void launch() {
         this.remove(moreMenu);

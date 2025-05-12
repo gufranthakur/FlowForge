@@ -135,7 +135,7 @@ public class DataManager {
             }
 
         };
-
+        dataSaverWorker.execute();
     }
 
     /**
