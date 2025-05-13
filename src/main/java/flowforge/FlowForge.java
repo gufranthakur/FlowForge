@@ -22,7 +22,7 @@ import flowforge.core.ui.panels.StartPanel;
 import javax.swing.*;
 import java.awt.*;
 
-public class FlowForge extends JFrame {
+public class FlowForge extends JFrame implements Runnable{
 
     public Timer loop;
     public DataManager dataManager;
@@ -40,6 +40,8 @@ public class FlowForge extends JFrame {
     public Console console;
 
     public Color theme = new Color(26, 77, 236).brighter();
+
+    private boolean isRunning = false;
 
     public FlowForge() {
         this.setTitle("FlowForge");
@@ -62,11 +64,6 @@ public class FlowForge extends JFrame {
 
         programPanelContainer = new JPanel(null);
 
-        loop = new Timer(1, e -> {
-            programPanel.repaint(programPanel.getVisibleRect());
-            programPanel.moveCamera();
-        });
-
         controlPanel.init();
         menuBar.init();
         menuBar.initListeners();
@@ -80,7 +77,9 @@ public class FlowForge extends JFrame {
         this.add(startPanel, BorderLayout.CENTER);
         this.setVisible(true);
 
-        loop.start();
+        //loop.start();
+
+        isRunning = true;
     }
 
     public void execute() {
@@ -117,6 +116,54 @@ public class FlowForge extends JFrame {
         this.revalidate();
     }
 
+    @Override
+    public void run() {
+        double timePerFrame = 1000000000.0 / 120;
+        double timePerUpdate = 1000000000.0 / 60;
+
+        long previousTime = System.nanoTime();
+
+        int frames = 0;
+        int updates = 0;
+        long lastCheck = System.currentTimeMillis();
+
+        double deltaU = 0;
+        double deltaF = 0;
+
+        while (isRunning) {
+            long currentTime = System.nanoTime();
+
+            deltaU += (currentTime - previousTime) / timePerUpdate;
+            deltaF += (currentTime - previousTime) / timePerFrame;
+            previousTime = currentTime;
+
+            if (deltaU >= 1) {
+                programPanel.moveCamera();
+                updates++;
+                deltaU--;
+            }
+
+            if (deltaF >= 1) {
+
+                programPanel.repaint();
+
+
+                frames++;
+                deltaF--;
+            }
+
+            if (System.currentTimeMillis() - lastCheck >= 1000) {
+                lastCheck = System.currentTimeMillis();
+                frames = 0;
+                updates = 0;
+
+            }
+        }
+
+    }
+
+    public static Thread flowForgeThread;
+
     public static void main(String[] args) throws UnsupportedLookAndFeelException {
         UIManager.setLookAndFeel(new FlatMacDarkLaf());
         FlatJetBrainsMonoFont.install();
@@ -126,7 +173,13 @@ public class FlowForge extends JFrame {
             FlowForge flowForge = new FlowForge();
             flowForge.init();
             flowForge.addComponent();
+
+            flowForgeThread = new Thread(flowForge);
+            flowForgeThread.start();
         });
+
+
     }
+
 
 }

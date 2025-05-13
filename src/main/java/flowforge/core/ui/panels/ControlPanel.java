@@ -68,7 +68,7 @@ public class ControlPanel {
     private DefaultMutableTreeNode integerNode, stringNode, booleanNode, floatNode;
 
     private boolean programIsRunning = false;
-    
+
     public ControlPanel(FlowForge flowForge) {
         this.flowForge = flowForge;
         rootPanel.setOpaque(true);
@@ -216,6 +216,7 @@ public class ControlPanel {
 
     public void getSelectedNodeAtTree(JTree tree, boolean inCenter) {
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+        if (selectedNode == null) return;
         switch (selectedNode.getUserObject().toString()) {
             case "Print" : flowForge.programPanel.addNewNode(new PrintNode("Print", flowForge.programPanel), inCenter); break;
             case "Branch" : flowForge.programPanel.addNewNode(new BranchNode("Branch", flowForge.programPanel), inCenter); break;

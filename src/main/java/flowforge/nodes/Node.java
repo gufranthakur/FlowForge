@@ -37,8 +37,10 @@ public abstract class Node extends JInternalFrame {
     public boolean isBeingConnected = false;
     public boolean isBeingXConnected = false;
 
-    public Color connectionColor = new Color(64, 193, 239);
-    public Color connectionColor2 = new Color(10, 97, 200);
+//    public Color connectionColor = new Color(64, 193, 239);
+//    public Color connectionColor2 = new Color(10, 97, 200);
+    public Color connectionColor = new Color(255, 255, 255);
+    public Color connectionColor2 = new Color(24, 130, 220);
     public Color connectionXColor = new Color(253, 108, 46);
     public Color connectionXColor2 = new Color(205, 183, 37);
 

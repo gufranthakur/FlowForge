@@ -216,7 +216,6 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
         for (Node node : nodes) {
             node.drawConnection(g2D);
             node.drawXConnection(g2D);
-
         }
 
         if (selectedNode == null) return;
