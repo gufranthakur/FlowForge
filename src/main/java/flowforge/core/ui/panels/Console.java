@@ -1,5 +1,7 @@
 package flowforge.core.ui.panels;
 
+import com.formdev.flatlaf.fonts.inter.FlatInterFont;
+import com.formdev.flatlaf.fonts.jetbrains_mono.FlatJetBrainsMonoFont;
 import flowforge.FlowForge;
 import flowforge.nodes.Node;
 
@@ -12,12 +14,14 @@ public class Console {
     private JButton closeButton;
     private JScrollPane scrollPane;
     private JTextPane consoleTextPane;
+    private JLabel consoleLabel;
 
     private FlowForge flowForge;
 
     public Console(FlowForge flowForge) {
         this.flowForge = flowForge;
 
+        consoleTextPane.setFont(new Font(FlatJetBrainsMonoFont.FAMILY, Font.PLAIN, 16));
         rootPanel.setPreferredSize(new Dimension(flowForge.getWidth(), 250));
         toolbar.setBackground(flowForge.getBackground().darker());
         closeButton.setBackground(toolbar.getBackground());
@@ -50,8 +54,5 @@ public class Console {
         print("Project saved succesfully at location : \n" + flowForge.projectFilePath);
     }
 
-    public void updateGUI() {
-
-    }
 
 }

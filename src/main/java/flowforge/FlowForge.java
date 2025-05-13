@@ -8,6 +8,7 @@ package flowforge;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
 import com.formdev.flatlaf.extras.FlatInspector;
+import com.formdev.flatlaf.fonts.jetbrains_mono.FlatJetBrainsMonoFont;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import flowforge.core.*;
 import flowforge.core.ui.MenuBar.AboutPanel;
@@ -98,19 +99,6 @@ public class FlowForge extends JFrame {
         nodeExecutor.execute();
     }
 
-    public void changeTheme(LookAndFeel lookAndFeel) {
-        FlatAnimatedLafChange.showSnapshot();
-
-        try {
-            UIManager.setLookAndFeel(lookAndFeel);
-        } catch (UnsupportedLookAndFeelException ex) {
-            throw new RuntimeException(ex);
-        }
-        FlatLaf.updateUI();
-        FlatAnimatedLafChange.hideSnapshotWithAnimation();
-
-        console.updateGUI();
-    }
 
     public void launch() {
         programPanelContainer.add(programPanel);
@@ -131,6 +119,7 @@ public class FlowForge extends JFrame {
 
     public static void main(String[] args) throws UnsupportedLookAndFeelException {
         UIManager.setLookAndFeel(new FlatMacDarkLaf());
+        FlatJetBrainsMonoFont.install();
         //FlatInspector.install( "ctrl shift V" );
 
         SwingUtilities.invokeLater(() -> {

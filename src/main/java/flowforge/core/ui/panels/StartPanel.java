@@ -31,24 +31,24 @@ public class StartPanel extends JPanel implements ComponentListener {
         this.setOpaque(false);
 
         titleLabel = new JLabel("FlowForge");
-        titleLabel.setFont(new Font(FlatJetBrainsMonoFont.FAMILY, Font.BOLD, 64));
+        titleLabel.setFont(new Font(FlatJetBrainsMonoFont.FAMILY, Font.BOLD, 72));
         titleLabel.setForeground(Color.WHITE);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        mottoLabel = new JLabel("Programming simplified");
+        mottoLabel = new JLabel("Forge Ideas into Code");
         mottoLabel.setFont(new Font(FlatJetBrainsMonoFont.FAMILY, Font.ITALIC, 24));
         mottoLabel.setForeground(Color.WHITE);
         mottoLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        createProjectButton = new JButton("Create Project");
+        createProjectButton = new JButton("New Project");
         createProjectButton.setForeground(Color.WHITE);
-        createProjectButton.setFont(new Font(FlatJetBrainsMonoFont.FAMILY, Font.PLAIN, 18));
+        createProjectButton.setFont(new Font(FlatJetBrainsMonoFont.FAMILY, Font.BOLD, 18));
 
         createProjectButton.setBackground(new Color(34, 169, 6));
 
         openProjectButton = new JButton("Open Project");
         openProjectButton.setForeground(Color.WHITE);
-        openProjectButton.setFont(new Font(FlatJetBrainsMonoFont.FAMILY, Font.PLAIN, 18));
+        openProjectButton.setFont(new Font(FlatJetBrainsMonoFont.FAMILY, Font.BOLD, 18));
         openProjectButton.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
             FileNameExtensionFilter filter = new FileNameExtensionFilter("FlowForge Programs", "flow");

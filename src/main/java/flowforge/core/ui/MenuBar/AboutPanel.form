@@ -144,7 +144,7 @@
                 </constraints>
                 <properties>
                   <font size="16"/>
-                  <text value="Current FlowForge version : v1.3"/>
+                  <text value="Current FlowForge version : v1.4"/>
                 </properties>
               </component>
             </children>

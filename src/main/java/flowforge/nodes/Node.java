@@ -6,10 +6,7 @@ import flowforge.core.ui.popupMenus.NodePopupMenu;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.awt.geom.Path2D;
 import java.util.ArrayList;
 
@@ -61,9 +58,7 @@ public abstract class Node extends JInternalFrame {
                     }
             }
         });
-        loadUI();
-        loadActionListeners();
-        addComponentListener(new ComponentAdapter() {
+        this.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentMoved(ComponentEvent e) {
                 updateNodeDimensions();
@@ -74,6 +69,18 @@ public abstract class Node extends JInternalFrame {
                 updateNodeDimensions();
             }
         });
+        this.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                super.keyPressed(e);
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    programPanel.selectedNode = null;
+                }
+            }
+        });
+
+        loadUI();
+        loadActionListeners();
     }
 
     private void loadUI() {

@@ -26,10 +26,6 @@ public class AppMenuBar extends JMenuBar {
 
     private JMenuItem aboutItem, chengelogItem;
     private JMenu viewMenu;
-        private JMenu changeThemeMenu, changeColorSchemeMenu;
-        private JMenuItem lightTheme, darkTheme,
-
-                lightColorScheme, darkColorScheme;
 
 
     private JMenuItem fullscreenItem, presentationModeItem,
@@ -73,12 +69,6 @@ public class AppMenuBar extends JMenuBar {
         showHideConsole = new JMenuItem("Toggle Console");
         showHideToolbar = new JMenuItem("Toggle Toolbar");
 
-        changeThemeMenu = new JMenu("Change Theme");
-            darkTheme = new JMenuItem("Dark");
-            lightTheme = new JMenuItem("Light");
-        changeColorSchemeMenu = new JMenu("Change Color Scheme");
-            darkColorScheme = new JMenuItem("Dark");
-            lightColorScheme = new JMenuItem("Light");
     }
 
     public void addComponent() {
@@ -105,11 +95,6 @@ public class AppMenuBar extends JMenuBar {
         viewMenu.add(showHideSideBar);
         viewMenu.add(showHideConsole);
         viewMenu.add(showHideToolbar);
-        viewMenu.addSeparator();
-        viewMenu.add(changeThemeMenu);
-            changeThemeMenu.add(darkTheme);
-            changeThemeMenu.add(lightTheme);
-        viewMenu.add(changeColorSchemeMenu);
 
         flowForge.setJMenuBar(this);
     }
@@ -252,10 +237,6 @@ public class AppMenuBar extends JMenuBar {
             toolbar.setVisible(!toolbar.isVisible());
         });
 
-        //Themes stuff
-
-        darkTheme.addActionListener(e -> flowForge.changeTheme(new FlatMacDarkLaf()));
-        lightTheme.addActionListener(e -> flowForge.changeTheme(new FlatMacLightLaf()));
     }
 
     private FlowForge getNewInstance(boolean launchOnCreation) {

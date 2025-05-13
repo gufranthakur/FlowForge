@@ -16,7 +16,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="f21cc" class="javax.swing.JLabel">
+          <component id="f21cc" class="javax.swing.JLabel" binding="consoleLabel">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -38,7 +38,7 @@
               <background color="-1566182"/>
               <focusable value="false"/>
               <font size="16" style="1"/>
-              <text value="x"/>
+              <text value="×"/>
             </properties>
           </component>
         </children>

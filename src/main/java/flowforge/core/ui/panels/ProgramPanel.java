@@ -35,11 +35,14 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
 
     private Point currentMouseLocation;
 
+    private Color bgColor = new Color(30, 30, 30);
+
+
     public ProgramPanel(FlowForge flowForge) {
         this.flowForge = flowForge;
         this.setLocation(0, 0);
         this.setSize(3000, 3000);
-        this.setBackground(new Color(30, 30, 30));
+        this.setBackground(bgColor);
         this.addKeyListener(this);
 
         setDoubleBuffered(true);
@@ -184,6 +187,7 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
         repaint();
     }
 
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -217,6 +221,7 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
 
         if (selectedNode == null) return;
 
+
         if (selectedNode.isBeingConnected && selectedNode.outputButton.isSelected()) {
             selectedNode.drawCurvedGradientLine(g2D, selectedNode.getOutputPoint(),
                     currentMouseLocation,
@@ -228,6 +233,7 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
                     currentMouseLocation,
                     selectedNode.connectionXColor, selectedNode.connectionXColor2);
         }
+
 
     }
 
