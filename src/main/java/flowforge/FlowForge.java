@@ -5,9 +5,6 @@
  */
 package flowforge;
 
-import com.formdev.flatlaf.FlatLaf;
-import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
-import com.formdev.flatlaf.extras.FlatInspector;
 import com.formdev.flatlaf.fonts.jetbrains_mono.FlatJetBrainsMonoFont;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import flowforge.core.*;
@@ -24,7 +21,6 @@ import java.awt.*;
 
 public class FlowForge extends JFrame implements Runnable{
 
-    public Timer loop;
     public DataManager dataManager;
     public String projectFilePath;
 
@@ -76,8 +72,6 @@ public class FlowForge extends JFrame implements Runnable{
 
         this.add(startPanel, BorderLayout.CENTER);
         this.setVisible(true);
-
-        //loop.start();
 
         isRunning = true;
     }
@@ -144,10 +138,7 @@ public class FlowForge extends JFrame implements Runnable{
             }
 
             if (deltaF >= 1) {
-
                 programPanel.repaint();
-
-
                 frames++;
                 deltaF--;
             }

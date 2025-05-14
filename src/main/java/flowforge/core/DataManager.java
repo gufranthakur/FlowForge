@@ -15,6 +15,18 @@ import java.io.*;
 import java.lang.reflect.Type;
 import java.util.*;
 
+/*
+    The DataManager class is responsible for saving and loading applications into a JSON File
+    The Hierarchy for the data is as Follows :
+
+                  nodes ArrayList  -------------- in ProgramPanel.java
+                        ↓
+                       node        -------------- Loops through all individual nodes
+                       ↙  ↘
+             Input Nodes   Output Nodes  --------- Then within each node, there are four ArrayLists
+             InputX Node   OutputX Nodes           Then the nodes stored in these arraylists are stored
+ */
+
 public class DataManager {
     private ProgramPanel programPanel;
     private Gson gson;
@@ -27,11 +39,15 @@ public class DataManager {
                 .registerTypeAdapter(Node.class, new NodeDeserializer())
                 .create();
     }
-    
+
+    /*
+        > Saves the entire program in a .json file
+        > Using a Swing Worker to avoid freezing the UI
+     */
     public void saveProgram(String filePath) {
-        SwingWorker<Void, Void> dataSaverWorker = new SwingWorker<Void, Void>() {
+        SwingWorker<Void, Void> dataSaverWorker = new SwingWorker<>() {
             @Override
-            protected Void doInBackground() throws Exception {
+            protected Void doInBackground(){
 
                 try (FileWriter writer = new FileWriter(filePath)) {
                     JsonObject programData = new JsonObject();
@@ -128,7 +144,7 @@ public class DataManager {
                     // Write the complete program structure to file
                     writer.write(gson.toJson(programData));
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Fatal Error while saving program", JOptionPane.ERROR_MESSAGE);
                 }
 
                 return null;
@@ -148,18 +164,17 @@ public class DataManager {
         if (node instanceof PrintNode) {
             PrintNode printNode = (PrintNode) node;
             properties.addProperty("text", printNode.textField.getText());
-        } else if (node instanceof DelayNode) {
-            DelayNode delayNode = (DelayNode) node;
+        } else if (node instanceof DelayNode delayNode) {
             properties.addProperty("delay", delayNode.delaySpinner.getValue().toString());
-        } else if (node instanceof LogicGateNode) {
-            LogicGateNode logicNode = (LogicGateNode) node;
+        } else if (node instanceof LogicGateNode logicNode) {
             properties.addProperty("gateType", logicNode.getGateType());
-        } else if (node instanceof LoopNode) {
-            LoopNode loopNode = (LoopNode) node;
+        } else if (node instanceof LoopNode loopNode) {
             properties.addProperty("loops", loopNode.loopSpinner.getValue().toString());
             if (loopNode.getIterationValue() != null) {
                 properties.addProperty("iterationValue", loopNode.getIterationValue());
             }
+        } else if (node instanceof InputNode inputNode) {
+            properties.addProperty("inputString", inputNode.inputField.getText());
         } else if (node instanceof IntegerNode) {
             IntegerNode intNode = (IntegerNode) node;
             properties.addProperty("name", intNode.getTitle());
@@ -172,11 +187,6 @@ public class DataManager {
             BooleanNode boolNode = (BooleanNode) node;
             properties.addProperty("name", boolNode.getTitle());
             properties.addProperty("value", boolNode.getValue());
-        } else if (node instanceof InputNode) {
-            InputNode inputNode = (InputNode) node;
-            if (inputNode.inputValue != null) {
-                properties.addProperty("inputString", inputNode.inputValue);
-            }
         }
         // Additional node types can be handled here as needed
     }
@@ -379,6 +389,7 @@ public class DataManager {
                     InputNode inputNode = new InputNode(title, programPanel);
                     if (properties.has("inputString")) {
                         inputNode.inputValue = (properties.get("inputString").getAsString());
+                        inputNode.inputField.setText(inputNode.inputValue);
                     }
                     return inputNode;
 

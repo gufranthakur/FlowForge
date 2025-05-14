@@ -9,7 +9,7 @@ import javax.swing.*;
 public class InputNode extends Node {
 
     private ProgramPanel programPanel;
-    private JTextField inputField;
+    public JTextField inputField;
     public String inputValue;
 
     public InputNode(String title, ProgramPanel programPanel) {
