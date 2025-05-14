@@ -5,6 +5,10 @@ import flowforge.nodes.Node;
 import flowforge.nodes.flownodes.PrintNode;
 import flowforge.nodes.variables.IntegerNode;
 
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import java.awt.*;
 import java.util.Random;
 
 public class RandomNode extends Node {
@@ -30,7 +34,22 @@ public class RandomNode extends Node {
     }
 
     @Override
-    public void execute() {
+    public void execute(boolean isStepExecution) {
+        if (isStepExecution) {
+            synchronized (programPanel.stepExecutorLock) {
+                try {
+                    programPanel.stepExecutorLock.wait();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            SwingUtilities.invokeLater(() -> {
+                for (Node node : programPanel.nodes) {
+                    node.setBorder(new EmptyBorder(3, 3, 3, 3));
+                }
+                this.setBorder(new LineBorder(new Color(255, 126, 23), 3));
+            });
+        }
         if (inputXNodes.size() != 2) return;
 
         Integer firstInt = null;
@@ -57,11 +76,11 @@ public class RandomNode extends Node {
         }
 
         for (Node node : outputXNodes) {
-            if (node != null && !(node instanceof PrintNode)) node.execute();
+            if (node != null && !(node instanceof PrintNode)) node.execute(isStepExecution);
         }
 
         for (Node node : outputNodes) {
-            if (node != null) node.execute();
+            if (node != null) node.execute(isStepExecution);
         }
     }
 }

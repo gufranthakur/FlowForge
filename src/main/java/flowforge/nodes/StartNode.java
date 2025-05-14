@@ -2,6 +2,9 @@ package flowforge.nodes;
 
 import flowforge.core.ui.panels.ProgramPanel;
 
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 
 public class StartNode extends Node{
@@ -29,15 +32,31 @@ public class StartNode extends Node{
     }
 
     @Override
-    public void execute() {
+    public void execute(boolean isStepExecution) {
+        if (isStepExecution) {
+            synchronized (programPanel.stepExecutorLock) {
+                try {
+                    programPanel.stepExecutorLock.wait();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            SwingUtilities.invokeLater(() -> {
+                for (Node node : programPanel.nodes) {
+                    node.setBorder(new EmptyBorder(3, 3, 3, 3));
+                }
+                this.setBorder(new LineBorder(new Color(255, 126, 23), 3));
+            });
+        }
         programPanel.flowForge.console.clear();
         print("Program Execution started");
         print("Total nodes : " + programPanel.getNodeAmount());
 
         System.out.println(outputNodes.size());
 
-        for (Node outputXNode : outputXNodes) if (outputXNode != null) outputXNode.execute();
-        for (Node outputNode : outputNodes) outputNode.execute();
-
+        for (Node outputXNode : outputXNodes) if (outputXNode != null) outputXNode.execute(isStepExecution);
+        for (Node outputNode : outputNodes) outputNode.execute(isStepExecution);
     }
+
+
 }

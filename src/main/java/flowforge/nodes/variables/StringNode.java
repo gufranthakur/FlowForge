@@ -6,6 +6,8 @@ import flowforge.nodes.Node;
 import flowforge.nodes.flownodes.InputNode;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 
 public class StringNode extends Node {
@@ -37,7 +39,22 @@ public class StringNode extends Node {
     }
 
     @Override
-    public void execute() {
+    public void execute(boolean isStepExecution) {
+        if (isStepExecution) {
+            synchronized (programPanel.stepExecutorLock) {
+                try {
+                    programPanel.stepExecutorLock.wait();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            SwingUtilities.invokeLater(() -> {
+                for (Node node : programPanel.nodes) {
+                    node.setBorder(new EmptyBorder(3, 3, 3, 3));
+                }
+                this.setBorder(new LineBorder(new Color(255, 126, 23), 3));
+            });
+        }
         for (Node node : inputXNodes) {
 
             if (node != null) {
@@ -47,7 +64,7 @@ public class StringNode extends Node {
         }
 
         for (Node nodes : outputNodes) {
-            if (nodes != null) nodes.execute();
+            if (nodes != null) nodes.execute(isStepExecution);
         }
         
     }

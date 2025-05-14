@@ -39,6 +39,7 @@ public class FlowForge extends JFrame implements Runnable{
 
     private boolean isRunning = false;
 
+
     public FlowForge() {
         this.setTitle("FlowForge");
         this.setSize(1000, 600);
@@ -80,7 +81,7 @@ public class FlowForge extends JFrame implements Runnable{
         SwingWorker<Void, Void> nodeExecutor = new SwingWorker<>() {
             @Override
             protected Void doInBackground()  {
-                programPanel.startNode.execute();
+                programPanel.startNode.execute(false);
                 return null;
             }
             @Override
@@ -90,6 +91,24 @@ public class FlowForge extends JFrame implements Runnable{
         };
 
         nodeExecutor.execute();
+    }
+
+    public void executeByStep() {
+        SwingWorker<Void, Void> nodeStepExecutor = new SwingWorker<>() {
+            @Override
+            protected Void doInBackground()  {
+                synchronized (programPanel.stepExecutorLock) {
+                    programPanel.startNode.execute(true);
+                }
+                return null;
+            }
+            @Override
+            protected void done() {
+                console.getRootPanel().setVisible(true);
+            }
+        };
+
+        nodeStepExecutor.execute();
     }
 
 

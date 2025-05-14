@@ -34,6 +34,10 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
     public SearchPopupMenu searchPopupMenu;
 
     private Point currentMouseLocation;
+    public boolean isExecutingSteps = false;
+    public final Object stepExecutorLock = new Object();
+
+    public Node currentNodeAtStepExecution = startNode;
 
     private Color bgColor = new Color(30, 30, 30);
 

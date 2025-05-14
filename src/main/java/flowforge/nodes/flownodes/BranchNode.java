@@ -7,6 +7,8 @@ import flowforge.nodes.flownodes.logicgates.LogicGateNode;
 import flowforge.nodes.variables.BooleanNode;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -111,7 +113,22 @@ public class BranchNode extends Node {
      * executes either the true or false branch accordingly.
      */
     @Override
-    public void execute() {
+    public void execute(boolean isStepExecution) {
+        if (isStepExecution) {
+            synchronized (programPanel.stepExecutorLock) {
+                try {
+                    programPanel.stepExecutorLock.wait();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            SwingUtilities.invokeLater(() -> {
+                for (Node node : programPanel.nodes) {
+                    node.setBorder(new EmptyBorder(3, 3, 3, 3));
+                }
+                this.setBorder(new LineBorder(new Color(255, 126, 23), 3));
+            });
+        }
         boolean condition = false;
 
         for (Node node : inputXNodes) {
@@ -133,13 +150,13 @@ public class BranchNode extends Node {
         if (condition) {
             for (Node node : trueNodes) {
                 if (node != null) {
-                    node.execute();
+                    node.execute(isStepExecution);
                 }
             }
         } else {
             for (Node node : falseNodes) {
                 if (node != null) {
-                    node.execute();
+                    node.execute(isStepExecution);
                 }
             }
         }

@@ -8,6 +8,8 @@ import flowforge.nodes.variables.BooleanNode;
 import flowforge.nodes.variables.IntegerNode;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 
 public class GreaterThanOrEqualNode extends Node {
@@ -32,7 +34,22 @@ public class GreaterThanOrEqualNode extends Node {
     }
 
     @Override
-    public void execute() {
+    public void execute(boolean isStepExecution) {
+        if (isStepExecution) {
+            synchronized (programPanel.stepExecutorLock) {
+                try {
+                    programPanel.stepExecutorLock.wait();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            SwingUtilities.invokeLater(() -> {
+                for (Node node : programPanel.nodes) {
+                    node.setBorder(new EmptyBorder(3, 3, 3, 3));
+                }
+                this.setBorder(new LineBorder(new Color(255, 126, 23), 3));
+            });
+        }
         if (inputXNodes.size() == 2) {
             Node firstNode = inputXNodes.get(0);
             Node secondNode = inputXNodes.get(1);
@@ -56,7 +73,7 @@ public class GreaterThanOrEqualNode extends Node {
         }
 
         for (Node oNode : outputNodes) {
-            oNode.execute();
+            oNode.execute(isStepExecution);
         }
     }
 

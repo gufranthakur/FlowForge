@@ -13,6 +13,7 @@ import flowforge.nodes.variables.IntegerNode;
 import flowforge.nodes.variables.StringNode;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
@@ -37,7 +38,6 @@ public class ControlPanel {
     private JScrollPane nodesScrollPanel;
     private JPanel variableControlPanel;
     private JScrollPane variableScrollPanel;
-    private JButton saveButton;
     private JPanel propertiesPanel;
     private JPanel detailsPanel;
     private JPanel connectionPanel;
@@ -50,6 +50,8 @@ public class ControlPanel {
     private JLabel outputConnectionsLabel;
     private JLabel inputXConnectionsLabel;
     private JLabel outputXConnectionLabel;
+    private JButton runWithStepsButton;
+    private JButton stopButton;
     private JComboBox nodeBox;
 
     private FlowForge flowForge;
@@ -83,8 +85,6 @@ public class ControlPanel {
     }
 
     public void init() {
-        saveButton.setBackground(flowForge.theme);
-
         searchField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Search...");
 
         detailsPanel.setBackground(rootPanel.getBackground().brighter());
@@ -153,27 +153,35 @@ public class ControlPanel {
             flowForge.execute();
         });
 
-        saveButton.addActionListener(e -> {
-            try {
-                flowForge.dataManager.saveProgram(flowForge.projectFilePath);
+        runWithStepsButton.addActionListener(e -> {
+            if (!flowForge.programPanel.isExecutingSteps) {
+                flowForge.programPanel.isExecutingSteps = true;
 
-            } catch (NullPointerException ex) {
-                JFileChooser fileChooser = new JFileChooser();
+                runWithStepsButton.setText("Next Step");
+                stopButton.setVisible(true);
 
-                if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-                    String filePath = fileChooser.getSelectedFile().getAbsolutePath();
-                    if (!filePath.endsWith(".flow")) {
-                        filePath += ".flow";
-                    }
-                    flowForge.dataManager.saveProgram(filePath);
-                    flowForge.projectFilePath = filePath;
+                flowForge.executeByStep();
+
+            } else {
+                synchronized (flowForge.programPanel.stepExecutorLock) {
+                    flowForge.programPanel.stepExecutorLock.notify();
                 }
+                flowForge.programPanel.requestFocus();
+            }
+        });
+
+        stopButton.addActionListener(e -> {
+            flowForge.programPanel.isExecutingSteps = false;
+
+            runWithStepsButton.setText("▶ Run with Steps");
+            stopButton.setVisible(false);
+
+            for (Node node : flowForge.programPanel.nodes) {
+                node.setBorder(new EmptyBorder(3, 3, 3, 3));
             }
 
-
-            flowForge.console.printSaveStatement();
-
         });
+
 
         functionsTree.addMouseListener(new MouseAdapter() {
             @Override

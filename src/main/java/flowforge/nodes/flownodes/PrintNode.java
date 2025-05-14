@@ -11,6 +11,9 @@ import flowforge.nodes.variables.IntegerNode;
 import flowforge.nodes.variables.StringNode;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import java.awt.*;
 
 public class PrintNode extends Node {
 
@@ -39,7 +42,22 @@ public class PrintNode extends Node {
     }
 
     @Override
-    public void execute() {
+    public void execute(boolean isStepExecution) {
+        if (isStepExecution) {
+            synchronized (programPanel.stepExecutorLock) {
+                try {
+                    programPanel.stepExecutorLock.wait();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            SwingUtilities.invokeLater(() -> {
+                for (Node node : programPanel.nodes) {
+                    node.setBorder(new EmptyBorder(3, 3, 3, 3));
+                }
+                this.setBorder(new LineBorder(new Color(255, 126, 23), 3));
+            });
+        }
 
         if (!inputXNodes.isEmpty()) {
             for (Node inputXNode : inputXNodes) {
@@ -70,9 +88,10 @@ public class PrintNode extends Node {
         }
 
         for (Node nodes : outputNodes) {
-            if (nodes != null) nodes.execute();
+            if (nodes != null) nodes.execute(isStepExecution);
         }
 
     }
+
 
 }

@@ -5,6 +5,7 @@ import flowforge.core.ui.popupMenus.NodePopupMenu;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Path2D;
@@ -115,7 +116,7 @@ public abstract class Node extends JInternalFrame {
         outputsPanel.add(outputXButton);
         outputsPanel.add(Box.createVerticalGlue());
 
-        contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        contentPanel.setBorder(new EmptyBorder(3, 3, 3, 3));
         contentPanel.add(topPanel, BorderLayout.NORTH);
         contentPanel.add(inputsPanel, BorderLayout.WEST);
         contentPanel.add(outputsPanel, BorderLayout.EAST);
@@ -303,6 +304,6 @@ public abstract class Node extends JInternalFrame {
         return new Point(getX() + getWidth(), getY() + getHeight()/2 + 20);
     }
 
-    public abstract void execute();
+    public abstract void execute(boolean isStepExecution);
 
 }
