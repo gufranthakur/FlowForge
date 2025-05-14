@@ -17,9 +17,14 @@ public class InputNode extends Node {
         this.programPanel = programPanel;
         this.setSize(210, 150);
         inputXButton.setVisible(false);
+        outputXButton.setText("Input Value");
 
         inputField = new JTextField();
         inputField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Input");
+
+        resetConnectionsButton.addActionListener(e -> {
+            inputField.setText("");
+        });
 
         topPanel.add(inputField);
     }

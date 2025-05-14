@@ -25,11 +25,15 @@ public class DelayNode extends Node {
         outputButton.setVisible(true);
         outputXButton.setVisible(false);
 
-        inputXButton.setText("InputX");
+        inputXButton.setText("Delay Value");
 
         wrapperPanel.add(resetConnectionsButton);
         wrapperPanel.add(delaySpinner);
         wrapperPanel.add(new JLabel("ms"));
+
+        resetConnectionsButton.addActionListener(e -> {
+            delaySpinner.setValue(1000);
+        });
 
         contentPanel.add(wrapperPanel, BorderLayout.NORTH);
     }

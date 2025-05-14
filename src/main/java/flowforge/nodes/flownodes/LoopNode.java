@@ -34,6 +34,8 @@ public class LoopNode extends Node {
         wrapperPanel.add(loopSpinner);
         wrapperPanel.add(new JLabel("times"));
 
+        resetConnectionsButton.setVisible(false);
+
         contentPanel.add(wrapperPanel, BorderLayout.NORTH);
     }
 
