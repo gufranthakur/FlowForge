@@ -57,6 +57,7 @@ public class DelayNode extends Node {
                 this.setBorder(new LineBorder(new Color(255, 126, 23), 3));
             });
         }
+
         int delay = (Integer) delaySpinner.getValue();
 
         for (Node node : inputXNodes) {
@@ -67,10 +68,12 @@ public class DelayNode extends Node {
             }
         }
 
-        try {
-            Thread.sleep(delay);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        synchronized (programPanel.stepExecutorLock) {
+            try {
+                programPanel.stepExecutorLock.wait(delay);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         for (Node node : outputNodes) {

@@ -8,6 +8,8 @@ import flowforge.nodes.flownodes.*;
 import flowforge.nodes.flownodes.arithmetic.*;
 import flowforge.nodes.flownodes.comparators.*;
 import flowforge.nodes.flownodes.logicgates.LogicGateNode;
+import flowforge.nodes.flownodes.utils.RouteNode;
+import flowforge.nodes.flownodes.utils.RouteXNode;
 import flowforge.nodes.variables.BooleanNode;
 import flowforge.nodes.variables.IntegerNode;
 import flowforge.nodes.variables.StringNode;
@@ -23,7 +25,6 @@ import java.util.Arrays;
 
 public class ControlPanel {
     private JPanel rootPanel;
-    private JTextField searchField;
     private JButton addNodeButton;
     private JPanel nodesListPanel;
     private JTextField variableNameField;
@@ -31,7 +32,7 @@ public class ControlPanel {
     private JPanel variableListPanel;
     public JPanel toolBar;
     private JButton consoleButton;
-    private JButton runStopButton;
+    public JButton runStopButton;
     private JButton addButton;
     private JTabbedPane rootTabbedPane;
     private JPanel nodeControlPanel;
@@ -50,20 +51,21 @@ public class ControlPanel {
     private JLabel outputConnectionsLabel;
     private JLabel inputXConnectionsLabel;
     private JLabel outputXConnectionLabel;
-    private JButton runWithStepsButton;
-    private JButton stopButton;
+    public JButton runWithStepsButton;
+    public JButton stopButton;
     private JComboBox nodeBox;
 
     private FlowForge flowForge;
 
     public JTree functionsTree;
     public DefaultMutableTreeNode root;
-    private DefaultMutableTreeNode commonNode, flowNode, basic, comparators, logicGates, arithmeticNode, arduinoNode;
-    private DefaultMutableTreeNode print, branch, input, delay, loop, conditionalLoop,
-            equalTo, greaterThan, lessThan,
-            greaterThanEqualTo, lessThanEqualTo, notEqualTo,
-            notGate, andGate, orGate, nandGate, norGate, xorGate,
-            add, subtract, multiply, divide, modulus, random;
+    private DefaultMutableTreeNode flowNode, comparators, logicGates, arithmeticNode, utilityNode;
+    private DefaultMutableTreeNode print, branch, input, delay, loop, conditionalLoop, //Flow Nodes
+            equalTo, greaterThan, lessThan, // Comparator Nodes
+            greaterThanEqualTo, lessThanEqualTo, notEqualTo, //Comparator Nodes
+            notGate, andGate, orGate, nandGate, norGate, xorGate,// Logic Gate Nodes
+            add, subtract, multiply, divide, modulus, random, // Arithmetic Nodes
+            route, routeX; //Utility Nodes
 
     private JTree variableTree;
     private DefaultMutableTreeNode variableRoot;
@@ -75,7 +77,7 @@ public class ControlPanel {
         this.flowForge = flowForge;
         rootPanel.setOpaque(true);
 
-        root = new DefaultMutableTreeNode("Functions");
+        root = new DefaultMutableTreeNode("Flow Functions");
         functionsTree = new JTree(root);
         functionsTree.setFont(new Font(FlatInterFont.FAMILY, Font.PLAIN, 16));
 
@@ -85,10 +87,9 @@ public class ControlPanel {
     }
 
     public void init() {
-        searchField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Search...");
-
         detailsPanel.setBackground(rootPanel.getBackground().brighter());
         connectionPanel.setBackground(rootPanel.getBackground().brighter());
+        runStopButton.setBackground(flowForge.theme);
 
         for (String s : Arrays.asList("Integer", "String", "Boolean", "Float")) {
             variableBox.addItem(s);
@@ -99,8 +100,6 @@ public class ControlPanel {
     }
 
     public void initFunctionNodes() {
-        commonNode = new DefaultMutableTreeNode("Common");
-
         flowNode = new DefaultMutableTreeNode("Flow");
 
         print = new DefaultMutableTreeNode("Print");
@@ -134,7 +133,9 @@ public class ControlPanel {
                 modulus = new DefaultMutableTreeNode("Modulus");
                 random = new DefaultMutableTreeNode("Random");
 
-        arduinoNode = new DefaultMutableTreeNode("Arduino");
+            utilityNode = new DefaultMutableTreeNode("Utility");
+                route = new DefaultMutableTreeNode("Route");
+                routeX = new DefaultMutableTreeNode("Route-X");
     }
 
     public void initVariableNodes() {
@@ -150,7 +151,16 @@ public class ControlPanel {
         });
 
         runStopButton.addActionListener(e -> {
-            flowForge.execute();
+            if (!flowForge.getIsExecuting()) {
+                flowForge.execute();
+                runStopButton.setText("Stop");
+                runStopButton.setBackground(stopButton.getBackground());
+            } else {
+                flowForge.stopExecution(true);
+                runStopButton.setText("▶ Run");
+                runStopButton.setBackground(flowForge.theme);
+            }
+
         });
 
         runWithStepsButton.addActionListener(e -> {
@@ -159,6 +169,7 @@ public class ControlPanel {
 
                 runWithStepsButton.setText("Next Step");
                 stopButton.setVisible(true);
+                runStopButton.setEnabled(false);
 
                 flowForge.executeByStep();
 
@@ -175,6 +186,7 @@ public class ControlPanel {
 
             runWithStepsButton.setText("▶ Run with Steps");
             stopButton.setVisible(false);
+            runStopButton.setEnabled(true);
 
             for (Node node : flowForge.programPanel.nodes) {
                 node.setBorder(new EmptyBorder(3, 3, 3, 3));
@@ -250,6 +262,8 @@ public class ControlPanel {
             case "Divide" : flowForge.programPanel.addNewNode(new DivideNode("Divide", flowForge.programPanel), inCenter); break;
             case "Modulus" : flowForge.programPanel.addNewNode(new ModulusNode("Modulus", flowForge.programPanel), inCenter); break;
             case "Random" : flowForge.programPanel.addNewNode(new RandomNode("Random", flowForge.programPanel), inCenter); break;
+            case "Route" : flowForge.programPanel.addNewNode(new RouteNode("Route", flowForge.programPanel), inCenter); break;
+            case "Route-X" : flowForge.programPanel.addNewNode(new RouteXNode("Route X", flowForge.programPanel), inCenter); break;
         }
     }
 
@@ -268,6 +282,9 @@ public class ControlPanel {
             arithmeticNode.add(divide);
             arithmeticNode.add(modulus);
             arithmeticNode.add(random);
+        root.add(utilityNode);
+            utilityNode.add(route);
+            utilityNode.add(routeX);
         root.add(comparators);
             comparators.add(equalTo);
             comparators.add(greaterThan);

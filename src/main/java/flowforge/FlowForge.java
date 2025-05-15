@@ -37,7 +37,9 @@ public class FlowForge extends JFrame implements Runnable{
 
     public Color theme = new Color(26, 77, 236).brighter();
 
+    private SwingWorker<Void, Void> nodeExecutor;
     private boolean isRunning = false;
+    private boolean isExecuting = false;
 
 
     public FlowForge() {
@@ -78,15 +80,25 @@ public class FlowForge extends JFrame implements Runnable{
     }
 
     public void execute() {
-        SwingWorker<Void, Void> nodeExecutor = new SwingWorker<>() {
+        programPanel.flowForge.console.clear();
+        console.print("Program Execution started");
+        console.print("Total nodes : " + programPanel.getNodeAmount());
+        console.print("");
+
+        isExecuting = true;
+
+        nodeExecutor = new SwingWorker<>() {
             @Override
             protected Void doInBackground()  {
+                isExecuting = true;
                 programPanel.startNode.execute(false);
                 return null;
             }
             @Override
             protected void done() {
                 console.getRootPanel().setVisible(true);
+                console.print("");
+                stopExecution(false);
             }
         };
 
@@ -94,6 +106,11 @@ public class FlowForge extends JFrame implements Runnable{
     }
 
     public void executeByStep() {
+        programPanel.flowForge.console.clear();
+        console.print("Step Execution started");
+        console.print("Total nodes : " + programPanel.getNodeAmount());
+        console.print("");
+
         SwingWorker<Void, Void> nodeStepExecutor = new SwingWorker<>() {
             @Override
             protected Void doInBackground()  {
@@ -104,11 +121,33 @@ public class FlowForge extends JFrame implements Runnable{
             }
             @Override
             protected void done() {
-                console.getRootPanel().setVisible(true);
+                console.print("");
+                console.print("Step Execution completed");
+                console.print("Click on the stop button to exit out of execution mode");
             }
         };
 
         nodeStepExecutor.execute();
+    }
+
+    public void stopExecution(boolean manualStop) {
+
+        if (!manualStop) {
+            controlPanel.runStopButton.setText("▶ Run");
+            controlPanel.runStopButton.setBackground(theme);
+            console.print("Execution completed successfully");
+        } else {
+            nodeExecutor.cancel(true);
+            console.print("Execution Stopped");
+        }
+
+
+        isExecuting = false;
+
+    }
+
+    public boolean getIsExecuting() {
+        return isExecuting;
     }
 
 
