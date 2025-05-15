@@ -1,6 +1,5 @@
 package flowforge.core.ui.panels;
 
-import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.fonts.inter.FlatInterFont;
 import flowforge.FlowForge;
 import flowforge.nodes.Node;
@@ -8,8 +7,8 @@ import flowforge.nodes.flownodes.*;
 import flowforge.nodes.flownodes.arithmetic.*;
 import flowforge.nodes.flownodes.comparators.*;
 import flowforge.nodes.flownodes.logicgates.LogicGateNode;
+import flowforge.nodes.flownodes.utils.RecursiveNode;
 import flowforge.nodes.flownodes.utils.RouteNode;
-import flowforge.nodes.flownodes.utils.RouteXNode;
 import flowforge.nodes.variables.BooleanNode;
 import flowforge.nodes.variables.IntegerNode;
 import flowforge.nodes.variables.StringNode;
@@ -65,7 +64,7 @@ public class ControlPanel {
             greaterThanEqualTo, lessThanEqualTo, notEqualTo, //Comparator Nodes
             notGate, andGate, orGate, nandGate, norGate, xorGate,// Logic Gate Nodes
             add, subtract, multiply, divide, modulus, random, // Arithmetic Nodes
-            route, routeX; //Utility Nodes
+            route, recursive; //Utility Nodes
 
     private JTree variableTree;
     private DefaultMutableTreeNode variableRoot;
@@ -135,7 +134,7 @@ public class ControlPanel {
 
             utilityNode = new DefaultMutableTreeNode("Utility");
                 route = new DefaultMutableTreeNode("Route");
-                routeX = new DefaultMutableTreeNode("Route-X");
+                recursive = new DefaultMutableTreeNode("Recurse");
     }
 
     public void initVariableNodes() {
@@ -263,7 +262,7 @@ public class ControlPanel {
             case "Modulus" : flowForge.programPanel.addNewNode(new ModulusNode("Modulus", flowForge.programPanel), inCenter); break;
             case "Random" : flowForge.programPanel.addNewNode(new RandomNode("Random", flowForge.programPanel), inCenter); break;
             case "Route" : flowForge.programPanel.addNewNode(new RouteNode("Route", flowForge.programPanel), inCenter); break;
-            case "Route-X" : flowForge.programPanel.addNewNode(new RouteXNode("Route X", flowForge.programPanel), inCenter); break;
+            case "Recurse" : flowForge.programPanel.addNewNode(new RecursiveNode("Recurse", flowForge.programPanel), inCenter); break;
         }
     }
 
@@ -284,7 +283,7 @@ public class ControlPanel {
             arithmeticNode.add(random);
         root.add(utilityNode);
             utilityNode.add(route);
-            utilityNode.add(routeX);
+            utilityNode.add(recursive);
         root.add(comparators);
             comparators.add(equalTo);
             comparators.add(greaterThan);

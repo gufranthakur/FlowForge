@@ -2,32 +2,32 @@ package flowforge.nodes.flownodes.utils;
 
 import flowforge.core.ui.panels.ProgramPanel;
 import flowforge.nodes.Node;
+import flowforge.nodes.variables.IntegerNode;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 
-public class RouteXNode extends Node {
-
+public class RecursiveNode extends Node {
     private ProgramPanel programPanel;
 
-    public RouteXNode(String title, ProgramPanel programPanel) {
+    public RecursiveNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
         this.programPanel = programPanel;
+        this.setSize(260, 150);
 
-        inputButton.setVisible(false);
-        outputButton.setVisible(false);
 
-        inputXButton.setVisible(true);
-        outputXButton.setVisible(true);
+        inputButton.setVisible(true);
+        outputButton.setVisible(true);
 
-        this.setSize(200, 100);
+        inputXButton.setVisible(false);
+        outputXButton.setVisible(false);
     }
+
 
     @Override
     public void execute(boolean isStepExecution) {
-
         if (isStepExecution) {
             synchronized (programPanel.stepExecutorLock) {
                 try {
@@ -44,8 +44,18 @@ public class RouteXNode extends Node {
             });
         }
 
-        for (Node node : outputXNodes) {
-            node.execute(isStepExecution);
+
+        synchronized (programPanel.stepExecutorLock) {
+            try {
+                programPanel.stepExecutorLock.wait(200);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        for (Node node : outputNodes) {
+            if (node != null) node.execute(isStepExecution);
         }
     }
+
 }

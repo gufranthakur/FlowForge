@@ -9,7 +9,6 @@ import flowforge.nodes.flownodes.arithmetic.*;
 import flowforge.nodes.flownodes.comparators.*;
 import flowforge.nodes.flownodes.logicgates.LogicGateNode;
 import flowforge.nodes.flownodes.utils.RouteNode;
-import flowforge.nodes.flownodes.utils.RouteXNode;
 import flowforge.nodes.variables.*;
 
 import javax.swing.*;
@@ -459,8 +458,6 @@ public class DataManager {
                 case "RouteNode" :
                     return new RouteNode(title, programPanel);
 
-                case "RouteXNode" :
-                    return new RouteXNode(title, programPanel);
 
                 case "IntegerNode":
                     String intName = properties.get("name").getAsString();
