@@ -65,6 +65,9 @@ public class SearchPopupMenu extends JPopupMenu {
         nodesList.add("NAND");
         nodesList.add("NOR");
         nodesList.add("XOR");
+
+        nodesList.add("Route");
+        nodesList.add("Recurse");
     }
 
     private void initTree() {

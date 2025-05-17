@@ -37,8 +37,6 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
     public boolean isExecutingSteps = false;
     public final Object stepExecutorLock = new Object();
 
-    public Node currentNodeAtStepExecution = startNode;
-
     private Color bgColor = new Color(30, 30, 30);
 
 
@@ -91,6 +89,13 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
                 if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
                     cameraSpeed = 18;
                 }
+
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    if (selectedNode == null) return;
+                    selectedNode.isBeingConnected = false;
+                    selectedNode.isBeingXConnected = false;
+                }
+
             }
             @Override
             public void keyReleased(KeyEvent e) {

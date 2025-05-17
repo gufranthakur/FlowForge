@@ -35,7 +35,7 @@ public class StartPanel extends JPanel implements ComponentListener {
         titleLabel.setForeground(Color.WHITE);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        mottoLabel = new JLabel("Forge Ideas into Code");
+        mottoLabel = new JLabel("Forge Ideas into Visual Code");
         mottoLabel.setFont(new Font(FlatJetBrainsMonoFont.FAMILY, Font.ITALIC, 24));
         mottoLabel.setForeground(Color.WHITE);
         mottoLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -93,9 +93,9 @@ public class StartPanel extends JPanel implements ComponentListener {
             titleLabel.setBounds(getWidth() / 2 - titleWidth / 2,
                     (getHeight() / 2 - titleHeight / 2) - 50,
                     titleWidth, titleHeight);
-            mottoLabel.setBounds(getWidth() / 2 - mottoWidth / 2,
+            mottoLabel.setBounds(getWidth() / 2 - mottoWidth / 2 - 20,
                     titleLabel.getY() + titleHeight / 2,
-                    mottoWidth, mottoHeight);
+                    mottoWidth + 40, mottoHeight);
             openProjectButton.setBounds(getWidth() / 2 - titleWidth / 4,
                     mottoLabel.getY() + mottoHeight,
                     titleWidth / 2 - 20, mottoHeight / 2);

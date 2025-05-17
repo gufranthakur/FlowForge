@@ -15,7 +15,7 @@ public class RecursiveNode extends Node {
     public RecursiveNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
         this.programPanel = programPanel;
-        this.setSize(260, 150);
+        this.setSize(200, 100);
 
 
         inputButton.setVisible(true);

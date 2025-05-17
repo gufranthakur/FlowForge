@@ -306,6 +306,8 @@ public class ControlPanel {
 
         nodesListPanel.add(functionsTree, BorderLayout.CENTER);
         variableListPanel.add(variableTree, BorderLayout.CENTER);
+
+        functionsTree.expandRow(0);
     }
 
     private void loadVariables() {
