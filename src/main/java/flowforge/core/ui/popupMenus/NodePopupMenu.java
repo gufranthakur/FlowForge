@@ -1,6 +1,7 @@
 package flowforge.core.ui.popupMenus;
 
 import flowforge.core.ui.panels.ProgramPanel;
+import flowforge.nodes.StartNode;
 
 import javax.swing.*;
 
@@ -24,6 +25,11 @@ public class NodePopupMenu extends JPopupMenu {
         resize.addActionListener(e -> programPanel.selectedNode.pack());
         resetConnections.addActionListener(e -> programPanel.selectedNode.disconnectAll());
         deleteNode.addActionListener(e ->  {
+            if (programPanel.selectedNode instanceof StartNode) {
+                JOptionPane.showMessageDialog(null, "Start Node cannot be deleted",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             programPanel.selectedNode.disconnectAll();
             programPanel.removeNode(programPanel.selectedNode);
         });

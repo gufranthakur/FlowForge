@@ -11,6 +11,9 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class AppMenuBar extends JMenuBar {
 
@@ -21,7 +24,7 @@ public class AppMenuBar extends JMenuBar {
     private JMenu moreMenu;
     private JMenu projectMenu;
     private JMenuItem newProjectItem, openProjectItem, closeProjectItem,
-            saveProjectItem, saveAsProjectItem, exitAppItem,
+            saveProjectItem, saveAsProjectItem, viewDocumentationItem, exitAppItem,
             projectPropertiesItem, settingsItem;
 
     private JMenuItem aboutItem, chengelogItem;
@@ -51,12 +54,14 @@ public class AppMenuBar extends JMenuBar {
         aboutItem = new JMenuItem("About FlowForge");
         chengelogItem = new JMenuItem("View Changelog");
 
+        viewDocumentationItem = new JMenuItem("Documentation ↗");
         // Initialize Project menu items
         newProjectItem = new JMenuItem("New Project");
         openProjectItem = new JMenuItem("Open Project");
         closeProjectItem = new JMenuItem("Close Project");
         saveProjectItem = new JMenuItem("Save");
         saveAsProjectItem = new JMenuItem("Save As");
+
         projectPropertiesItem = new JMenuItem("Project Properties");
         settingsItem = new JMenuItem("Settings");
         exitAppItem = new JMenuItem("Exit");
@@ -87,6 +92,8 @@ public class AppMenuBar extends JMenuBar {
         //projectItem.add(settingsItem);
         //projectItem.addSeparator();
         projectMenu.add(exitAppItem);
+        projectMenu.addSeparator();
+        projectMenu.add(viewDocumentationItem);
 
 
         viewMenu.add(fullscreenItem);
@@ -186,6 +193,17 @@ public class AppMenuBar extends JMenuBar {
             if (JOptionPane.showConfirmDialog(null, "Any unsaved changes will be lost",
                     "Exit FlowForge?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_NO_OPTION) {
                 System.exit(0);
+            }
+        });
+
+        viewDocumentationItem.addActionListener(e -> {
+            Desktop desktop = Desktop.getDesktop();
+            try {
+                desktop.browse(new URI("https://gufrans-organization.gitbook.io/flowforge-docs"));
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            } catch (URISyntaxException ex) {
+                System.out.println("Exception caught : wrong URL");
             }
         });
     }
