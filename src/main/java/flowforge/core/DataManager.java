@@ -176,7 +176,12 @@ public class DataManager {
             }
         } else if (node instanceof InputNode inputNode) {
             properties.addProperty("inputString", inputNode.inputField.getText());
-        } else if (node instanceof IntegerNode) {
+        } else if (node instanceof EvalNode evalNode) {
+            properties.addProperty("expression", evalNode.expressionField.getText());
+        }
+
+
+        else if (node instanceof IntegerNode) {
             IntegerNode intNode = (IntegerNode) node;
             properties.addProperty("name", intNode.getTitle());
             properties.addProperty("value", intNode.getValue());
@@ -458,6 +463,12 @@ public class DataManager {
                 case "RouteNode" :
                     return new RouteNode(title, programPanel);
 
+                case "EvalNode" :
+                    EvalNode evalNode = new EvalNode("EvalNode", programPanel);
+                    if (properties.has("expression")) {
+                        evalNode.expressionField.setText(properties.get("expression").getAsString());
+                    }
+                    return evalNode;
 
                 case "IntegerNode":
                     String intName = properties.get("name").getAsString();
@@ -477,7 +488,7 @@ public class DataManager {
                     String boolName = properties.get("name").getAsString();
                     boolean boolValue = properties.get("value").getAsBoolean();
                     BooleanNode boolNode = new BooleanNode(boolName, programPanel, boolValue);
-                    boolNode.checkBox.setSelected(boolValue   );
+                    boolNode.checkBox.setSelected(boolValue);
                     return boolNode;
 
                 default:

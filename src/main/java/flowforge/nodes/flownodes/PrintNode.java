@@ -80,6 +80,7 @@ public class PrintNode extends Node {
                     case DivideNode divideNode -> print(textField.getText() + divideNode.getResult());
                     case ModulusNode modulusNode -> print(textField.getText() + modulusNode.getResult());
                     case RandomNode randomNode -> print(textField.getText() + randomNode.getResult());
+                    case EvalNode evalNode -> print(textField.getText() + evalNode.getResult());
                     default -> print("ERROR");
                 }
             }

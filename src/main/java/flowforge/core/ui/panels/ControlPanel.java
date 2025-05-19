@@ -63,7 +63,7 @@ public class ControlPanel {
             equalTo, greaterThan, lessThan, // Comparator Nodes
             greaterThanEqualTo, lessThanEqualTo, notEqualTo, //Comparator Nodes
             notGate, andGate, orGate, nandGate, norGate, xorGate,// Logic Gate Nodes
-            add, subtract, multiply, divide, modulus, random, // Arithmetic Nodes
+            add, subtract, multiply, divide, modulus, random, eval, // Arithmetic Nodes
             route, recursive; //Utility Nodes
 
     private JTree variableTree;
@@ -131,6 +131,7 @@ public class ControlPanel {
                 divide = new DefaultMutableTreeNode("Divide");
                 modulus = new DefaultMutableTreeNode("Modulus");
                 random = new DefaultMutableTreeNode("Random");
+                eval = new DefaultMutableTreeNode("Eval");
 
             utilityNode = new DefaultMutableTreeNode("Utility");
                 route = new DefaultMutableTreeNode("Route");
@@ -263,6 +264,7 @@ public class ControlPanel {
             case "Random" : flowForge.programPanel.addNewNode(new RandomNode("Random", flowForge.programPanel), inCenter); break;
             case "Route" : flowForge.programPanel.addNewNode(new RouteNode("Route", flowForge.programPanel), inCenter); break;
             case "Recurse" : flowForge.programPanel.addNewNode(new RecursiveNode("Recurse", flowForge.programPanel), inCenter); break;
+            case "Eval" : flowForge.programPanel.addNewNode(new EvalNode("Eval", flowForge.programPanel), inCenter); break;
         }
     }
 
@@ -281,6 +283,7 @@ public class ControlPanel {
             arithmeticNode.add(divide);
             arithmeticNode.add(modulus);
             arithmeticNode.add(random);
+            arithmeticNode.add(eval);
         root.add(utilityNode);
             utilityNode.add(route);
             utilityNode.add(recursive);
