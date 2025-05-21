@@ -1,6 +1,6 @@
-package flowforge.core.ui.popupMenus;
+package flowforge.ui.popupMenus;
 
-import flowforge.core.ui.panels.ProgramPanel;
+import flowforge.ui.panels.ProgramPanel;
 import flowforge.nodes.StartNode;
 
 import javax.swing.*;

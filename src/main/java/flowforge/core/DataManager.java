@@ -1,7 +1,7 @@
 package flowforge.core;
 
 import com.google.gson.*;
-import flowforge.core.ui.panels.ProgramPanel;
+import flowforge.ui.panels.ProgramPanel;
 import flowforge.nodes.Node;
 import flowforge.nodes.StartNode;
 import flowforge.nodes.flownodes.*;

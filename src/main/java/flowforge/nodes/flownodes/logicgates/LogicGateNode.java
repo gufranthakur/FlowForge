@@ -1,7 +1,7 @@
 package flowforge.nodes.flownodes.logicgates;
 
 import com.formdev.flatlaf.fonts.inter.FlatInterFont;
-import flowforge.core.ui.panels.ProgramPanel;
+import flowforge.ui.panels.ProgramPanel;
 import flowforge.nodes.Node;
 import flowforge.nodes.variables.BooleanNode;
 

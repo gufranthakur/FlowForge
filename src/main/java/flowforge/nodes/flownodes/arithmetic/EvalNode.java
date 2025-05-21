@@ -1,7 +1,7 @@
 package flowforge.nodes.flownodes.arithmetic;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import flowforge.core.ui.panels.ProgramPanel;
+import flowforge.ui.panels.ProgramPanel;
 import flowforge.nodes.Node;
 import flowforge.nodes.flownodes.PrintNode;
 import net.objecthunter.exp4j.Expression;
@@ -11,7 +11,6 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

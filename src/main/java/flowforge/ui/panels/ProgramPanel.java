@@ -1,8 +1,8 @@
-package flowforge.core.ui.panels;
+package flowforge.ui.panels;
 
 import flowforge.FlowForge;
-import flowforge.core.ui.popupMenus.NodePopupMenu;
-import flowforge.core.ui.popupMenus.SearchPopupMenu;
+import flowforge.ui.popupMenus.NodePopupMenu;
+import flowforge.ui.popupMenus.SearchPopupMenu;
 import flowforge.nodes.Node;
 import flowforge.nodes.StartNode;
 
@@ -43,7 +43,7 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
     public ProgramPanel(FlowForge flowForge) {
         this.flowForge = flowForge;
         this.setLocation(0, 0);
-        this.setSize(3000, 3000);
+        this.setSize(2000, 1000);
         this.setBackground(bgColor);
         this.addKeyListener(this);
 

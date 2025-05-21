@@ -8,13 +8,13 @@ package flowforge;
 import com.formdev.flatlaf.fonts.jetbrains_mono.FlatJetBrainsMonoFont;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import flowforge.core.*;
-import flowforge.core.ui.MenuBar.AboutPanel;
-import flowforge.core.ui.MenuBar.AppMenuBar;
-import flowforge.core.ui.MenuBar.ChangeLogPanel;
-import flowforge.core.ui.panels.Console;
-import flowforge.core.ui.panels.ControlPanel;
-import flowforge.core.ui.panels.ProgramPanel;
-import flowforge.core.ui.panels.StartPanel;
+import flowforge.ui.MenuBar.AboutPanel;
+import flowforge.ui.MenuBar.AppMenuBar;
+import flowforge.ui.MenuBar.ChangeLogPanel;
+import flowforge.ui.panels.Console;
+import flowforge.ui.panels.ControlPanel;
+import flowforge.ui.panels.ProgramPanel;
+import flowforge.ui.panels.StartPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,10 +37,10 @@ public class FlowForge extends JFrame implements Runnable{
 
     public Color theme = new Color(26, 77, 236).brighter();
 
-    private SwingWorker<Void, Void> nodeExecutor;
-    private boolean isRunning = false;
-    private boolean isExecuting = false;
+    public ForgeExecutor forgeExecutor;
 
+    private Thread flowForgeThread;
+    private boolean isRunning = false;
 
     public FlowForge() {
         this.setTitle("FlowForge");
@@ -51,11 +51,15 @@ public class FlowForge extends JFrame implements Runnable{
     }
 
     public void init() {
+        flowForgeThread = new Thread(this);
+
         console = new Console(this);
         startPanel = new StartPanel(this);
         controlPanel = new ControlPanel(this);
         programPanel = new ProgramPanel(this);
+
         dataManager = new DataManager(programPanel);
+        forgeExecutor = new ForgeExecutor(this);
 
         menuBar = new AppMenuBar(this);
         aboutPanel = new AboutPanel(this);
@@ -77,79 +81,8 @@ public class FlowForge extends JFrame implements Runnable{
         this.setVisible(true);
 
         isRunning = true;
+        flowForgeThread.start();
     }
-
-    public void execute() {
-        programPanel.flowForge.console.clear();
-        console.print("Program Execution started");
-        console.print("Total nodes : " + programPanel.getNodeAmount());
-        console.print("");
-
-        isExecuting = true;
-
-        nodeExecutor = new SwingWorker<>() {
-            @Override
-            protected Void doInBackground()  {
-                isExecuting = true;
-                programPanel.startNode.execute(false);
-                return null;
-            }
-            @Override
-            protected void done() {
-                console.getRootPanel().setVisible(true);
-                console.print("");
-                stopExecution(false);
-            }
-        };
-
-        nodeExecutor.execute();
-    }
-
-    public void executeByStep() {
-        programPanel.flowForge.console.clear();
-        console.print("Step Execution started");
-        console.print("Total nodes : " + programPanel.getNodeAmount());
-        console.print("");
-
-        SwingWorker<Void, Void> nodeStepExecutor = new SwingWorker<>() {
-            @Override
-            protected Void doInBackground()  {
-                synchronized (programPanel.stepExecutorLock) {
-                    programPanel.startNode.execute(true);
-                }
-                return null;
-            }
-            @Override
-            protected void done() {
-                console.print("");
-                console.print("Step Execution completed");
-                console.print("Click on the stop button to exit out of execution mode");
-            }
-        };
-
-        nodeStepExecutor.execute();
-    }
-
-    public void stopExecution(boolean manualStop) {
-
-        if (!manualStop) {
-            controlPanel.runStopButton.setText("▶ Run");
-            controlPanel.runStopButton.setBackground(theme);
-            console.print("Execution completed successfully");
-        } else {
-            nodeExecutor.cancel(true);
-            console.print("Execution Stopped");
-        }
-
-
-        isExecuting = false;
-
-    }
-
-    public boolean getIsExecuting() {
-        return isExecuting;
-    }
-
 
     public void launch() {
         programPanelContainer.add(programPanel);
@@ -211,8 +144,6 @@ public class FlowForge extends JFrame implements Runnable{
 
     }
 
-    public static Thread flowForgeThread;
-
     public static void main(String[] args) throws UnsupportedLookAndFeelException {
         UIManager.setLookAndFeel(new FlatMacDarkLaf());
         FlatJetBrainsMonoFont.install();
@@ -222,11 +153,7 @@ public class FlowForge extends JFrame implements Runnable{
             FlowForge flowForge = new FlowForge();
             flowForge.init();
             flowForge.addComponent();
-
-            flowForgeThread = new Thread(flowForge);
-            flowForgeThread.start();
         });
-
 
     }
 

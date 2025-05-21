@@ -1,11 +1,9 @@
 package flowforge.nodes;
 
-import flowforge.core.ui.panels.ProgramPanel;
-import flowforge.core.ui.popupMenus.NodePopupMenu;
+import flowforge.ui.panels.ProgramPanel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Path2D;

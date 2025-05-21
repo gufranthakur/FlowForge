@@ -1,4 +1,4 @@
-package flowforge.core.ui.MenuBar;
+package flowforge.ui.MenuBar;
 
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.extras.FlatAnimatedLafChange;

@@ -1,6 +1,6 @@
 package flowforge.nodes;
 
-import flowforge.core.ui.panels.ProgramPanel;
+import flowforge.ui.panels.ProgramPanel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

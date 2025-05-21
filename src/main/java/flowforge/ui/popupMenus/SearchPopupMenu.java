@@ -1,8 +1,8 @@
-package flowforge.core.ui.popupMenus;
+package flowforge.ui.popupMenus;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.fonts.inter.FlatInterFont;
-import flowforge.core.ui.panels.ProgramPanel;
+import flowforge.ui.panels.ProgramPanel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

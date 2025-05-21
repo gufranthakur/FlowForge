@@ -1,4 +1,4 @@
-package flowforge.core.ui.MenuBar;
+package flowforge.ui.MenuBar;
 
 import flowforge.FlowForge;
 

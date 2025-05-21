@@ -1,6 +1,6 @@
 package flowforge.nodes.flownodes;
 
-import flowforge.core.ui.panels.ProgramPanel;
+import flowforge.ui.panels.ProgramPanel;
 import flowforge.nodes.Node;
 import flowforge.nodes.variables.IntegerNode;
 

@@ -1,4 +1,4 @@
-package flowforge.core.ui.panels;
+package flowforge.ui.panels;
 
 import com.formdev.flatlaf.fonts.inter.FlatInterFont;
 import flowforge.FlowForge;
@@ -151,12 +151,12 @@ public class ControlPanel {
         });
 
         runStopButton.addActionListener(e -> {
-            if (!flowForge.getIsExecuting()) {
-                flowForge.execute();
+            if (!flowForge.forgeExecutor.getIsExecuting()) {
+                flowForge.forgeExecutor.execute();
                 runStopButton.setText("Stop");
                 runStopButton.setBackground(stopButton.getBackground());
             } else {
-                flowForge.stopExecution(true);
+                flowForge.forgeExecutor.stopExecution(true);
                 runStopButton.setText("▶ Run");
                 runStopButton.setBackground(flowForge.theme);
             }
@@ -171,7 +171,7 @@ public class ControlPanel {
                 stopButton.setVisible(true);
                 runStopButton.setEnabled(false);
 
-                flowForge.executeByStep();
+                flowForge.forgeExecutor.executeByStep();
 
             } else {
                 synchronized (flowForge.programPanel.stepExecutorLock) {
