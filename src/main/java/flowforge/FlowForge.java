@@ -163,12 +163,12 @@ public class FlowForge extends JFrame implements Runnable{
             flowForge.init();
             flowForge.addComponent();
 
-            checkForUpdate();
+
         });
 
     }
 
-    public static void checkForUpdate() {
+    public boolean checkForUpdate() {
         try {
             String currentVersion = "1.5";
             URL versionUrl = new URL("https://flow-forge-website.vercel.app/version.txt");
@@ -198,13 +198,13 @@ public class FlowForge extends JFrame implements Runnable{
                     System.exit(0);
 
                 }
-
+                return true;
             }
 
         } catch (Exception e) {
             System.err.println("Update check failed: " + e.getMessage());
         }
-
+        return false;
     }
 
 

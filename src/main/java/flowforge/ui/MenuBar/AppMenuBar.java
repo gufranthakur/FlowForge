@@ -27,7 +27,7 @@ public class AppMenuBar extends JMenuBar {
             saveProjectItem, saveAsProjectItem, viewDocumentationItem, exitAppItem,
             projectPropertiesItem, settingsItem;
 
-    private JMenuItem aboutItem, chengelogItem;
+    private JMenuItem aboutItem, chengelogItem, checkForUpdateItem;
     private JMenu viewMenu;
 
 
@@ -53,6 +53,7 @@ public class AppMenuBar extends JMenuBar {
         //about
         aboutItem = new JMenuItem("About FlowForge");
         chengelogItem = new JMenuItem("View Changelog");
+        checkForUpdateItem = new JMenuItem("Check for Updates");
 
         viewDocumentationItem = new JMenuItem("Documentation ↗");
         // Initialize Project menu items
@@ -80,6 +81,8 @@ public class AppMenuBar extends JMenuBar {
         this.add(moreMenu);
         moreMenu.add(aboutItem);
         moreMenu.add(chengelogItem);
+        moreMenu.addSeparator();
+        moreMenu.add(checkForUpdateItem);
 
         projectMenu.add(newProjectItem);
         projectMenu.add(openProjectItem);
@@ -133,6 +136,15 @@ public class AppMenuBar extends JMenuBar {
 
             flowForge.revalidate();
             flowForge.repaint();
+        });
+
+        checkForUpdateItem.addActionListener(e -> {
+            if (!flowForge.checkForUpdate()) {
+                JOptionPane.showMessageDialog(null,
+                        "FlowForge is up to date",
+                        "No updates available", JOptionPane.INFORMATION_MESSAGE);
+            }
+
         });
     }
 

@@ -18,10 +18,12 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
+import java.util.Enumeration;
 
 public class ControlPanel {
     private JPanel rootPanel;
@@ -239,6 +241,20 @@ public class ControlPanel {
 
         addButton.addActionListener(e -> {
             String variableName = JOptionPane.showInputDialog("Enter variable name");
+            if (variableName.isEmpty() || variableName == null) return;
+
+            Enumeration<TreeNode> enumeration = variableRoot.depthFirstEnumeration();
+            while (enumeration.hasMoreElements()) {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) enumeration.nextElement();
+                if (variableName.equals(node.getUserObject().toString())) {
+                    JOptionPane.showMessageDialog(null,
+                            "Variable name already in Use", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+
+
+
             flowForge.programPanel.addVariable(variableName);
 
             loadVariables();
@@ -323,6 +339,7 @@ public class ControlPanel {
         variableListPanel.add(variableTree, BorderLayout.CENTER);
 
         functionsTree.expandRow(0);
+        variableTree.expandRow(0);
     }
 
     private void loadVariables() {

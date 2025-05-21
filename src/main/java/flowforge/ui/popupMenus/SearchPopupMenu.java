@@ -180,10 +180,10 @@ public class SearchPopupMenu extends JPopupMenu {
             programPanel.startConnection(programPanel.selectedNode);
             programPanel.finishConnection(programPanel.nodes.getLast());
         }
-        if (programPanel.selectedNode.isBeingXConnected) {
-            programPanel.startXConnection(programPanel.selectedNode);
-            programPanel.finishXConnection(programPanel.nodes.getLast());
-        }
+//        if (programPanel.selectedNode.isBeingXConnected) {
+//            programPanel.startXConnection(programPanel.selectedNode);
+//            programPanel.finishXConnection(programPanel.nodes.getLast());
+//        }
         programPanel.selectedNode.outputButton.setSelected(false);
         programPanel.selectedNode.outputXButton.setSelected(false);
 

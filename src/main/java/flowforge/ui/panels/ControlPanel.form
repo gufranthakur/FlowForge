@@ -87,13 +87,17 @@
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
-                <properties/>
+                <properties>
+                  <font size="16"/>
+                </properties>
               </component>
               <component id="66822" class="javax.swing.JButton" binding="addButton" default-binding="true">
                 <constraints>
                   <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
+                  <background color="-12693268"/>
+                  <font size="16"/>
                   <text value="Add"/>
                 </properties>
               </component>

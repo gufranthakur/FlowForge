@@ -34,7 +34,7 @@ public abstract class Node extends JInternalFrame {
     private int nodeHeight;
 
     public boolean isBeingConnected = false;
-    public boolean isBeingXConnected = false;
+    //public boolean isBeingXConnected = false;
 
     public Color connectionColor = Color.WHITE;
     public Color connectionColor2 = Color.WHITE;
@@ -138,7 +138,7 @@ public abstract class Node extends JInternalFrame {
 
         outputButton.addActionListener(e -> {
             this.isBeingConnected = true;
-            this.isBeingXConnected = false;
+            //this.isBeingXConnected = false;
 
             programPanel.selectedNode = Node.this;
             programPanel.flowForge.controlPanel.updatePropertiesPanel(Node.this);
@@ -164,7 +164,7 @@ public abstract class Node extends JInternalFrame {
         });
 
         outputXButton.addActionListener(e -> {
-            this.isBeingXConnected = true;
+            //this.isBeingXConnected = true;
             this.isBeingConnected = false;
 
             programPanel.selectedNode = Node.this;

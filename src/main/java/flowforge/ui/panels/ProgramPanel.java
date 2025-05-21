@@ -61,7 +61,7 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
                 requestFocusInWindow();
 
                 if (selectedNode == null) return;
-                if (selectedNode.isBeingConnected || selectedNode.isBeingXConnected) {
+                if (selectedNode.isBeingConnected) { // || selectedNode.isBeingXConnected
                     searchPopupMenu.show(getDesktopPane(), currentMouseLocation.x, currentMouseLocation.y);
                 }
 
@@ -93,7 +93,10 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     if (selectedNode == null) return;
                     selectedNode.isBeingConnected = false;
-                    selectedNode.isBeingXConnected = false;
+                    //selectedNode.isBeingXConnected = false;
+
+                    selectedNode.outputXButton.setSelected(false);
+                    selectedNode.outputButton.setSelected(false);
                 }
 
             }
@@ -236,7 +239,7 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
                     selectedNode.connectionColor, selectedNode.connectionColor2);
         }
 
-        if (selectedNode.isBeingXConnected && selectedNode.outputXButton.isSelected()) {
+        if (selectedNode.outputXButton.isSelected()) { //selectedNode.isBeingXConnected &&
             selectedNode.drawCurvedGradientLine(g2D, selectedNode.getOutputXPoint(),
                     currentMouseLocation,
                     selectedNode.connectionXColor, selectedNode.connectionXColor2);
