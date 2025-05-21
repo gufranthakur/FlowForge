@@ -244,11 +244,12 @@ public class ControlPanel {
             if (variableName.isEmpty() || variableName == null) return;
 
             Enumeration<TreeNode> enumeration = variableRoot.depthFirstEnumeration();
+
             while (enumeration.hasMoreElements()) {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) enumeration.nextElement();
                 if (variableName.equals(node.getUserObject().toString())) {
                     JOptionPane.showMessageDialog(null,
-                            "Variable name already in Use", "Error", JOptionPane.ERROR_MESSAGE);
+                            "Variable name already in use", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
             }
@@ -333,7 +334,7 @@ public class ControlPanel {
         variableRoot.add(integerNode);
         variableRoot.add(stringNode);
         variableRoot.add(booleanNode);
-        variableRoot.add(floatNode);
+        //variableRoot.add(floatNode);
 
         nodesListPanel.add(functionsTree, BorderLayout.CENTER);
         variableListPanel.add(variableTree, BorderLayout.CENTER);

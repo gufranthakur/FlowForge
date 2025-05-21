@@ -111,6 +111,48 @@ public class FlowForge extends JFrame implements Runnable{
         this.revalidate();
     }
 
+    public boolean checkForUpdate() {
+        try {
+            String currentVersion = "1.5";
+            URL versionUrl = new URL("https://flow-forge-website.vercel.app/version.txt");
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(versionUrl.openStream()));
+            String latestVersion = reader.readLine().trim();
+            reader.close();
+
+            if (!latestVersion.equals(currentVersion)) {
+
+                if (JOptionPane.showConfirmDialog(null,
+                        "There is a new FlowForge version available." +
+                                "Proceed with installation?",
+                        "New version Available", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+
+
+                    URL jarUrl = new URL("https://github.com/gufranthakur/FlowForge/releases/download/v1.5/FlowForge.jar");
+                    Path tempJar = Paths.get("FlowForge.jar");
+
+                    try (InputStream in = jarUrl.openStream()) {
+                        Files.copy(in, tempJar, StandardCopyOption.REPLACE_EXISTING);
+                    }
+
+                    System.out.println("Download complete. Relaunching...");
+
+                    new ProcessBuilder("java", "-jar", tempJar.toAbsolutePath().toString()).start();
+                    System.exit(0);
+
+                }
+                return true;
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,
+                    "Please connect to an internet",
+                    "Could not check for update", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        return false;
+    }
+
     @Override
     public void run() {
         double timePerFrame = 1000000000.0 / 120;
@@ -167,46 +209,5 @@ public class FlowForge extends JFrame implements Runnable{
         });
 
     }
-
-    public boolean checkForUpdate() {
-        try {
-            String currentVersion = "1.5";
-            URL versionUrl = new URL("https://flow-forge-website.vercel.app/version.txt");
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(versionUrl.openStream()));
-            String latestVersion = reader.readLine().trim();
-            reader.close();
-
-            if (!latestVersion.equals(currentVersion)) {
-
-                if (JOptionPane.showConfirmDialog(null,
-                        "There is a new FlowForge version available." +
-                                "Proceed with installation?",
-                        "New version Available", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-
-
-                    URL jarUrl = new URL("https://github.com/gufranthakur/FlowForge/releases/download/v1.5/FlowForge.jar");
-                    Path tempJar = Paths.get("FlowForge.jar");
-
-                    try (InputStream in = jarUrl.openStream()) {
-                        Files.copy(in, tempJar, StandardCopyOption.REPLACE_EXISTING);
-                    }
-
-                    System.out.println("Download complete. Relaunching...");
-
-                    new ProcessBuilder("java", "-jar", tempJar.toAbsolutePath().toString()).start();
-                    System.exit(0);
-
-                }
-                return true;
-            }
-
-        } catch (Exception e) {
-            System.err.println("Update check failed: " + e.getMessage());
-        }
-        return false;
-    }
-
-
 
 }

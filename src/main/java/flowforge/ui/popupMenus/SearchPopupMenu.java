@@ -110,6 +110,7 @@ public class SearchPopupMenu extends JPopupMenu {
         searchTree.setFont(new Font(FlatInterFont.FAMILY, Font.PLAIN, 16));
         searchTree.setPreferredSize(new Dimension(300, 50));
         searchTree.setMaximumSize(new Dimension(300, 50));
+        searchTree.setBackground(getBackground());
 
         searchField.setFont(new Font(FlatInterFont.FAMILY, Font.PLAIN, 16));
         searchField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Search...");
@@ -132,6 +133,15 @@ public class SearchPopupMenu extends JPopupMenu {
 
         contentPanel.add(searchField, BorderLayout.NORTH);
         contentPanel.add(searchTree, BorderLayout.CENTER);
+
+        JLabel label = new JLabel("Press ESC twice to escape");
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+
+        contentPanel.add(label, BorderLayout.SOUTH);
+
+        this.setBackground(new Color(30, 30, 30));
+        contentPanel.setBackground(getBackground());
+        searchTree.setBackground(getBackground());
 
         this.add(contentPanel);
 

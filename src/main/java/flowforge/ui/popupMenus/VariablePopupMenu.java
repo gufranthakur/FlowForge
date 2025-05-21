@@ -6,10 +6,8 @@ import flowforge.ui.panels.ControlPanel;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import javax.swing.tree.TreeNode;
+import java.util.*;
 
 public class VariablePopupMenu extends JPopupMenu {
 
@@ -35,6 +33,9 @@ public class VariablePopupMenu extends JPopupMenu {
         deleteVariable.addActionListener(e -> {
             String key = (String) controlPanel.selectedVariableNode.getUserObject();
 
+            if (key.equals("Strings") || key.equals("integers") || key.equals("booleans") || key.equals("floats"))
+                return;
+
             strings.remove(key);
             integers.remove(key);
             booleans.remove(key);
@@ -57,7 +58,21 @@ public class VariablePopupMenu extends JPopupMenu {
         renameVariable.addActionListener(e -> {
             String key = (String) controlPanel.selectedVariableNode.getUserObject();
 
+            if (key.equals("Strings") || key.equals("Integers") || key.equals("Booleans") || key.equals("Floats"))
+                return;
+
             String newKey = JOptionPane.showInputDialog(null, "Enter new Variable name", key);
+
+            Enumeration<TreeNode> enumeration = controlPanel.variableRoot.depthFirstEnumeration();
+
+            while (enumeration.hasMoreElements()) {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) enumeration.nextElement();
+                if (key.equals(node.getUserObject().toString())) {
+                    JOptionPane.showMessageDialog(null,
+                            "Variable name already in use", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
 
             if (strings.containsKey(key)) {
 
