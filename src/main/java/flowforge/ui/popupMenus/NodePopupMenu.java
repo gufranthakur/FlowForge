@@ -1,5 +1,6 @@
 package flowforge.ui.popupMenus;
 
+import flowforge.nodes.variables.BooleanNode;
 import flowforge.ui.panels.ProgramPanel;
 import flowforge.nodes.StartNode;
 

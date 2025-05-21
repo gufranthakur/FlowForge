@@ -63,8 +63,8 @@ public class FlowForge extends JFrame implements Runnable{
 
         console = new Console(this);
         startPanel = new StartPanel(this);
-        controlPanel = new ControlPanel(this);
         programPanel = new ProgramPanel(this);
+        controlPanel = new ControlPanel(this);
 
         dataManager = new DataManager(programPanel);
         forgeExecutor = new ForgeExecutor(this);
@@ -170,7 +170,7 @@ public class FlowForge extends JFrame implements Runnable{
 
     public static void checkForUpdate() {
         try {
-            String currentVersion = "1.6";
+            String currentVersion = "1.5";
             URL versionUrl = new URL("https://flow-forge-website.vercel.app/version.txt");
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(versionUrl.openStream()));

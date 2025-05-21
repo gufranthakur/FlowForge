@@ -12,6 +12,7 @@ import flowforge.nodes.flownodes.utils.RouteNode;
 import flowforge.nodes.variables.BooleanNode;
 import flowforge.nodes.variables.IntegerNode;
 import flowforge.nodes.variables.StringNode;
+import flowforge.ui.popupMenus.VariablePopupMenu;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -54,7 +55,7 @@ public class ControlPanel {
     public JButton stopButton;
     private JComboBox nodeBox;
 
-    private FlowForge flowForge;
+    public FlowForge flowForge;
 
     public JTree functionsTree;
     public DefaultMutableTreeNode root;
@@ -66,9 +67,12 @@ public class ControlPanel {
             add, subtract, multiply, divide, modulus, random, eval, // Arithmetic Nodes
             route, recursive; //Utility Nodes
 
-    private JTree variableTree;
-    private DefaultMutableTreeNode variableRoot;
+    public JTree variableTree;
+    public DefaultMutableTreeNode variableRoot;
     private DefaultMutableTreeNode integerNode, stringNode, booleanNode, floatNode;
+
+    public DefaultMutableTreeNode selectedVariableNode;
+    public VariablePopupMenu variablePopupMenu;
 
     private boolean programIsRunning = false;
 
@@ -83,6 +87,7 @@ public class ControlPanel {
         variableRoot = new DefaultMutableTreeNode("Variables");
         variableTree = new JTree(variableRoot);
         variableTree.setFont(new Font(FlatInterFont.FAMILY, Font.PLAIN, 16));
+        variablePopupMenu = new VariablePopupMenu(this);
     }
 
     public void init() {
@@ -205,20 +210,27 @@ public class ControlPanel {
 
         variableTree.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
+            public void mousePressed(MouseEvent e) {
+                super.mousePressed(e);
                 DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) variableTree.getLastSelectedPathComponent();
+                selectedVariableNode = selectedNode;
 
-                if (selectedNode != null && selectedNode.getParent() != null) {
-                    DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) selectedNode.getParent();
+                if (SwingUtilities.isRightMouseButton(e)) {
+                    if (selectedNode.isLeaf()) {
+                        variablePopupMenu.show(variableTree, e.getX() + 10, e.getY() + 10);
+                    }
+                } else {
+                    if (selectedNode != null && selectedNode.getParent() != null) {
+                        DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) selectedNode.getParent();
 
-                    String variableName = (String) selectedNode.getUserObject();
-                    if (parentNode.getUserObject().equals("Integers")) {
-                        flowForge.programPanel.addNewNode(new IntegerNode(variableName, flowForge.programPanel, 0), true);
-                    } else if (parentNode.getUserObject().equals("Strings")) {
-                        flowForge.programPanel.addNewNode(new StringNode(variableName, flowForge.programPanel, ""), true);
-                    } else if (parentNode.getUserObject().equals("Booleans")) {
-                        flowForge.programPanel.addNewNode(new BooleanNode(variableName, flowForge.programPanel, false), true);
+                        String variableName = (String) selectedNode.getUserObject();
+                        if (parentNode.getUserObject().equals("Integers")) {
+                            flowForge.programPanel.addNewNode(new IntegerNode(variableName, flowForge.programPanel, 0), true);
+                        } else if (parentNode.getUserObject().equals("Strings")) {
+                            flowForge.programPanel.addNewNode(new StringNode(variableName, flowForge.programPanel, ""), true);
+                        } else if (parentNode.getUserObject().equals("Booleans")) {
+                            flowForge.programPanel.addNewNode(new BooleanNode(variableName, flowForge.programPanel, false), true);
+                        }
                     }
                 }
 
