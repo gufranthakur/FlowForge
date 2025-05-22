@@ -56,6 +56,10 @@ public class FlowForge extends JFrame implements Runnable{
         this.setLocationRelativeTo(null);
         this.setLayout(new BorderLayout());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        Image icon = Toolkit.getDefaultToolkit().getImage("FlowForge-Logo.png");
+        this.setIconImage(icon);
+
     }
 
     public void init() {
