@@ -205,6 +205,7 @@ public class FlowForge extends JFrame implements Runnable{
         FlatMacDarkLaf.setup();
         FlatJetBrainsMonoFont.install();
 
+
         SwingUtilities.invokeLater(() -> {
             FlowForge flowForge = new FlowForge();
             flowForge.init();

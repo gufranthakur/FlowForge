@@ -196,7 +196,7 @@ public class ControlPanel {
             runStopButton.setEnabled(true);
 
             for (Node node : flowForge.programPanel.nodes) {
-                node.setBorder(new EmptyBorder(3, 3, 3, 3));
+                node.restoreBorder();
             }
 
         });

@@ -43,7 +43,7 @@ public class StartNode extends Node{
             }
             SwingUtilities.invokeLater(() -> {
                 for (Node node : programPanel.nodes) {
-                    node.setBorder(new EmptyBorder(3, 3, 3, 3));
+                    node.restoreBorder();
                 }
                 this.setBorder(new LineBorder(new Color(255, 126, 23), 3));
             });

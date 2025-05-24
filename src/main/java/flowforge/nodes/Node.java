@@ -1,15 +1,17 @@
 package flowforge.nodes;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import flowforge.ui.panels.ProgramPanel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Path2D;
 import java.util.ArrayList;
 
-public abstract class Node extends JInternalFrame {
+public abstract class Node extends JPanel {
     private ProgramPanel programPanel;
 
     public ArrayList<Node> inputNodes = new ArrayList<>();
@@ -23,6 +25,7 @@ public abstract class Node extends JInternalFrame {
     public JRadioButton outputXButton;
     public JButton resetConnectionsButton;
 
+    TitledBorder titledBorder;
     public JPanel contentPanel;
     public JPanel topPanel;
     public JPanel outputsPanel;
@@ -33,43 +36,71 @@ public abstract class Node extends JInternalFrame {
     private int nodeWidth;
     private int nodeHeight;
 
+    // Dragging variables
+    private Point dragStart;
+    private boolean isDragging = false;
+
     public boolean isBeingConnected = false;
-    //public boolean isBeingXConnected = false;
+    public boolean isMinimized = false;
 
     public Color connectionColor = Color.WHITE;
     public Color connectionColor2 = Color.WHITE;
-//    public Color connectionColor = new Color(255, 255, 255);
-//    public Color connectionColor2 = new Color(24, 130, 220);
     public Color connectionXColor = new Color(253, 108, 46);
     public Color connectionXColor2 = new Color(205, 183, 37);
 
     public String nodeType;
+    public String title;
 
     public Node(String title, ProgramPanel programPanel) {
-        super(title, true, false, false, false);
+        this.title = title;
         this.programPanel = programPanel;
+
+        // Mouse listeners for selection, right-click menu, and dragging
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                    programPanel.selectedNode = Node.this;
-                    programPanel.flowForge.controlPanel.updatePropertiesPanel(Node.this);
-                    if (SwingUtilities.isRightMouseButton(e)) {
-                        programPanel.nodePopupMenu.show(Node.this, e.getX() + 10, e.getY() + 10);
-                    }
-            }
-        });
-        this.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentMoved(ComponentEvent e) {
-                updateNodeDimensions();
+                programPanel.selectedNode = Node.this;
+                programPanel.flowForge.controlPanel.updatePropertiesPanel(Node.this);
+                if (SwingUtilities.isRightMouseButton(e)) {
+                    programPanel.nodePopupMenu.show(Node.this, e.getX() + 10, e.getY() + 10);
+                }
             }
 
             @Override
-            public void componentResized(ComponentEvent e) {
-                updateNodeDimensions();
+            public void mousePressed(MouseEvent e) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    dragStart = e.getPoint();
+                    isDragging = true;
+                    programPanel.selectedNode = Node.this;
+                    programPanel.flowForge.controlPanel.updatePropertiesPanel(Node.this);
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                isDragging = false;
+                dragStart = null;
             }
         });
+
+        this.addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                if (isDragging && dragStart != null) {
+                    Point current = e.getPoint();
+                    Point parentLocation = getLocation();
+
+                    int newX = parentLocation.x + current.x - dragStart.x;
+                    int newY = parentLocation.y + current.y - dragStart.y;
+
+                    setLocation(newX, newY);
+                    updateNodeDimensions();
+                    programPanel.repaint(); // Repaint to update connections
+                }
+            }
+        });
+
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -80,12 +111,28 @@ public abstract class Node extends JInternalFrame {
             }
         });
 
+
+        setFocusable(true);
+
         loadUI();
         loadActionListeners();
     }
 
     private void loadUI() {
         setLocation(300, 300);
+        setSize(200, 150);
+        setLayout(new BorderLayout());
+        setBackground(new Color(25, 25, 25));
+        putClientProperty(FlatClientProperties.STYLE, "arc : 20");
+
+        // Create titled border with the title
+        titledBorder = BorderFactory.createTitledBorder(title);
+        titledBorder.setTitleColor(Color.WHITE);
+
+        restoreBorder();
+
+        // Set background color
+        //setBorder(new EmptyBorder(3, 3, 3, 3));
 
         contentPanel = new JPanel(new BorderLayout());
         topPanel = new JPanel();
@@ -97,30 +144,54 @@ public abstract class Node extends JInternalFrame {
         inputXButton = new JRadioButton("InputX");
         outputXButton = new JRadioButton("OutputX");
 
+        // Style radio buttons
+        styleRadioButton(inputButton, false);
+        styleRadioButton(outputButton, false);
+        styleRadioButton(inputXButton, true);
+        styleRadioButton(outputXButton, true);
+
         resetConnectionsButton = new JButton("↺");
+        resetConnectionsButton.setPreferredSize(new Dimension(30, 25));
 
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
         topPanel.add(resetConnectionsButton);
+        topPanel.setOpaque(false);
 
         inputsPanel.setLayout(new BoxLayout(inputsPanel, BoxLayout.Y_AXIS));
         inputsPanel.add(Box.createVerticalGlue());
         inputsPanel.add(inputButton);
         inputsPanel.add(inputXButton);
         inputsPanel.add(Box.createVerticalGlue());
+        inputsPanel.setOpaque(false);
 
         outputsPanel.setLayout(new BoxLayout(outputsPanel, BoxLayout.Y_AXIS));
         outputsPanel.add(Box.createVerticalGlue());
         outputsPanel.add(outputButton);
         outputsPanel.add(outputXButton);
         outputsPanel.add(Box.createVerticalGlue());
+        outputsPanel.setOpaque(false);
 
         contentPanel.setBorder(new EmptyBorder(3, 3, 3, 3));
         contentPanel.add(topPanel, BorderLayout.NORTH);
         contentPanel.add(inputsPanel, BorderLayout.WEST);
         contentPanel.add(outputsPanel, BorderLayout.EAST);
+        contentPanel.setOpaque(false);
 
-        setContentPane(contentPanel);
-        setVisible(true);
+        add(contentPanel, BorderLayout.CENTER);
+
+        updateNodeDimensions();
+    }
+
+    private void styleRadioButton(JRadioButton button, boolean isXConnection) {
+        button.setOpaque(false);
+        button.setForeground(Color.WHITE);
+        button.setFont(button.getFont().deriveFont(12f));
+
+        if (isXConnection) {
+            button.putClientProperty(FlatClientProperties.STYLE,
+                    "icon.selectedBackground: rgb(229,117,42);");
+        }
+
     }
 
     private void loadActionListeners() {
@@ -138,7 +209,6 @@ public abstract class Node extends JInternalFrame {
 
         outputButton.addActionListener(e -> {
             this.isBeingConnected = true;
-            //this.isBeingXConnected = false;
 
             programPanel.selectedNode = Node.this;
             programPanel.flowForge.controlPanel.updatePropertiesPanel(Node.this);
@@ -164,7 +234,6 @@ public abstract class Node extends JInternalFrame {
         });
 
         outputXButton.addActionListener(e -> {
-            //this.isBeingXConnected = true;
             this.isBeingConnected = false;
 
             programPanel.selectedNode = Node.this;
@@ -177,6 +246,11 @@ public abstract class Node extends JInternalFrame {
             if(outputXButton.isSelected()) {
                 programPanel.startXConnection(this);
             }
+        });
+
+        resetConnectionsButton.addActionListener(e -> {
+            disconnectAll();
+            programPanel.repaint();
         });
     }
 
@@ -256,12 +330,13 @@ public abstract class Node extends JInternalFrame {
 
         inputNodes.clear();
         outputNodes.clear();
+        inputXNodes.clear();
+        outputXNodes.clear();
 
         inputButton.setSelected(false);
         outputButton.setSelected(false);
         inputXButton.setSelected(false);
         outputXButton.setSelected(false);
-
     }
 
     private void updateNodeDimensions() {
@@ -277,21 +352,35 @@ public abstract class Node extends JInternalFrame {
         updateNodeDimensions();
     }
 
-    private Node getNode() {
-        return this;
+    public void restoreBorder() {
+        setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createEmptyBorder(5, 5, 5, 5),
+                titledBorder
+        ));
     }
 
+    public void setStepExecutedBorder() {
+        setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(229, 117, 42), 2),
+                titledBorder
+        ));
+    }
+
+    // Getters
+    public String getTitle() { return title; }
     public int getNodeX() { return nodeX; }
     public int getNodeY() { return nodeY; }
     public int getNodeWidth() { return nodeWidth; }
     public int getNodeHeight() { return nodeHeight; }
 
     public Point getInputPoint() {
-        return new Point(getX(), getY() + getHeight()/2 - 20);
+        if (isMinimized) return new Point(getX(), getY() + 10);
+        return new Point(getX(), getY() + getHeight()/2 + 20);
     }
 
     public Point getOutputPoint() {
-        return new Point(getX() + getWidth(), getY() + getHeight()/2 - 20);
+        if (isMinimized) return new Point(getX() + getWidth(), getY() + 10);
+        return new Point(getX() + getWidth(), getY() + getHeight()/2 + 20);
     }
 
     public Point getInputXPoint() {
@@ -304,4 +393,18 @@ public abstract class Node extends JInternalFrame {
 
     public abstract void execute(boolean isStepExecution);
 
+    public void setClosable(boolean b) {
+
+    }
+
+    public void setResizable(boolean b) {
+
+    }
+    public void pack() {
+
+    }
+
+    public void setTitle(String s) {
+        this.title = s;
+    }
 }

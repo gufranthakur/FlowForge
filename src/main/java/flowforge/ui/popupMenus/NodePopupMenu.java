@@ -23,7 +23,10 @@ public class NodePopupMenu extends JPopupMenu {
         resetConnections = new JMenuItem("Disconnect");
         deleteNode = new JMenuItem("Delete");
 
-        resize.addActionListener(e -> programPanel.selectedNode.pack());
+        resize.addActionListener(e -> {
+            programPanel.selectedNode.setSize(150, 30);
+            programPanel.selectedNode.isMinimized = true;
+        });
         resetConnections.addActionListener(e -> programPanel.selectedNode.disconnectAll());
         deleteNode.addActionListener(e ->  {
             if (programPanel.selectedNode instanceof StartNode) {
