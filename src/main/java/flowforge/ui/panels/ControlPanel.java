@@ -10,6 +10,7 @@ import flowforge.nodes.flownodes.logicgates.LogicGateNode;
 import flowforge.nodes.flownodes.utils.RecursiveNode;
 import flowforge.nodes.flownodes.utils.RouteNode;
 import flowforge.nodes.variables.BooleanNode;
+import flowforge.nodes.variables.FloatNode;
 import flowforge.nodes.variables.IntegerNode;
 import flowforge.nodes.variables.StringNode;
 import flowforge.ui.popupMenus.VariablePopupMenu;
@@ -232,6 +233,8 @@ public class ControlPanel {
                             flowForge.programPanel.addNewNode(new StringNode(variableName, flowForge.programPanel, ""), true);
                         } else if (parentNode.getUserObject().equals("Booleans")) {
                             flowForge.programPanel.addNewNode(new BooleanNode(variableName, flowForge.programPanel, false), true);
+                        } else if (parentNode.getUserObject().equals("Floats")) {
+                            flowForge.programPanel.addNewNode(new FloatNode(variableName, flowForge.programPanel, 0.0f), true);
                         }
                     }
                 }
@@ -332,7 +335,7 @@ public class ControlPanel {
         variableRoot.add(integerNode);
         variableRoot.add(stringNode);
         variableRoot.add(booleanNode);
-        //variableRoot.add(floatNode);
+        variableRoot.add(floatNode);
 
         nodesListPanel.add(functionsTree, BorderLayout.CENTER);
         variableListPanel.add(variableTree, BorderLayout.CENTER);

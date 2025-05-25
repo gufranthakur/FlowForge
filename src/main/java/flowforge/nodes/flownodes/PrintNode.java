@@ -1,6 +1,7 @@
 package flowforge.nodes.flownodes;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import flowforge.nodes.variables.FloatNode;
 import flowforge.ui.panels.ProgramPanel;
 import flowforge.nodes.Node;
 import flowforge.nodes.flownodes.arithmetic.*;
@@ -65,6 +66,7 @@ public class PrintNode extends Node {
                     case IntegerNode integerNode -> print(textField.getText() + integerNode.getValue());
                     case StringNode stringNode -> print(textField.getText() + stringNode.getValue());
                     case BooleanNode booleanNode -> print(textField.getText() + booleanNode.getValue());
+                    case FloatNode floatNode -> print(textField.getText() + floatNode.getValue());
                     case EqualToNode equalToNode -> print(textField.getText() + equalToNode.getIsEqual());
                     case GreaterThanNode greaterThanNode -> print(textField.getText() + greaterThanNode.getIsGreater());
                     case LessThanNode lessThanNode -> print(textField.getText() + lessThanNode.getIsLess());

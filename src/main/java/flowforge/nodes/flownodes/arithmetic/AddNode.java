@@ -1,6 +1,7 @@
 package flowforge.nodes.flownodes.arithmetic;
 
 
+import flowforge.nodes.variables.FloatNode;
 import flowforge.ui.panels.ProgramPanel;
 import flowforge.nodes.Node;
 import flowforge.nodes.flownodes.PrintNode;
@@ -14,7 +15,7 @@ import java.awt.*;
 public class AddNode extends Node {
 
     private ProgramPanel programPanel;
-    private Integer result;
+    private float result;
 
     public AddNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
@@ -25,11 +26,11 @@ public class AddNode extends Node {
         outputXButton.setText("Sum");
     }
 
-    public Integer getResult() {
+    public float getResult() {
         return result;
     }
 
-    public void setResult(Integer result) {
+    public void setResult(float result) {
         this.result = result;
     }
 
@@ -47,15 +48,17 @@ public class AddNode extends Node {
                 for (Node node : programPanel.nodes) {
                     node.setBorder(new EmptyBorder(3, 3, 3, 3));
                 }
-                this.setBorder(new LineBorder(new Color(255, 126, 23), 3));
+                this.setStepExecutedBorder();
             });
         }
 
-        int sum = 0;
+        float sum = 0;
 
         for (Node node : inputXNodes) {
             if (node != null) if (node instanceof IntegerNode) {
                 sum += ((IntegerNode) node).getValue();
+            } else if (node instanceof FloatNode) {
+                sum += ((FloatNode) node).getValue();
             }
         }
 

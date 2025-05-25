@@ -277,6 +277,7 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
             }
         }
 
+        searchXPopupMenu.reloadVariableTree();
 
     }
 

@@ -1,5 +1,6 @@
 package flowforge.nodes.flownodes.arithmetic;
 
+import flowforge.nodes.variables.FloatNode;
 import flowforge.ui.panels.ProgramPanel;
 import flowforge.nodes.Node;
 import flowforge.nodes.flownodes.PrintNode;
@@ -13,7 +14,7 @@ import java.awt.*;
 public class ModulusNode extends Node {
 
     private ProgramPanel programPanel;
-    private Integer result;
+    private float result;
 
     public ModulusNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
@@ -24,11 +25,11 @@ public class ModulusNode extends Node {
         outputXButton.setText("Remainder");
     }
 
-    public Integer getResult() {
+    public float getResult() {
         return result;
     }
 
-    public void setResult(Integer result) {
+    public void setResult(float result) {
         this.result = result;
     }
 
@@ -49,23 +50,40 @@ public class ModulusNode extends Node {
                 this.setBorder(new LineBorder(new Color(255, 126, 23), 3));
             });
         }
+
         if (inputXNodes.size() != 2) return;
 
-        Integer dividend = null;
-        Integer divisor = null;
+        Float dividend = null;
+        Float divisor = null;
 
         Node firstNode = inputXNodes.get(0);
         Node secondNode = inputXNodes.get(1);
 
+        // Handle all combinations of Integer and Float nodes
         if (firstNode instanceof IntegerNode && secondNode instanceof IntegerNode) {
-            dividend = ((IntegerNode) firstNode).getValue();
-            divisor = ((IntegerNode) secondNode).getValue();
+            dividend = Float.valueOf(((IntegerNode) firstNode).getValue());
+            divisor = Float.valueOf(((IntegerNode) secondNode).getValue());
+        } else if (firstNode instanceof FloatNode && secondNode instanceof FloatNode) {
+            dividend = ((FloatNode) firstNode).getValue();
+            divisor = ((FloatNode) secondNode).getValue();
+        } else if (firstNode instanceof IntegerNode && secondNode instanceof FloatNode) {
+            dividend = Float.valueOf(((IntegerNode) firstNode).getValue());
+            divisor = ((FloatNode) secondNode).getValue();
+        } else if (firstNode instanceof FloatNode && secondNode instanceof IntegerNode) {
+            dividend = ((FloatNode) firstNode).getValue();
+            divisor = Float.valueOf(((IntegerNode) secondNode).getValue());
         }
 
-        if (dividend != null && divisor != null && divisor != 0) {
-            result = dividend % divisor;
+        if (dividend != null && divisor != null) {
+            if (divisor == 0.0f) {
+                result = Float.NaN;
+                System.err.println("Warning: Modulus by zero in ModulusNode");
+            } else {
+                result = dividend % divisor;
+            }
         } else {
-            result = 0;
+            result = 0.0f;
+            System.err.println("Warning: Invalid input types for ModulusNode");
         }
 
         for (Node node : outputXNodes) {

@@ -3,6 +3,7 @@ package flowforge.ui.popupMenus;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.fonts.inter.FlatInterFont;
 import flowforge.nodes.variables.BooleanNode;
+import flowforge.nodes.variables.FloatNode;
 import flowforge.nodes.variables.IntegerNode;
 import flowforge.nodes.variables.StringNode;
 import flowforge.ui.panels.ProgramPanel;
@@ -47,9 +48,11 @@ public class SearchXPopupMenu extends JPopupMenu {
         nodesList.add("Create Integer");
         nodesList.add("Create String");
         nodesList.add("Create Boolean");
+        nodesList.add("Create Float");
 
         nodesList.addAll(programPanel.strings.keySet());
         nodesList.addAll(programPanel.integers.keySet());
+        nodesList.addAll(programPanel.booleans.keySet());
         nodesList.addAll(programPanel.booleans.keySet());
     }
 
@@ -203,6 +206,15 @@ public class SearchXPopupMenu extends JPopupMenu {
                 }
             }
             break;
+            case "Create Float" : {
+                String varName = JOptionPane.showInputDialog(null, "Enter Variable name");
+                if (!variableAlreadyExists(varName)) {
+                    programPanel.addVariable(varName, "Float");
+                    programPanel.addNewNode(new FloatNode(varName, programPanel, 0.0f), false);
+                    reloadVariableTree();
+                }
+            }
+            break;
         }
 
 
@@ -212,6 +224,8 @@ public class SearchXPopupMenu extends JPopupMenu {
             programPanel.addNewNode(new StringNode(selected, programPanel, ""), false);
         } else if (programPanel.booleans.containsKey(selected)) {
             programPanel.addNewNode(new BooleanNode(selected, programPanel, false), false);
+        } else if (programPanel.floats.containsKey(selected)) {
+            programPanel.addNewNode(new FloatNode(selected, programPanel, 0.0f), false);
         }
 
         getThis().setVisible(false);
@@ -238,7 +252,7 @@ public class SearchXPopupMenu extends JPopupMenu {
         return false;
     }
 
-    private void reloadVariableTree() {
+    public void reloadVariableTree() {
         programPanel.flowForge.controlPanel.loadVariables();
         programPanel.flowForge.controlPanel.refreshTree();
 

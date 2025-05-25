@@ -1,6 +1,6 @@
 package flowforge.nodes.flownodes.arithmetic;
 
-
+import flowforge.nodes.variables.FloatNode;
 import flowforge.ui.panels.ProgramPanel;
 import flowforge.nodes.Node;
 import flowforge.nodes.flownodes.PrintNode;
@@ -14,22 +14,22 @@ import java.awt.*;
 public class MultiplyNode extends Node {
 
     private ProgramPanel programPanel;
-    private Integer result;
+    private float result;
 
     public MultiplyNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
         this.programPanel = programPanel;
         this.setSize(210, 150);
 
-        inputXButton.setText("Integers");
+        inputXButton.setText("Numbers");
         outputXButton.setText("Result");
     }
 
-    public Integer getResult() {
+    public float getResult() {
         return result;
     }
 
-    public void setResult(Integer result) {
+    public void setResult(float result) {
         this.result = result;
     }
 
@@ -50,16 +50,22 @@ public class MultiplyNode extends Node {
                 this.setBorder(new LineBorder(new Color(255, 126, 23), 3));
             });
         }
-        int res = 1;
+
+        float res = 1.0f;
         boolean hasInputs = false;
+
         for (Node node : inputXNodes) {
-            if (node != null && node instanceof IntegerNode) {
+            if (node instanceof IntegerNode) {
                 res *= ((IntegerNode) node).getValue();
+                hasInputs = true;
+            } else if (node instanceof FloatNode) {
+                res *= ((FloatNode) node).getValue();
                 hasInputs = true;
             }
         }
+
         if (!hasInputs) {
-            res = 0;
+            res = 0.0f;
         }
 
         setResult(res);

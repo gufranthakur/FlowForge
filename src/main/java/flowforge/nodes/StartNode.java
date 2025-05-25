@@ -45,7 +45,7 @@ public class StartNode extends Node{
                 for (Node node : programPanel.nodes) {
                     node.restoreBorder();
                 }
-                this.setBorder(new LineBorder(new Color(255, 126, 23), 3));
+                this.setStepExecutedBorder();
             });
         }
 

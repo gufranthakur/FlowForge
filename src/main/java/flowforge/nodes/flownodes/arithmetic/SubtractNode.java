@@ -1,6 +1,6 @@
 package flowforge.nodes.flownodes.arithmetic;
 
-
+import flowforge.nodes.variables.FloatNode;
 import flowforge.ui.panels.ProgramPanel;
 import flowforge.nodes.Node;
 import flowforge.nodes.flownodes.PrintNode;
@@ -13,24 +13,23 @@ import java.awt.*;
 
 public class SubtractNode extends Node {
     private ProgramPanel programPanel;
-    private Integer result;
+    private float result;
 
     public SubtractNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
         this.programPanel = programPanel;
         this.setSize(240, 180);
-        inputXButton.setText("Integers");
+        inputXButton.setText("Numbers");
         outputXButton.setText("Difference");
     }
 
-    public Integer getResult() {
+    public float getResult() {
         return result;
     }
 
-    public void setResult(Integer result) {
+    public void setResult(float result) {
         this.result = result;
     }
-
 
     @Override
     public void execute(boolean isStepExecution) {
@@ -49,13 +48,26 @@ public class SubtractNode extends Node {
                 this.setBorder(new LineBorder(new Color(255, 126, 23), 3));
             });
         }
-        if (inputXNodes.isEmpty()) return;
-        int difference = ((IntegerNode)inputXNodes.get(0)).getValue();
 
+        if (inputXNodes.isEmpty()) return;
+
+        float difference = 0.0f;
+
+        // Get the first value
+        Node firstNode = inputXNodes.get(0);
+        if (firstNode instanceof IntegerNode) {
+            difference = ((IntegerNode) firstNode).getValue();
+        } else if (firstNode instanceof FloatNode) {
+            difference = ((FloatNode) firstNode).getValue();
+        }
+
+        // Subtract all subsequent values
         for (int i = 1; i < inputXNodes.size(); i++) {
             Node node = inputXNodes.get(i);
-            if (node != null && node instanceof IntegerNode) {
-                difference -= ((IntegerNode)node).getValue();
+            if (node instanceof IntegerNode) {
+                difference -= ((IntegerNode) node).getValue();
+            } else if (node instanceof FloatNode) {
+                difference -= ((FloatNode) node).getValue();
             }
         }
 
@@ -69,6 +81,4 @@ public class SubtractNode extends Node {
             if (node != null) node.execute(isStepExecution);
         }
     }
-
-
 }

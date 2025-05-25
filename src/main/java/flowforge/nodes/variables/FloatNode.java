@@ -10,16 +10,19 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 
-public class IntegerNode extends Node {
+public class FloatNode extends Node {
     private ProgramPanel programPanel;
     public JSpinner spinner;
 
-    public IntegerNode(String title, ProgramPanel programPanel, Integer intValue) {
+    public FloatNode(String title, ProgramPanel programPanel, Float floatValue) {
         super(title, programPanel);
         this.programPanel = programPanel;
         this.setSize(200, 100);
 
-        spinner = new JSpinner();
+        SpinnerNumberModel model = new SpinnerNumberModel(1.0, 0.0, 10.0, 0.1);
+
+        spinner = new JSpinner(model);
+        spinner.setEditor(new JSpinner.NumberEditor(spinner, "0.0"));
         spinner.setPreferredSize(new Dimension(100, 30));
         resetConnectionsButton.setVisible(false);
 
@@ -53,13 +56,15 @@ public class IntegerNode extends Node {
         for (Node node : inputXNodes) {
             if (node != null) {
                 switch (node) {
-                    case InputNode inputNode -> setIntValue(Integer.valueOf(inputNode.inputValue));
-                    case AddNode addNode -> setIntValue((int) addNode.getResult());
-                    case SubtractNode subtractNode -> setIntValue((int) subtractNode.getResult());
-                    case MultiplyNode multiplyNode -> setIntValue((int) multiplyNode.getResult());
-                    case DivideNode divideNode -> setIntValue((int) divideNode.getResult());
-                    case ModulusNode modulusNode -> setIntValue((int) modulusNode.getResult());
-                    default -> setIntValue((Integer) spinner.getValue());
+                    case InputNode inputNode -> setFloatValue(Float.parseFloat(inputNode.inputValue));
+                    case AddNode addNode -> setFloatValue(addNode.getResult());
+                    case SubtractNode subtractNode -> setFloatValue(subtractNode.getResult());
+                    case MultiplyNode multiplyNode -> setFloatValue(multiplyNode.getResult());
+                    case DivideNode divideNode -> setFloatValue(divideNode.getResult());
+                    case ModulusNode modulusNode -> setFloatValue(modulusNode.getResult());
+                    default -> setFloatValue(((Double) spinner.getValue()).floatValue());
+
+
                 }
             }
         }
@@ -70,13 +75,13 @@ public class IntegerNode extends Node {
 
     }
 
-    public Integer getValue() {
-        return programPanel.integers.get(title);
+    public float getValue() {
+        return programPanel.floats.get(title);
     }
 
-    public void setIntValue(Integer intValue) {
-        programPanel.integers.put(title, intValue);
-        System.out.println(programPanel.integers);
+    public void setFloatValue(float floatValue) {
+        programPanel.floats.put(title, floatValue);
+        System.out.println(programPanel.floats);
     }
 
 

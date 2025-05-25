@@ -18,8 +18,7 @@ public class EvalNode extends Node {
 
     private ProgramPanel programPanel;
     public JTextField expressionField;
-
-    private Integer result;
+    private float result;
 
     public EvalNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
@@ -52,19 +51,21 @@ public class EvalNode extends Node {
                 this.setBorder(new LineBorder(new Color(255, 126, 23), 3));
             });
         }
-        //-----------
 
         String expressionStr = expressionField.getText().trim();
         if (!expressionStr.isEmpty()) {
-            expressionStr = replaceVariables(expressionStr);
-
-            Expression expression = new ExpressionBuilder(expressionStr).build();
-            float value = (float) expression.evaluate();
-
-            result = (int) value;
+            try {
+                expressionStr = replaceVariables(expressionStr);
+                Expression expression = new ExpressionBuilder(expressionStr).build();
+                double doubleResult = expression.evaluate();
+                result = (float) doubleResult;
+            } catch (Exception e) {
+                result = Float.NaN;
+                System.err.println("Error evaluating expression: " + e.getMessage());
+            }
+        } else {
+            result = 0.0f;
         }
-
-        //-----------
 
         for (Node node : outputXNodes) {
             if (node != null && !(node instanceof PrintNode)) node.execute(isStepExecution);
@@ -74,25 +75,26 @@ public class EvalNode extends Node {
         }
     }
 
-
-
     private String replaceVariables(String expression) {
-        // Pattern to match variables wrapped in curly braces: {varName}
         Pattern pattern = Pattern.compile("\\{([^{}]+)\\}");
         Matcher matcher = pattern.matcher(expression);
         StringBuffer result = new StringBuffer();
 
         while (matcher.find()) {
             String varName = matcher.group(1);
-            String replacement = getVariableValue(varName);
-            matcher.appendReplacement(result, replacement);
+            try {
+                String replacement = getVariableValue(varName);
+                matcher.appendReplacement(result, replacement);
+            } catch (RuntimeException e) {
+                matcher.appendReplacement(result, "0");
+                System.err.println("Variable not found, using 0: " + varName);
+            }
         }
         matcher.appendTail(result);
         return result.toString();
     }
 
     private String getVariableValue(String varName) {
-        // Check all variable maps and return the value if found
         if (programPanel.integers.containsKey(varName)) {
             return programPanel.integers.get(varName).toString();
         } else if (programPanel.floats.containsKey(varName)) {
@@ -104,8 +106,7 @@ public class EvalNode extends Node {
         }
     }
 
-
-    public int getResult() {
+    public float getResult() {
         return result;
     }
 }
