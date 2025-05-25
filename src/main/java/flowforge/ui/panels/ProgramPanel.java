@@ -99,10 +99,10 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     if (selectedNode == null) return;
                     selectedNode.isBeingConnected = false;
-                    //selectedNode.isBeingXConnected = false;
+                    selectedNode.isBeingXConnected = false;
 
-                    selectedNode.outputXButton.setSelected(true);
-                    selectedNode.outputButton.setSelected(true);
+                    selectedNode.outputXButton.setSelected(false);
+                    selectedNode.outputButton.setSelected(false);
                 }
 
             }

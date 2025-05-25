@@ -43,11 +43,16 @@ public abstract class Node extends JPanel {
     public boolean isBeingConnected = false;
     public boolean isBeingXConnected = false;
     public boolean isMinimized = false;
+    public boolean isHighlighted = false;
+    public boolean isCommented = false;
+    public String comment;
 
-    public Color connectionColor = Color.WHITE;
-    public Color connectionColor2 = Color.WHITE;
-    public Color connectionXColor = new Color(253, 108, 46);
-    public Color connectionXColor2 = new Color(205, 183, 37);
+//    public Color connectionColor = Color.WHITE;
+//    public Color connectionColor2 = Color.WHITE;
+    public Color connectionColor = new Color(89, 105, 239);
+    public Color connectionColor2 = new Color(93, 168, 237);
+    public Color connectionXColor = new Color(237, 121, 66);
+    public Color connectionXColor2 = new Color(220, 197, 56);
 
     public String nodeType;
     public String title;
@@ -64,7 +69,9 @@ public abstract class Node extends JPanel {
                 programPanel.selectedNode = Node.this;
                 programPanel.flowForge.controlPanel.updatePropertiesPanel(Node.this);
                 if (SwingUtilities.isRightMouseButton(e)) {
-                    programPanel.nodePopupMenu.show(Node.this, e.getX() + 10, e.getY() + 10);
+                    programPanel.nodePopupMenu.display(Node.this,
+                            e.getX() + 10, e.getY() + 10,
+                            isMinimized, isHighlighted, isCommented);
                 }
             }
 
@@ -210,6 +217,7 @@ public abstract class Node extends JPanel {
 
         outputButton.addActionListener(e -> {
             this.isBeingConnected = true;
+            isBeingXConnected = false;
 
             programPanel.selectedNode = Node.this;
             programPanel.flowForge.controlPanel.updatePropertiesPanel(Node.this);
@@ -236,12 +244,13 @@ public abstract class Node extends JPanel {
         });
 
         outputXButton.addActionListener(e -> {
-            this.isBeingConnected = false;
+            isBeingConnected = false;
+            isBeingXConnected = true;
 
             programPanel.selectedNode = Node.this;
             programPanel.flowForge.controlPanel.updatePropertiesPanel(Node.this);
 
-            isBeingXConnected = true;
+
 
             for (Node node : programPanel.nodes) {
                 node.inputButton.setEnabled(false);
@@ -351,14 +360,23 @@ public abstract class Node extends JPanel {
         nodeHeight = getHeight();
     }
 
-    public void restoreDimensions(int x, int y, int width, int height) {
+    public void restoreDimensions(boolean isMinimized, int x, int y) {
         setLocation(x, y);
-        setSize(width, height);
+
+        if (isMinimized) {
+            setSize(150, 40);
+        } else {
+            setSize(200, 150);
+        }
         updateNodeDimensions();
     }
 
     public void restoreBorder() {
-        Border coloredBorder = BorderFactory.createLineBorder(getBackground().brighter(), 2);
+        Border coloredBorder;
+
+        if (!isHighlighted) coloredBorder = BorderFactory.createLineBorder(getBackground().brighter(), 2);
+        else coloredBorder = BorderFactory.createLineBorder(programPanel.flowForge.theme, 2);
+
         TitledBorder titledBorder = BorderFactory.createTitledBorder(coloredBorder, title);
         titledBorder.setTitleColor(Color.WHITE);
 

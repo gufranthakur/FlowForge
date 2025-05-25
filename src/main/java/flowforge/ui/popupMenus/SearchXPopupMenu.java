@@ -171,6 +171,8 @@ public class SearchXPopupMenu extends JPopupMenu {
 
     private void addNodeThroughSearch(DefaultMutableTreeNode selectedNode) {
 
+        if (selectedNode == null) return;
+
         String selected = selectedNode.getUserObject().toString();
 
         switch (selected) {

@@ -64,8 +64,11 @@ public class DataManager {
                         nodeObj.addProperty("title", node.getTitle());
                         nodeObj.addProperty("x", node.getNodeX());
                         nodeObj.addProperty("y", node.getNodeY());
-                        nodeObj.addProperty("width", node.getNodeWidth());
-                        nodeObj.addProperty("height", node.getNodeHeight());
+
+                        nodeObj.addProperty("isHighlighted", node.isHighlighted);
+                        nodeObj.addProperty("isMinimized", node.isMinimized);
+                        nodeObj.addProperty("isCommented", node.isCommented);
+                        nodeObj.addProperty("comment", node.comment);
 
                         // Store primary output connections (flow path)
                         JsonArray outputConnections = new JsonArray();
@@ -259,19 +262,45 @@ public class DataManager {
                     String title = nodeObj.get("title").getAsString();
                     int x = nodeObj.get("x").getAsInt();
                     int y = nodeObj.get("y").getAsInt();
-                    int width = nodeObj.get("width").getAsInt();
-                    int height = nodeObj.get("height").getAsInt();
 
-                    JsonObject properties = nodeObj.getAsJsonObject("properties");
+                    try {
+                        boolean isHighlighted = nodeObj.get("isHighlighted").getAsBoolean();
+                        boolean isCommented = nodeObj.get("isCommented").getAsBoolean();
+                        boolean isMinimized = nodeObj.get("isMinimized").getAsBoolean();
 
-                    // Create the node with its specific type and properties
-                    Node node = createNode(type, title, properties);
+                        String comment = null;
 
-                    if (node != null) {
-                        node.restoreDimensions(x, y, width, height);
-                        newNodes.add(node);
-                        idToNodeMap.put(id, node);
+                        if (isCommented) comment = nodeObj.get("comment").getAsString();
+
+                        JsonObject properties = nodeObj.getAsJsonObject("properties");
+
+                        // Create the node with its specific type and properties
+                        Node node = createNode(type, title, properties);
+
+                        if (node != null) {
+                            if (!node.isMinimized) node.restoreDimensions(isMinimized, x, y);
+                            newNodes.add(node);
+                            idToNodeMap.put(id, node);
+
+                            if (isCommented) {
+                                node.isCommented = true;
+                                node.comment = comment;
+                                node.setToolTipText(comment);
+                            }
+                            if (isHighlighted) {
+                                node.isHighlighted = true;
+                                node.restoreBorder();
+                            }
+                            if (isMinimized) {
+                                node.isMinimized = true;
+                            }
+                        }
+                    } catch (NullPointerException e) {
+                        JOptionPane.showMessageDialog(null, "The file you opened was for a " + "\n" + "older version of FlowForge",
+                                "Fatal file error", JOptionPane.ERROR_MESSAGE);
+                        return;
                     }
+
                 }
 
                 // Add all nodes to the program panel
