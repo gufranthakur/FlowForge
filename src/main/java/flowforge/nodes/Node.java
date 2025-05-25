@@ -216,7 +216,7 @@ public abstract class Node extends JPanel {
         });
 
         outputButton.addActionListener(e -> {
-            this.isBeingConnected = true;
+            isBeingConnected = true;
             isBeingXConnected = false;
 
             programPanel.selectedNode = Node.this;
@@ -249,8 +249,6 @@ public abstract class Node extends JPanel {
 
             programPanel.selectedNode = Node.this;
             programPanel.flowForge.controlPanel.updatePropertiesPanel(Node.this);
-
-
 
             for (Node node : programPanel.nodes) {
                 node.inputButton.setEnabled(false);

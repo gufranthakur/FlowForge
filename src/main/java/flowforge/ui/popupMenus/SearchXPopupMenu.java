@@ -233,12 +233,19 @@ public class SearchXPopupMenu extends JPopupMenu {
         if (programPanel.selectedNode.isBeingXConnected) {
             programPanel.startXConnection(programPanel.selectedNode);
             programPanel.finishXConnection(programPanel.nodes.getLast());
+
+            programPanel.selectedNode.isBeingXConnected = false;
         }
 
         programPanel.selectedNode = null;
     }
 
     public boolean variableAlreadyExists(String varName) {
+
+        if (varName.isEmpty()) {
+            return true;
+        }
+
         Enumeration<TreeNode> enumeration = programPanel.flowForge.controlPanel.variableRoot.depthFirstEnumeration();
 
         while (enumeration.hasMoreElements()) {

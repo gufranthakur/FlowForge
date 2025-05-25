@@ -65,7 +65,7 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
                 requestFocusInWindow();
 
                 if (selectedNode == null) return;
-                if (selectedNode.isBeingConnected) { // || selectedNode.isBeingXConnected
+                if (selectedNode.isBeingConnected) {
                     searchPopupMenu.displayMenu(getDesktopPane(), currentMouseLocation.x, currentMouseLocation.y, false);
                 } else if (selectedNode.isBeingXConnected) {
                     searchXPopupMenu.show(getDesktopPane(), currentMouseLocation.x, currentMouseLocation.y);
