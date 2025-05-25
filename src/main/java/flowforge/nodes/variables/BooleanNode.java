@@ -17,7 +17,7 @@ public class BooleanNode extends Node {
     public BooleanNode(String title, ProgramPanel programPanel, Boolean booleanValue) {
         super(title, programPanel);
         this.programPanel = programPanel;
-        this.setSize(260, 110);
+        this.setSize(200, 100);
 
         checkBox = new JCheckBox("Set value : False");
 
@@ -36,6 +36,7 @@ public class BooleanNode extends Node {
         outputXButton.setText("Get");
 
         JPanel wrapperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        wrapperPanel.setBackground(getBackground());
         wrapperPanel.add(checkBox);
 
         contentPanel.add(wrapperPanel, BorderLayout.NORTH);

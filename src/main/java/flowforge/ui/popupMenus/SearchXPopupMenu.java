@@ -2,6 +2,9 @@ package flowforge.ui.popupMenus;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.fonts.inter.FlatInterFont;
+import flowforge.nodes.variables.BooleanNode;
+import flowforge.nodes.variables.IntegerNode;
+import flowforge.nodes.variables.StringNode;
 import flowforge.ui.panels.ProgramPanel;
 
 import javax.swing.*;
@@ -12,15 +15,17 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
-public class SearchPopupMenu extends JPopupMenu {
+public class SearchXPopupMenu extends JPopupMenu {
 
     private ProgramPanel programPanel;
 
@@ -29,7 +34,7 @@ public class SearchPopupMenu extends JPopupMenu {
     private DefaultMutableTreeNode root;
 
 
-    public SearchPopupMenu(ProgramPanel programPanel) {
+    public SearchXPopupMenu(ProgramPanel programPanel) {
         this.programPanel = programPanel;
 
         initList();
@@ -39,36 +44,13 @@ public class SearchPopupMenu extends JPopupMenu {
     }
     private void initList() {
         nodesList = new ArrayList<>();
-        nodesList.add("Print");
-        nodesList.add("Branch");
-        nodesList.add("Input");
-        nodesList.add("Delay");
-        nodesList.add("Loop");
-        nodesList.add("Conditional-Loop");
+        nodesList.add("Create Integer");
+        nodesList.add("Create String");
+        nodesList.add("Create Boolean");
 
-        nodesList.add("Add");
-        nodesList.add("Subtract");
-        nodesList.add("Multiply");
-        nodesList.add("Divide");
-        nodesList.add("Modulus");
-        nodesList.add("Random");
-
-        nodesList.add("Equals to");
-        nodesList.add("Greater than");
-        nodesList.add("Less than");
-        nodesList.add("Greater than or equal to");
-        nodesList.add("Less than or equal to");
-        nodesList.add("Not equal to");
-
-        nodesList.add("NOT");
-        nodesList.add("AND");
-        nodesList.add("OR");
-        nodesList.add("NAND");
-        nodesList.add("NOR");
-        nodesList.add("XOR");
-
-        nodesList.add("Route");
-        nodesList.add("Recurse");
+        nodesList.addAll(programPanel.strings.keySet());
+        nodesList.addAll(programPanel.integers.keySet());
+        nodesList.addAll(programPanel.booleans.keySet());
     }
 
 
@@ -88,15 +70,17 @@ public class SearchPopupMenu extends JPopupMenu {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                addNodeThroughSearch();
+                DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) searchTree.getLastSelectedPathComponent();
+                addNodeThroughSearch(selectedNode);
             }
         });
         searchTree.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 super.keyPressed(e);
+                DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) searchTree.getLastSelectedPathComponent();
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    addNodeThroughSearch();
+                    addNodeThroughSearch(selectedNode);
                 }
             }
         });
@@ -185,34 +169,99 @@ public class SearchPopupMenu extends JPopupMenu {
         revalidate();
     }
 
-    private void addNodeThroughSearch() {
-        programPanel.flowForge.controlPanel.getSelectedNodeAtTree(searchTree, false);
+    private void addNodeThroughSearch(DefaultMutableTreeNode selectedNode) {
+
+        String selected = selectedNode.getUserObject().toString();
+
+        switch (selected) {
+            case "Create Integer" : {
+                String varName = JOptionPane.showInputDialog(null, "Enter Variable name");
+                if (!variableAlreadyExists(varName)) {
+                    programPanel.addVariable(varName, "Integer");
+                    programPanel.addNewNode(new IntegerNode(varName, programPanel, 0), false);
+                    reloadVariableTree();
+                }
+            }
+            break;
+            case "Create String" : {
+                String varName = JOptionPane.showInputDialog(null, "Enter Variable name");
+                if (!variableAlreadyExists(varName)) {
+                    programPanel.addVariable(varName, "String");
+                    programPanel.addNewNode(new StringNode(varName, programPanel, ""), false);
+                    reloadVariableTree();
+                }
+            }
+            break;
+            case "Create Boolean" : {
+                String varName = JOptionPane.showInputDialog(null, "Enter Variable name");
+                if (!variableAlreadyExists(varName)) {
+                    programPanel.addVariable(varName, "Boolean");
+                    programPanel.addNewNode(new BooleanNode(varName, programPanel, false), false);
+                    reloadVariableTree();
+                }
+            }
+            break;
+        }
+
+
+        if (programPanel.integers.containsKey(selected)) {
+            programPanel.addNewNode(new IntegerNode(selected, programPanel, 0), false);
+        } else if (programPanel.strings.containsKey(selected)) {
+            programPanel.addNewNode(new StringNode(selected, programPanel, ""), false);
+        } else if (programPanel.booleans.containsKey(selected)) {
+            programPanel.addNewNode(new BooleanNode(selected, programPanel, false), false);
+        }
+
         getThis().setVisible(false);
 
-
-        if (programPanel.selectedNode.isBeingConnected) {
-            programPanel.startConnection(programPanel.selectedNode);
-            programPanel.finishConnection(programPanel.nodes.getLast());
-
-            programPanel.selectedNode.outputButton.setSelected(true);
+        if (programPanel.selectedNode.isBeingXConnected) {
+            programPanel.startXConnection(programPanel.selectedNode);
+            programPanel.finishXConnection(programPanel.nodes.getLast());
         }
-//        if (programPanel.selectedNode.isBeingXConnected) {
-//            programPanel.startXConnection(programPanel.selectedNode);
-//            programPanel.finishXConnection(programPanel.nodes.getLast());
-//        }
-
 
         programPanel.selectedNode = null;
     }
 
+    public boolean variableAlreadyExists(String varName) {
+        Enumeration<TreeNode> enumeration = programPanel.flowForge.controlPanel.variableRoot.depthFirstEnumeration();
+
+        while (enumeration.hasMoreElements()) {
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) enumeration.nextElement();
+            if (varName.equals(node.getUserObject().toString())) {
+                JOptionPane.showMessageDialog(null,
+                        "Variable name already in use", "Error", JOptionPane.ERROR_MESSAGE);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void reloadVariableTree() {
+        programPanel.flowForge.controlPanel.loadVariables();
+        programPanel.flowForge.controlPanel.refreshTree();
+
+        repopulateSearchTree();
+    }
+
+    private void repopulateSearchTree() {
+        DefaultTreeModel model = (DefaultTreeModel) searchTree.getModel();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+        root.removeAllChildren();
+        model.reload();
+
+        initList();
+
+        for (String s : nodesList) {
+            root.add(new DefaultMutableTreeNode(s));
+        }
+
+        model.reload();
+        repaint();
+    }
 
 
     private JPopupMenu getThis() {
         return this;
     }
 
-    public void displayMenu(JDesktopPane desktopPane, int x, int y, boolean isXConnection) {
-        show(desktopPane, x, y);
-
-    }
 }

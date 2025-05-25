@@ -19,12 +19,12 @@ public class StringNode extends Node {
     public StringNode(String title, ProgramPanel programPanel, String stringValue) {
         super(title, programPanel);
         this.programPanel = programPanel;
-        this.setSize(260, 110);
+        this.setSize(200, 100);
 
-        JPanel wrapperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
         textField = new JTextField();
         textField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Set value...");
-        textField.setPreferredSize(new Dimension(150, 30));
+        textField.setPreferredSize(new Dimension(120, 30));
 
         inputButton.setVisible(false);
         outputButton.setVisible(false);
@@ -32,10 +32,18 @@ public class StringNode extends Node {
         inputXButton.setText("Set");
         outputXButton.setText("Get");
 
-        wrapperPanel.add(resetConnectionsButton);
-        wrapperPanel.add(textField);
-        contentPanel.add(wrapperPanel, BorderLayout.NORTH);
+        topPanel.add(textField);
 
+    }
+    @Override
+    public Point getInputXPoint() {
+        if (isMinimized) return new Point(getX(), getY() + 15);
+        return new Point(getX(), getY() + getHeight()/2 + 20);
+    }
+    @Override
+    public Point getOutputXPoint() {
+        if (isMinimized) return new Point(getX() + getWidth(), getY() + 15);
+        return new Point(getX() + getWidth(), getY() + getHeight() / 2 + 20);
     }
 
     @Override

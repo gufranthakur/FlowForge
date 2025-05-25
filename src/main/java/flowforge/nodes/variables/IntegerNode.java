@@ -17,10 +17,11 @@ public class IntegerNode extends Node {
     public IntegerNode(String title, ProgramPanel programPanel, Integer intValue) {
         super(title, programPanel);
         this.programPanel = programPanel;
-        this.setSize(170, 100);
+        this.setSize(200, 100);
 
-        JPanel wrapperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         spinner = new JSpinner();
+        spinner.setPreferredSize(new Dimension(100, 30));
+        resetConnectionsButton.setVisible(false);
 
         inputButton.setVisible(false);
         outputButton.setVisible(false);
@@ -28,8 +29,8 @@ public class IntegerNode extends Node {
         inputXButton.setText("Set");
         outputXButton.setText("Get");
 
-        wrapperPanel.add(spinner);
-        contentPanel.add(wrapperPanel, BorderLayout.NORTH);
+        topPanel.add(spinner);
+
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.formdev.flatlaf.FlatClientProperties;
 import flowforge.ui.panels.ProgramPanel;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
@@ -25,7 +26,6 @@ public abstract class Node extends JPanel {
     public JRadioButton outputXButton;
     public JButton resetConnectionsButton;
 
-    TitledBorder titledBorder;
     public JPanel contentPanel;
     public JPanel topPanel;
     public JPanel outputsPanel;
@@ -41,6 +41,7 @@ public abstract class Node extends JPanel {
     private boolean isDragging = false;
 
     public boolean isBeingConnected = false;
+    public boolean isBeingXConnected = false;
     public boolean isMinimized = false;
 
     public Color connectionColor = Color.WHITE;
@@ -126,8 +127,7 @@ public abstract class Node extends JPanel {
         putClientProperty(FlatClientProperties.STYLE, "arc : 20");
 
         // Create titled border with the title
-        titledBorder = BorderFactory.createTitledBorder(title);
-        titledBorder.setTitleColor(Color.WHITE);
+
 
         restoreBorder();
 
@@ -154,7 +154,7 @@ public abstract class Node extends JPanel {
         resetConnectionsButton.setPreferredSize(new Dimension(30, 25));
 
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
-        topPanel.add(resetConnectionsButton);
+        //topPanel.add(resetConnectionsButton);
         topPanel.setOpaque(false);
 
         inputsPanel.setLayout(new BoxLayout(inputsPanel, BoxLayout.Y_AXIS));
@@ -185,7 +185,7 @@ public abstract class Node extends JPanel {
     private void styleRadioButton(JRadioButton button, boolean isXConnection) {
         button.setOpaque(false);
         button.setForeground(Color.WHITE);
-        button.setFont(button.getFont().deriveFont(12f));
+        button.setFont(button.getFont().deriveFont(14f));
 
         if (isXConnection) {
             button.putClientProperty(FlatClientProperties.STYLE,
@@ -198,13 +198,14 @@ public abstract class Node extends JPanel {
         inputButton.addActionListener(e -> {
             programPanel.selectedNode = Node.this;
             programPanel.flowForge.controlPanel.updatePropertiesPanel(Node.this);
+
             for (Node node : programPanel.nodes) {
                 node.inputXButton.setEnabled(true);
                 node.outputXButton.setEnabled(true);
             }
-            if (inputButton.isSelected()) {
-                programPanel.finishConnection(Node.this);
-            }
+
+            programPanel.finishConnection(Node.this);
+
         });
 
         outputButton.addActionListener(e -> {
@@ -212,13 +213,14 @@ public abstract class Node extends JPanel {
 
             programPanel.selectedNode = Node.this;
             programPanel.flowForge.controlPanel.updatePropertiesPanel(Node.this);
+
             for (Node node : programPanel.nodes) {
                 node.inputXButton.setEnabled(false);
                 node.outputXButton.setEnabled(false);
             }
-            if (outputButton.isSelected()) {
-                programPanel.startConnection(this);
-            }
+
+            programPanel.startConnection(this);
+
         });
 
         inputXButton.addActionListener(e -> {
@@ -228,9 +230,9 @@ public abstract class Node extends JPanel {
                 node.inputButton.setEnabled(true);
                 node.outputButton.setEnabled(true);
             }
-            if (inputXButton.isSelected()) {
-                programPanel.finishXConnection(Node.this);
-            }
+
+            programPanel.finishXConnection(Node.this);
+
         });
 
         outputXButton.addActionListener(e -> {
@@ -238,16 +240,19 @@ public abstract class Node extends JPanel {
 
             programPanel.selectedNode = Node.this;
             programPanel.flowForge.controlPanel.updatePropertiesPanel(Node.this);
-            if (outputButton.isSelected()) this.isBeingConnected = true;
+
+            isBeingXConnected = true;
+
             for (Node node : programPanel.nodes) {
                 node.inputButton.setEnabled(false);
                 node.outputButton.setEnabled(false);
             }
-            if(outputXButton.isSelected()) {
-                programPanel.startXConnection(this);
-            }
+
+            programPanel.startXConnection(this);
+
         });
 
+        resetConnectionsButton.setBackground(programPanel.flowForge.theme);
         resetConnectionsButton.addActionListener(e -> {
             disconnectAll();
             programPanel.repaint();
@@ -353,15 +358,27 @@ public abstract class Node extends JPanel {
     }
 
     public void restoreBorder() {
+        Border coloredBorder = BorderFactory.createLineBorder(getBackground().brighter(), 2);
+        TitledBorder titledBorder = BorderFactory.createTitledBorder(coloredBorder, title);
+        titledBorder.setTitleColor(Color.WHITE);
+
         setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createEmptyBorder(5, 5, 5, 5),
                 titledBorder
         ));
     }
 
+    public void highlightNode() {
+
+    }
+
     public void setStepExecutedBorder() {
+        Border coloredBorder = BorderFactory.createLineBorder(new Color(229, 117, 42), 2);
+        TitledBorder titledBorder = BorderFactory.createTitledBorder(coloredBorder, title);
+        titledBorder.setTitleColor(Color.WHITE);
+
         setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(229, 117, 42), 2),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5),
                 titledBorder
         ));
     }
@@ -375,7 +392,7 @@ public abstract class Node extends JPanel {
 
     public Point getInputPoint() {
         if (isMinimized) return new Point(getX(), getY() + 10);
-        return new Point(getX(), getY() + getHeight()/2 + 20);
+        return new Point(getX(), getY() + getHeight()/2 + 10);
     }
 
     public Point getOutputPoint() {
@@ -384,11 +401,13 @@ public abstract class Node extends JPanel {
     }
 
     public Point getInputXPoint() {
-        return new Point(getX(), getY() + getHeight()/2 + 20);
+        if (isMinimized) return new Point(getX(), getY() + 25);
+        return new Point(getX(), getY() + getHeight()/2 + 30);
     }
 
     public Point getOutputXPoint() {
-        return new Point(getX() + getWidth(), getY() + getHeight()/2 + 20);
+        if (isMinimized) return new Point(getX() + getWidth(), getY() + 25);
+        return new Point(getX() + getWidth(), getY() + getHeight() / 2 + 40);
     }
 
     public abstract void execute(boolean isStepExecution);

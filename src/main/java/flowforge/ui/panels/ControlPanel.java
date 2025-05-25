@@ -254,9 +254,7 @@ public class ControlPanel {
                 }
             }
 
-
-
-            flowForge.programPanel.addVariable(variableName);
+            flowForge.programPanel.addVariable(variableName, null);
 
             loadVariables();
             refreshTree();
@@ -343,7 +341,7 @@ public class ControlPanel {
         variableTree.expandRow(0);
     }
 
-    private void loadVariables() {
+    public void loadVariables() {
 
         integerNode.removeAllChildren();
         stringNode.removeAllChildren();
@@ -372,7 +370,7 @@ public class ControlPanel {
         }
     }
 
-    private void refreshTree() {
+    public void refreshTree() {
         java.util.Enumeration<javax.swing.tree.TreePath> expanded = variableTree.getExpandedDescendants(new javax.swing.tree.TreePath(root));
 
         DefaultTreeModel model = (DefaultTreeModel) variableTree.getModel();

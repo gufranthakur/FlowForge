@@ -16,7 +16,7 @@ public class DelayNode extends Node {
     public DelayNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
         this.programPanel = programPanel;
-        this.setSize(260, 150);
+        this.setSize(200, 150);
 
         JPanel wrapperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1000, 0, Integer.MAX_VALUE, 100);
@@ -29,6 +29,7 @@ public class DelayNode extends Node {
 
         inputXButton.setText("Delay Value");
 
+        wrapperPanel.setBackground(getBackground());
         wrapperPanel.add(resetConnectionsButton);
         wrapperPanel.add(delaySpinner);
         wrapperPanel.add(new JLabel("ms"));

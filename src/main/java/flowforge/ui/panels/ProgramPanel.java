@@ -5,6 +5,7 @@ import flowforge.ui.popupMenus.NodePopupMenu;
 import flowforge.ui.popupMenus.SearchPopupMenu;
 import flowforge.nodes.Node;
 import flowforge.nodes.StartNode;
+import flowforge.ui.popupMenus.SearchXPopupMenu;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,6 +13,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class ProgramPanel extends JDesktopPane implements KeyListener {
 
@@ -32,6 +34,7 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
 
     public NodePopupMenu nodePopupMenu;
     public SearchPopupMenu searchPopupMenu;
+    public SearchXPopupMenu searchXPopupMenu;
 
     private Point currentMouseLocation;
     public boolean isExecutingSteps = false;
@@ -43,7 +46,7 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
     public ProgramPanel(FlowForge flowForge) {
         this.flowForge = flowForge;
         this.setLocation(0, 0);
-        this.setSize(2000, 1000);
+        this.setSize(5000, 5000);
         this.setBackground(bgColor);
         this.addKeyListener(this);
 
@@ -54,6 +57,7 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
 
         nodePopupMenu = new NodePopupMenu(this);
         searchPopupMenu = new SearchPopupMenu(this);
+        searchXPopupMenu = new SearchXPopupMenu(this);
 
         this.addMouseListener(new MouseAdapter() {
             @Override
@@ -62,7 +66,9 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
 
                 if (selectedNode == null) return;
                 if (selectedNode.isBeingConnected) { // || selectedNode.isBeingXConnected
-                    searchPopupMenu.show(getDesktopPane(), currentMouseLocation.x, currentMouseLocation.y);
+                    searchPopupMenu.displayMenu(getDesktopPane(), currentMouseLocation.x, currentMouseLocation.y, false);
+                } else if (selectedNode.isBeingXConnected) {
+                    searchXPopupMenu.show(getDesktopPane(), currentMouseLocation.x, currentMouseLocation.y);
                 }
 
                 for (Node node : nodes) {
@@ -95,8 +101,8 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
                     selectedNode.isBeingConnected = false;
                     //selectedNode.isBeingXConnected = false;
 
-                    selectedNode.outputXButton.setSelected(false);
-                    selectedNode.outputButton.setSelected(false);
+                    selectedNode.outputXButton.setSelected(true);
+                    selectedNode.outputButton.setSelected(true);
                 }
 
             }
@@ -139,8 +145,8 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
     public void finishConnection(Node targetNode) {
         if (sourceNode != null && sourceNode != targetNode) {
             sourceNode.connectTo(targetNode);
-            sourceNode.outputButton.setSelected(false);
-            targetNode.inputButton.setSelected(false);
+            sourceNode.outputButton.setSelected(true);
+            targetNode.inputButton.setSelected(true);
             sourceNode = null;
             repaint();
         }
@@ -153,8 +159,8 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
     public void finishXConnection(Node targetNode) {
         if (sourceNode != null && sourceNode != targetNode) {
             sourceNode.connectToX(targetNode);
-            sourceNode.outputXButton.setSelected(false);
-            targetNode.inputXButton.setSelected(false);
+            sourceNode.outputXButton.setSelected(true);
+            targetNode.inputXButton.setSelected(true);
             sourceNode = null;
         }
     }
@@ -233,13 +239,13 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
         if (selectedNode == null) return;
 
 
-        if (selectedNode.isBeingConnected && selectedNode.outputButton.isSelected()) {
+        if (selectedNode.isBeingConnected) {
             selectedNode.drawCurvedGradientLine(g2D, selectedNode.getOutputPoint(),
                     currentMouseLocation,
                     selectedNode.connectionColor, selectedNode.connectionColor2);
         }
 
-        if (selectedNode.outputXButton.isSelected()) { //selectedNode.isBeingXConnected &&
+        if (selectedNode.isBeingXConnected) {
             selectedNode.drawCurvedGradientLine(g2D, selectedNode.getOutputXPoint(),
                     currentMouseLocation,
                     selectedNode.connectionXColor, selectedNode.connectionXColor2);
@@ -253,16 +259,25 @@ public class ProgramPanel extends JDesktopPane implements KeyListener {
         return nodes.size();
     }
 
-    public void addVariable(String varName) {
-        if (flowForge.controlPanel.variableBox.getSelectedItem().equals("Integer")) {
-            integers.put(varName, 0);
-        } else if (flowForge.controlPanel.variableBox.getSelectedItem().equals("String")) {
-            strings.put(varName, "");
-        } else if (flowForge.controlPanel.variableBox.getSelectedItem().equals("Boolean")) {
-            booleans.put(varName, false);
-        } else if (flowForge.controlPanel.variableBox.getSelectedItem().equals("Float")) {
-            floats.put(varName, 0.0f);
+    public void addVariable(String varName, String varType) {
+
+        if (varType == null) {
+            switch (Objects.requireNonNull(flowForge.controlPanel.variableBox.getSelectedItem()).toString()) {
+                case "Integer" -> integers.put(varName, 0);
+                case "String" -> strings.put(varName, "");
+                case "Boolean" -> booleans.put(varName, false);
+                case "Float" -> floats.put(varName, 0.0f);
+            }
+        } else {
+            switch (varType) {
+                case "Integer" -> integers.put(varName, 0);
+                case "String" -> strings.put(varName, "");
+                case "Boolean" -> booleans.put(varName, false);
+                case "Float" -> floats.put(varName, 0.0f);
+            }
         }
+
+
     }
 
     public JDesktopPane getDesktopPane() {

@@ -18,9 +18,9 @@ public class InputNode extends Node {
     public InputNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
         this.programPanel = programPanel;
-        this.setSize(210, 150);
+        this.setSize(200, 150);
         inputXButton.setVisible(false);
-        outputXButton.setText("Input Value");
+        outputXButton.setText("Value");
 
         inputField = new JTextField();
         inputField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Input");
