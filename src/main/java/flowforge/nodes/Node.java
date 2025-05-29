@@ -187,6 +187,8 @@ public abstract class Node extends JPanel {
         add(contentPanel, BorderLayout.CENTER);
 
         updateNodeDimensions();
+        repaint();
+        revalidate();
     }
 
     private void styleRadioButton(JRadioButton button, boolean isXConnection) {
@@ -204,6 +206,9 @@ public abstract class Node extends JPanel {
     private void loadActionListeners() {
         inputButton.addActionListener(e -> {
             programPanel.selectedNode = Node.this;
+
+            for (Node node : programPanel.nodes) node.isBeingConnected = false;
+
             programPanel.flowForge.controlPanel.updatePropertiesPanel(Node.this);
 
             for (Node node : programPanel.nodes) {
@@ -234,6 +239,9 @@ public abstract class Node extends JPanel {
         inputXButton.addActionListener(e -> {
             programPanel.selectedNode = Node.this;
             programPanel.flowForge.controlPanel.updatePropertiesPanel(Node.this);
+
+            for (Node node : programPanel.nodes) node.isBeingXConnected = false;
+
             for (Node node : programPanel.nodes) {
                 node.inputButton.setEnabled(true);
                 node.outputButton.setEnabled(true);

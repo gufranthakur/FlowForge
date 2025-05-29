@@ -234,7 +234,7 @@ public class SearchXPopupMenu extends JPopupMenu {
             programPanel.startXConnection(programPanel.selectedNode);
             programPanel.finishXConnection(programPanel.nodes.getLast());
 
-            programPanel.selectedNode.isBeingXConnected = false;
+            programPanel.selectedNode.outputXButton.setSelected(true);
         }
 
         programPanel.selectedNode = null;

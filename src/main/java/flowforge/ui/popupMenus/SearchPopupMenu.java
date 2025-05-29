@@ -211,8 +211,4 @@ public class SearchPopupMenu extends JPopupMenu {
         return this;
     }
 
-    public void displayMenu(JDesktopPane desktopPane, int x, int y, boolean isXConnection) {
-        show(desktopPane, x, y);
-
-    }
 }
