@@ -133,13 +133,13 @@ public class ControlPanel {
                 xorGate = new DefaultMutableTreeNode("XOR");
 
             arithmeticNode = new DefaultMutableTreeNode("Arithmetic");
+                eval = new DefaultMutableTreeNode("Eval");
                 add = new DefaultMutableTreeNode("Add");
                 subtract = new DefaultMutableTreeNode("Subtract");
                 multiply = new DefaultMutableTreeNode("Multiply");
                 divide = new DefaultMutableTreeNode("Divide");
                 modulus = new DefaultMutableTreeNode("Modulus");
                 random = new DefaultMutableTreeNode("Random");
-                eval = new DefaultMutableTreeNode("Eval");
 
             utilityNode = new DefaultMutableTreeNode("Utility");
                 route = new DefaultMutableTreeNode("Route");
@@ -306,13 +306,13 @@ public class ControlPanel {
         root.add(loop);
         root.add(conditionalLoop);
         root.add(arithmeticNode);
+            arithmeticNode.add(eval);
             arithmeticNode.add(add);
             arithmeticNode.add(subtract);
             arithmeticNode.add(multiply);
             arithmeticNode.add(divide);
             arithmeticNode.add(modulus);
             arithmeticNode.add(random);
-            arithmeticNode.add(eval);
         root.add(utilityNode);
             utilityNode.add(route);
             utilityNode.add(recursive);

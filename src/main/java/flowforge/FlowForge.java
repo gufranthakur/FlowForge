@@ -122,7 +122,7 @@ public class FlowForge extends JFrame implements Runnable{
     public boolean checkForUpdate() {
 
         try {
-            String currentVersion = "1.6";
+            String currentVersion = "1.7";
             URL versionUrl = new URL("https://flow-forge-website.vercel.app/version.txt");
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(versionUrl.openStream()));
@@ -137,7 +137,7 @@ public class FlowForge extends JFrame implements Runnable{
                         "New version Available", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 
 
-                    URL jarUrl = new URL("https://github.com/gufranthakur/FlowForge/releases/download/v1.5/FlowForge.jar");
+                    URL jarUrl = new URL("https://github.com/gufranthakur/FlowForge/releases/download/v1.7/FlowForge.jar");
                     Path tempJar = Paths.get("FlowForge.jar");
 
                     try (InputStream in = jarUrl.openStream()) {

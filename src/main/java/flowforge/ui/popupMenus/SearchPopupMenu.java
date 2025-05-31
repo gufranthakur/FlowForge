@@ -47,6 +47,7 @@ public class SearchPopupMenu extends JPopupMenu {
         nodesList.add("Loop");
         nodesList.add("Conditional-Loop");
 
+        nodesList.add("Eval");
         nodesList.add("Add");
         nodesList.add("Subtract");
         nodesList.add("Multiply");
