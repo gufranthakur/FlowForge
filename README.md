@@ -1,7 +1,6 @@
 ![Screenshot 2025-05-22 122154](https://github.com/user-attachments/assets/86369f96-669e-4f77-a618-2b1ce441f1de)
 
 ![Static Badge](https://img.shields.io/badge/Flow-Forge-blue)
-![Static Badge](https://img.shields.io/badge/Version-v1.6-red)
 ![label](https://img.shields.io/badge/Java-v21-orange)  
 
 FlowForge is a visual-based programming IDE (Similiar to Unreal Engine blueprints) that helps programmers create programs with drag and drop nodes. With a modern UI and simplistic approach towards visual programming, beginners can easily grasp and 
@@ -15,7 +14,8 @@ learn the logic building skills in programming.
 * Step-by-step execution mode for debugging
 
 # Snapshots
-![Screenshot 2025-05-10 145820](https://github.com/user-attachments/assets/66758878-9545-46c8-b0eb-9c7410c6653e)
+
+![Screenshot 2025-05-31 190915](https://github.com/user-attachments/assets/36548bdb-a787-41e5-9965-20ab00a64aef)
 
 
 # How to run FlowForge
