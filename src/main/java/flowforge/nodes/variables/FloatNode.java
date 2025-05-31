@@ -25,7 +25,6 @@ public class FloatNode extends Node {
         spinner = new JSpinner(model);
         spinner.setEditor(new JSpinner.NumberEditor(spinner, "0.0"));
         spinner.setPreferredSize(new Dimension(100, 30));
-        resetConnectionsButton.setVisible(false);
 
         inputButton.setVisible(false);
         outputButton.setVisible(false);

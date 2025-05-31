@@ -12,84 +12,80 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.ArrayList;
 
-/**
- * Implements conditional branching (if-else) functionality.
- * Routes execution flow based on a boolean condition from a connected node.
- */
 public class BranchNode extends Node {
 
-    private JRadioButton outputFalseButton;
     private ArrayList<Node> trueNodes = new ArrayList<>();
     private ArrayList<Node> falseNodes = new ArrayList<>();
 
+    public Color trueConnectionColor = new Color(62, 80, 236);
+    public Color trueConnectionColor2 = new Color(55, 155, 236);
+
+    public Color falseConnectionColor = new Color(255, 45, 118);
+    public Color falseConnectionColor2 = new Color(234, 21, 22);
+
+    public boolean isBeingTrueConnected = false;
+    public boolean isBeingFalseConnected = false;
+
     private ProgramPanel programPanel;
 
-    /**
-     * Creates a new branch node with true and false output paths.
-     * @param title The display title for the node
-     * @param programPanel Reference to the main program panel
-     */
     public BranchNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
         this.programPanel = programPanel;
         this.setSize(200, 100);
         this.pack();
 
-        outputFalseButton = new JRadioButton();
-
         inputButton.setText("Input");
         inputXButton.setText("Condition");
 
         outputButton.setText("True");
-        outputFalseButton.setText("False");
-        styleRadioButton(outputFalseButton, true);
-        outputXButton.setVisible(false);
+        outputXButton.setText("False");
 
         outputButton.addActionListener(e -> {
+
+            isBeingFalseConnected = false;
+            isBeingTrueConnected = true;
+
             for (Node node : programPanel.nodes) {
                 node.inputXButton.setEnabled(false);
                 node.outputXButton.setEnabled(false);
             }
-            if (outputButton.isSelected()) {
-                programPanel.startConnection(this);
-            }
+
+            programPanel.startConnection(this);
+
         });
 
-        outputFalseButton.addActionListener(e -> {
+        outputXButton.addActionListener(e -> {
+            programPanel.selectedNode = this;
+
+            isBeingFalseConnected = true;
+            isBeingTrueConnected = false;
+
             for (Node node : programPanel.nodes) {
                 node.inputXButton.setEnabled(false);
                 node.outputXButton.setEnabled(false);
             }
-            if (outputFalseButton.isSelected()) {
-                programPanel.startConnection(this);
-            }
+
+            programPanel.startConnection(this);
+
         });
 
-        outputsPanel.add(outputFalseButton);
     }
 
-    /**
-     * Connects this node to a target node based on selected output type (true/false).
-     * Adds the target to either trueNodes or falseNodes depending on which output is selected.
-     * @param target The node to connect to
-     */
     @Override
     public void connectTo(Node target) {
-        if (outputButton.isSelected()) {
-            trueNodes.add(target);
-            target.inputNodes.add(this);
-            outputButton.setSelected(false);
-        } else if (outputFalseButton.isSelected()) {
-            falseNodes.add(target);
-            target.inputNodes.add(this);
-            outputFalseButton.setSelected(false);
-        }
+        trueNodes.add(target);
+        target.inputNodes.add(this);
+        outputButton.setSelected(true);
+
     }
 
-    /**
-     * Disconnects all input and output connections.
-     * Clears both true and false connection lists.
-     */
+    @Override
+    public void connectToX(Node target) {
+        falseNodes.add(target);
+        target.inputNodes.add(this);
+        outputXButton.setSelected(true);
+    }
+
     @Override
     public void disconnectAll() {
         for (Node node : trueNodes) {
@@ -105,7 +101,7 @@ public class BranchNode extends Node {
         inputButton.setSelected(false);
         outputButton.setSelected(false);
         inputXButton.setSelected(false);
-        outputFalseButton.setSelected(false);
+        outputXButton.setSelected(false);
     }
 
     /**
@@ -170,20 +166,21 @@ public class BranchNode extends Node {
      */
     @Override
     public void drawConnection(Graphics2D g) {
-        // Draw True connections
+
         for (Node node : trueNodes) {
             Point start = getOutputPoint();
             Point end = node.getInputPoint();
             drawCurvedGradientLine(g, start, end, new Color(31, 216, 241), new Color(37, 114, 205));
         }
 
-        // Draw False connections
         for (Node node : falseNodes) {
             Point start = getFalseOutputPoint();
             Point end = node.getInputPoint();
             drawCurvedGradientLine(g, start, end, new Color(244, 34, 160), new Color(239, 36, 36));
         }
     }
+
+
 
     /**
      * Gets the connection point for the false output.

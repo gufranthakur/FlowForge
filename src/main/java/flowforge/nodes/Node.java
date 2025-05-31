@@ -1,6 +1,7 @@
 package flowforge.nodes;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import flowforge.nodes.flownodes.BranchNode;
 import flowforge.ui.panels.ProgramPanel;
 
 import javax.swing.*;
@@ -24,7 +25,6 @@ public abstract class Node extends JPanel {
     public JRadioButton outputButton;
     public JRadioButton inputXButton;
     public JRadioButton outputXButton;
-    public JButton resetConnectionsButton;
 
     public JPanel contentPanel;
     public JPanel topPanel;
@@ -155,8 +155,6 @@ public abstract class Node extends JPanel {
         styleRadioButton(inputXButton, true);
         styleRadioButton(outputXButton, true);
 
-        resetConnectionsButton = new JButton("↺");
-        resetConnectionsButton.setPreferredSize(new Dimension(30, 25));
 
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
         //topPanel.add(resetConnectionsButton);
@@ -250,27 +248,24 @@ public abstract class Node extends JPanel {
 
         });
 
-        outputXButton.addActionListener(e -> {
-            isBeingConnected = false;
-            isBeingXConnected = true;
+        if (!(Node.this instanceof BranchNode)) {
+            outputXButton.addActionListener(e -> {
+                isBeingConnected = false;
+                isBeingXConnected = true;
 
-            programPanel.selectedNode = Node.this;
-            programPanel.flowForge.controlPanel.updatePropertiesPanel(Node.this);
+                programPanel.selectedNode = Node.this;
+                programPanel.flowForge.controlPanel.updatePropertiesPanel(Node.this);
 
-            for (Node node : programPanel.nodes) {
-                node.inputButton.setEnabled(false);
-                node.outputButton.setEnabled(false);
-            }
+                for (Node node : programPanel.nodes) {
+                    node.inputButton.setEnabled(false);
+                    node.outputButton.setEnabled(false);
+                }
 
-            programPanel.startXConnection(this);
+                programPanel.startXConnection(this);
 
-        });
+            });
+        }
 
-        resetConnectionsButton.setBackground(programPanel.flowForge.theme);
-        resetConnectionsButton.addActionListener(e -> {
-            disconnectAll();
-            programPanel.repaint();
-        });
     }
 
     public void connectTo(Node target) {

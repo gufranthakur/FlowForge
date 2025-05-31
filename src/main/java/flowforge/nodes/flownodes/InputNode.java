@@ -27,10 +27,6 @@ public class InputNode extends Node {
         inputField = new JTextField();
         inputField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Input");
 
-        resetConnectionsButton.addActionListener(e -> {
-            inputField.setText("");
-        });
-
         topPanel.add(inputField);
     }
 

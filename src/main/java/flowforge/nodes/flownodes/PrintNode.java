@@ -33,10 +33,6 @@ public class PrintNode extends Node {
         textField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Print...");
         topPanel.add(textField);
 
-        resetConnectionsButton.addActionListener(e -> {
-            textField.setText("");
-        });
-
         this.setSize(200, 140);
     }
 

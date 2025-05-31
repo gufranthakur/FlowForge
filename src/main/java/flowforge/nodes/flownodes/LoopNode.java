@@ -33,12 +33,9 @@ public class LoopNode extends Node {
         inputXButton.setText("times");
         outputXButton.setText("Iteration");
 
-        wrapperPanel.add(resetConnectionsButton);
         wrapperPanel.add(loopSpinner);
         wrapperPanel.setBackground(getBackground());
         wrapperPanel.add(new JLabel("times"));
-
-        resetConnectionsButton.setVisible(false);
 
         contentPanel.add(wrapperPanel, BorderLayout.NORTH);
     }

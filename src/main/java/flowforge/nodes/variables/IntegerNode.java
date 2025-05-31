@@ -22,7 +22,6 @@ public class IntegerNode extends Node {
 
         spinner = new JSpinner();
         spinner.setPreferredSize(new Dimension(100, 30));
-        resetConnectionsButton.setVisible(false);
 
         inputButton.setVisible(false);
         outputButton.setVisible(false);

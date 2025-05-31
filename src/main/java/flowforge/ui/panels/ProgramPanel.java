@@ -1,6 +1,7 @@
 package flowforge.ui.panels;
 
 import flowforge.FlowForge;
+import flowforge.nodes.flownodes.BranchNode;
 import flowforge.ui.popupMenus.NodePopupMenu;
 import flowforge.ui.popupMenus.SearchPopupMenu;
 import flowforge.nodes.Node;
@@ -67,12 +68,17 @@ public class ProgramPanel extends JPanel implements KeyListener {
 
                 if (selectedNode == null) return;
 
-                if (selectedNode.isBeingConnected) {
-                    searchPopupMenu.show(getDesktopPane(), currentMouseLocation.x, currentMouseLocation.y);
-                } else if (selectedNode.isBeingXConnected) {
-                    searchXPopupMenu.show(getDesktopPane(), currentMouseLocation.x, currentMouseLocation.y);
+                if (selectedNode instanceof BranchNode) {
+                    if (((BranchNode) selectedNode).isBeingTrueConnected || ((BranchNode) selectedNode).isBeingFalseConnected) {
+                        searchPopupMenu.show(getDesktopPane(), currentMouseLocation.x, currentMouseLocation.y);
+                    }
+                } else {
+                    if (selectedNode.isBeingConnected) {
+                        searchPopupMenu.show(getDesktopPane(), currentMouseLocation.x, currentMouseLocation.y);
+                    } else if (selectedNode.isBeingXConnected) {
+                        searchXPopupMenu.show(getDesktopPane(), currentMouseLocation.x, currentMouseLocation.y);
+                    }
                 }
-
                 for (Node node : nodes) {
                     node.inputButton.setEnabled(true);
                     node.outputButton.setEnabled(true);
@@ -100,8 +106,16 @@ public class ProgramPanel extends JPanel implements KeyListener {
 
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     if (selectedNode == null) return;
-                    selectedNode.isBeingConnected = false;
-                    selectedNode.isBeingXConnected = false;
+
+                    if (selectedNode instanceof BranchNode) {
+                        ((BranchNode) selectedNode).isBeingTrueConnected = false;
+                        ((BranchNode) selectedNode).isBeingFalseConnected = false;
+                    } else {
+                        selectedNode.isBeingConnected = false;
+                        selectedNode.isBeingXConnected = false;
+                    }
+
+
                 }
 
             }
@@ -145,6 +159,12 @@ public class ProgramPanel extends JPanel implements KeyListener {
 
     public void finishConnection(Node targetNode) {
         if (sourceNode != null && sourceNode != targetNode) {
+
+            if (sourceNode instanceof BranchNode) {
+                if (((BranchNode) sourceNode).isBeingTrueConnected) sourceNode.connectTo(targetNode);
+                if (((BranchNode) sourceNode).isBeingFalseConnected) sourceNode.connectToX(targetNode);
+            }
+
             sourceNode.connectTo(targetNode);
 
             sourceNode.outputButton.setSelected(true);
@@ -241,17 +261,34 @@ public class ProgramPanel extends JPanel implements KeyListener {
 
         if (selectedNode == null) return;
 
-        if (selectedNode.isBeingConnected) {
-            selectedNode.drawCurvedGradientLine(g2D, selectedNode.getOutputPoint(),
-                    currentMouseLocation,
-                    selectedNode.connectionColor, selectedNode.connectionColor2);
+        if (selectedNode instanceof BranchNode) {
+            if (((BranchNode) selectedNode).isBeingTrueConnected) {
+                selectedNode.drawCurvedGradientLine(g2D, selectedNode.getOutputPoint(),
+                        currentMouseLocation,
+                        ((BranchNode) selectedNode).trueConnectionColor,
+                        ((BranchNode) selectedNode).trueConnectionColor2);
+
+            } else if (((BranchNode) selectedNode).isBeingFalseConnected) {
+                selectedNode.drawCurvedGradientLine(g2D, selectedNode.getOutputPoint(),
+                        currentMouseLocation,
+                        ((BranchNode) selectedNode).falseConnectionColor,
+                        ((BranchNode) selectedNode).falseConnectionColor2);
+            }
+        } else {
+            if (selectedNode.isBeingConnected) {
+                selectedNode.drawCurvedGradientLine(g2D, selectedNode.getOutputPoint(),
+                        currentMouseLocation,
+                        selectedNode.connectionColor, selectedNode.connectionColor2);
+            }
+
+            if (selectedNode.isBeingXConnected) {
+                selectedNode.drawCurvedGradientLine(g2D, selectedNode.getOutputXPoint(),
+                        currentMouseLocation,
+                        selectedNode.connectionXColor, selectedNode.connectionXColor2);
+            }
         }
 
-        if (selectedNode.isBeingXConnected) {
-            selectedNode.drawCurvedGradientLine(g2D, selectedNode.getOutputXPoint(),
-                    currentMouseLocation,
-                    selectedNode.connectionXColor, selectedNode.connectionXColor2);
-        }
+
 
 
     }

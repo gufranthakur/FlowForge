@@ -2,6 +2,7 @@ package flowforge.ui.popupMenus;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.fonts.inter.FlatInterFont;
+import flowforge.nodes.flownodes.BranchNode;
 import flowforge.ui.panels.ProgramPanel;
 
 import javax.swing.*;
@@ -191,15 +192,24 @@ public class SearchPopupMenu extends JPopupMenu {
 
 
         if (programPanel.selectedNode.isBeingConnected) {
-            programPanel.startConnection(programPanel.selectedNode);
-            programPanel.finishConnection(programPanel.nodes.getLast());
+            if (!(programPanel.selectedNode instanceof BranchNode node)) {
+                programPanel.startConnection(programPanel.selectedNode);
+                programPanel.finishConnection(programPanel.nodes.getLast());
 
-            programPanel.selectedNode.outputButton.setSelected(true);
+                programPanel.selectedNode.outputButton.setSelected(true);
+            } else {
+                if (node.isBeingTrueConnected) {
+                    node.addTrueNode(programPanel.nodes.getLast());
+                    node.outputButton.setSelected(true);
+                } else if (node.isBeingFalseConnected) {
+                    node.addFalseNode(programPanel.nodes.getLast());
+                    node.outputXButton.setSelected(true);
+                }
+
+            }
+
         }
-//        if (programPanel.selectedNode.isBeingXConnected) {
-//            programPanel.startXConnection(programPanel.selectedNode);
-//            programPanel.finishXConnection(programPanel.nodes.getLast());
-//        }
+
 
 
         programPanel.selectedNode = null;
