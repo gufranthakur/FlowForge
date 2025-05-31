@@ -168,7 +168,6 @@ public class ControlPanel {
                 runStopButton.setText("▶ Run");
                 runStopButton.setBackground(flowForge.theme);
             }
-
         });
 
         runWithStepsButton.addActionListener(e -> {

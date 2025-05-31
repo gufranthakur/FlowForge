@@ -5,6 +5,12 @@ import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import flowforge.FlowForge;
+import flowforge.nodes.Node;
+import flowforge.nodes.StartNode;
+import flowforge.nodes.flownodes.BranchNode;
+import flowforge.nodes.variables.BooleanNode;
+import flowforge.nodes.variables.IntegerNode;
+import flowforge.nodes.variables.StringNode;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -22,17 +28,21 @@ public class AppMenuBar extends JMenuBar {
     private GraphicsDevice device;
 
     private JMenu moreMenu;
+        private JMenuItem aboutItem, chengelogItem, checkForUpdateItem;
     private JMenu projectMenu;
-    private JMenuItem newProjectItem, openProjectItem, closeProjectItem,
+        private JMenuItem newProjectItem, openProjectItem, closeProjectItem,
             saveProjectItem, saveAsProjectItem, viewDocumentationItem, exitAppItem,
             projectPropertiesItem, settingsItem;
 
-    private JMenuItem aboutItem, chengelogItem, checkForUpdateItem;
     private JMenu viewMenu;
+        private JMenuItem fullscreenItem, presentationModeItem,
+                showHideSideBar, showHideConsole, showHideToolbar;
 
+    private JMenu codeMenu;
+        private JMenuItem runItem, runWithStepsItem, stopExecutionItem,
+                minimizeAllNodesItem, maximiseAllNodesItem, removeAllHighlightItem,
+                clearAllConnectionsItem, removeAllNodesItem;
 
-    private JMenuItem fullscreenItem, presentationModeItem,
-            showHideSideBar, showHideConsole, showHideToolbar;
 
     public boolean aboutPanelVisible, changelogPanelVisible = false;
     private boolean isFullScreen, isPresentationMode;
@@ -49,6 +59,7 @@ public class AppMenuBar extends JMenuBar {
         moreMenu = new JMenu("More");
         projectMenu = new JMenu("Project");
         viewMenu = new JMenu("View");
+        codeMenu = new JMenu("Code");
 
         //about
         aboutItem = new JMenuItem("About FlowForge");
@@ -75,6 +86,17 @@ public class AppMenuBar extends JMenuBar {
         showHideConsole = new JMenuItem("Toggle Console");
         showHideToolbar = new JMenuItem("Toggle Toolbar");
 
+
+        // Init codeMenu items
+        runItem = new JMenuItem("Run");
+        runWithStepsItem = new JMenuItem("Run with Steps");
+        stopExecutionItem = new JMenuItem("Stop Execution");
+        minimizeAllNodesItem = new JMenuItem("Minimize all nodes");
+        maximiseAllNodesItem = new JMenuItem("Maximize all nodes");
+        removeAllHighlightItem = new JMenuItem("Clear all Highlight");
+        clearAllConnectionsItem = new JMenuItem("Clear all connections");
+        removeAllNodesItem = new JMenuItem("Remove all Nodes");
+
     }
 
     public void addComponent() {
@@ -98,13 +120,25 @@ public class AppMenuBar extends JMenuBar {
         projectMenu.addSeparator();
         projectMenu.add(viewDocumentationItem);
 
-
         viewMenu.add(fullscreenItem);
         viewMenu.add(presentationModeItem);
         viewMenu.addSeparator();
         viewMenu.add(showHideSideBar);
         viewMenu.add(showHideConsole);
         viewMenu.add(showHideToolbar);
+
+
+        codeMenu.add(runItem);
+        codeMenu.add(runWithStepsItem);
+        codeMenu.add(stopExecutionItem);
+        codeMenu.addSeparator();
+        codeMenu.add(minimizeAllNodesItem);
+        codeMenu.add(maximiseAllNodesItem);
+        codeMenu.add(removeAllHighlightItem);
+        codeMenu.addSeparator();
+        codeMenu.add(clearAllConnectionsItem);
+        codeMenu.add(removeAllNodesItem);
+
 
         flowForge.setJMenuBar(this);
     }
@@ -113,6 +147,7 @@ public class AppMenuBar extends JMenuBar {
         initStartMenuListeners();
         initProjectMenuListeners();
         initViewMenuListeners();
+        initCodeMenuItems();
     }
 
     private void initStartMenuListeners() {
@@ -269,6 +304,83 @@ public class AppMenuBar extends JMenuBar {
 
     }
 
+    private void initCodeMenuItems() {
+        runItem.addActionListener(e -> {
+            flowForge.controlPanel.runStopButton.doClick();
+        });
+
+        runWithStepsItem.addActionListener(e -> {
+            flowForge.controlPanel.runWithStepsButton.doClick();
+        });
+
+        stopExecutionItem.addActionListener(e -> {
+            flowForge.controlPanel.stopButton.doClick();
+        });
+
+        minimizeAllNodesItem.addActionListener(e -> {
+            for (Node node : flowForge.programPanel.nodes) {
+                node.setSize(150, 40);
+                node.isMinimized = true;
+                node.contentPanel.setVisible(false);
+            }
+            flowForge.programPanel.repaint();
+            flowForge.programPanel.revalidate();
+        });
+
+        maximiseAllNodesItem.addActionListener(e -> {
+            for (Node node : flowForge.programPanel.nodes) {
+                if (node instanceof StringNode
+                        || node instanceof IntegerNode
+                        || node instanceof BooleanNode
+                        || node instanceof BranchNode) {
+                    node.setSize(200, 100);
+                    node.isMinimized = false;
+                    node.contentPanel.setVisible(true);
+                } else {
+                    node.setSize(200, 150);
+                    node.isMinimized = false;
+                    node.contentPanel.setVisible(true);
+                }
+
+            }
+            flowForge.programPanel.repaint();
+            flowForge.programPanel.revalidate();
+        });
+
+        removeAllHighlightItem.addActionListener(e -> {
+            for (Node node : flowForge.programPanel.nodes) {
+                node.isHighlighted = false;
+                node.restoreBorder();
+            }
+        });
+
+        clearAllConnectionsItem.addActionListener(e -> {
+            int confirm = JOptionPane.showConfirmDialog(null,
+                    "This action cannot be reversed.\nAll connections will be cleared", "Delete all connections?" ,
+                    JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                for (Node node : flowForge.programPanel.nodes) {
+                    node.disconnectAll();
+                }
+            }
+
+        });
+
+        removeAllNodesItem.addActionListener(e -> {
+            int confirm = JOptionPane.showConfirmDialog(null,
+                    "This action cannot be reversed.\nAll Nodes will be deleted", "Delete all Nodes?" ,
+                    JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                for (int i = flowForge.programPanel.nodes.size() - 1; i >= 0; i--) {
+                    Node node = flowForge.programPanel.nodes.get(i);
+                    if (!(node instanceof StartNode)) {
+                        flowForge.programPanel.removeNode(node);
+                    }
+                }
+            }
+        });
+    }
+
     private FlowForge getNewInstance(boolean launchOnCreation) {
         FlowForge newInstance = new FlowForge();
         newInstance.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -302,5 +414,6 @@ public class AppMenuBar extends JMenuBar {
 
         this.add(projectMenu);
         this.add(viewMenu);
+        this.add(codeMenu);
     }
 }

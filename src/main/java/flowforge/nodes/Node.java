@@ -414,12 +414,23 @@ public abstract class Node extends JPanel {
                     getBackground());
             g2D.setPaint(gradientPaint);
         } else {
-            GradientPaint gradientPaint = new GradientPaint(
-                    0, 0,
-                    nodeTheme,
-                    getWidth() - 50, 80,
-                    getBackground());
-            g2D.setPaint(gradientPaint);
+
+            if (this instanceof BranchNode node) {
+                GradientPaint gradientPaint = new GradientPaint(
+                        0, 0,
+                        node.trueConnectionColor.darker().darker(),
+                        getWidth() - 50, 80,
+                        node.falseConnectionColor2.darker().darker());
+                g2D.setPaint(gradientPaint);
+            } else {
+                GradientPaint gradientPaint = new GradientPaint(
+                        0, 0,
+                        nodeTheme,
+                        getWidth() - 50, 80,
+                        getBackground());
+                g2D.setPaint(gradientPaint);
+            }
+
         }
 
         g2D.fillRect(0, 0, getWidth(), 20);

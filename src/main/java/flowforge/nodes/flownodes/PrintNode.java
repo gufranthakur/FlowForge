@@ -33,7 +33,6 @@ public class PrintNode extends Node {
         textField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Print...");
         topPanel.add(textField);
 
-        this.setSize(200, 140);
     }
 
     public void print(String text) {

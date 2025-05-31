@@ -45,8 +45,8 @@ public class VariablePopupMenu extends JPopupMenu {
             while (iterator.hasNext()) {
                 Node node = iterator.next();
                 if (node.getTitle().equals(key)) {
-                    iterator.remove(); // Safe removal
-                    controlPanel.flowForge.programPanel.removeNode(node); // Assuming this doesn't modify the list
+                    iterator.remove();
+                    controlPanel.flowForge.programPanel.removeNode(node);
                 }
             }
 

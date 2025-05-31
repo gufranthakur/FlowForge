@@ -1,6 +1,7 @@
 package flowforge.ui.popupMenus;
 
 import flowforge.nodes.Node;
+import flowforge.nodes.flownodes.BranchNode;
 import flowforge.nodes.variables.BooleanNode;
 import flowforge.nodes.variables.IntegerNode;
 import flowforge.nodes.variables.StringNode;
@@ -39,7 +40,8 @@ public class NodePopupMenu extends JPopupMenu {
             } else {
                 if (node instanceof StringNode
                         || node instanceof IntegerNode
-                        || node instanceof BooleanNode) {
+                        || node instanceof BooleanNode
+                        || node instanceof BranchNode) {
                     node.setSize(200, 100);
                     node.isMinimized = false;
                     node.contentPanel.setVisible(true);

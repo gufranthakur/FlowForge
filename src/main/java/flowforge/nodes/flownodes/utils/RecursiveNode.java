@@ -14,7 +14,6 @@ public class RecursiveNode extends Node {
     public RecursiveNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
         this.programPanel = programPanel;
-        this.setSize(200, 100);
 
         this.nodeTheme = programPanel.flowForge.utilNodeTheme;
         inputButton.setVisible(true);
