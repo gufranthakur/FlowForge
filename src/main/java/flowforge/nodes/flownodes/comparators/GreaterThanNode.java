@@ -18,7 +18,7 @@ public class GreaterThanNode extends Node {
     public GreaterThanNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
         this.programPanel = programPanel;
-        this.nodeTheme = new Color(130, 140, 6);
+        this.nodeTheme = programPanel.flowForge.comparatorNodeTheme;
         inputXButton.setText("Values");
 
         JLabel label = new JLabel(">");

@@ -24,7 +24,7 @@ public class EvalNode extends Node {
         super(title, programPanel);
         this.programPanel = programPanel;
 
-        this.nodeTheme = new Color(85, 45, 142);
+        this.nodeTheme = programPanel.flowForge.arithmeticNodeTheme.brighter();
 
         expressionField = new JTextField();
         expressionField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter expression");

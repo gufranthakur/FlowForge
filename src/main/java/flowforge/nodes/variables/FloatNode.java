@@ -18,6 +18,7 @@ public class FloatNode extends Node {
         super(title, programPanel);
         this.programPanel = programPanel;
         this.setSize(200, 100);
+        this.nodeTheme = programPanel.flowForge.variableNodeTheme;
 
         SpinnerNumberModel model = new SpinnerNumberModel(1.0, 0.0, 10.0, 0.1);
 

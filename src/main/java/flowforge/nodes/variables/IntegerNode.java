@@ -17,7 +17,8 @@ public class IntegerNode extends Node {
     public IntegerNode(String title, ProgramPanel programPanel, Integer intValue) {
         super(title, programPanel);
         this.programPanel = programPanel;
-        this.setSize(200, 100);
+
+        this.nodeTheme = programPanel.flowForge.variableNodeTheme;
 
         spinner = new JSpinner();
         spinner.setPreferredSize(new Dimension(100, 30));

@@ -44,6 +44,11 @@ public class FlowForge extends JFrame implements Runnable{
     public Console console;
 
     public Color theme = new Color(26, 77, 236).brighter();
+    public Color secondaryTheme = new Color(229, 117, 42);
+    public Color arithmeticNodeTheme = new Color(73, 11, 142);
+    public Color comparatorNodeTheme = new Color(130, 140, 6);
+    public Color utilNodeTheme = new Color(5, 94, 92);
+    public Color variableNodeTheme = new Color(108, 5, 5);
 
     public ForgeExecutor forgeExecutor;
 
@@ -59,7 +64,6 @@ public class FlowForge extends JFrame implements Runnable{
 
         Image icon = Toolkit.getDefaultToolkit().getImage("FlowForge-Logo.png");
         this.setIconImage(icon);
-
     }
 
     public void init() {

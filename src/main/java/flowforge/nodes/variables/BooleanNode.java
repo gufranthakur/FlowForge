@@ -18,6 +18,7 @@ public class BooleanNode extends Node {
         super(title, programPanel);
         this.programPanel = programPanel;
         this.setSize(200, 100);
+        this.nodeTheme = programPanel.flowForge.variableNodeTheme;
 
         checkBox = new JCheckBox("Set value : False");
 
@@ -40,8 +41,6 @@ public class BooleanNode extends Node {
         wrapperPanel.add(checkBox);
 
         contentPanel.add(wrapperPanel, BorderLayout.NORTH);
-
-
     }
 
     @Override

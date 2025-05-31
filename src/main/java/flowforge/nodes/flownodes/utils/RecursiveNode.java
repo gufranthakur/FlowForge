@@ -16,8 +16,7 @@ public class RecursiveNode extends Node {
         this.programPanel = programPanel;
         this.setSize(200, 100);
 
-        this.nodeTheme = new Color(5, 94, 92);
-
+        this.nodeTheme = programPanel.flowForge.utilNodeTheme;
         inputButton.setVisible(true);
         outputButton.setVisible(true);
 

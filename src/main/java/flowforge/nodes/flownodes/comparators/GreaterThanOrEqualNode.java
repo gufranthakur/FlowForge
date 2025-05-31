@@ -20,7 +20,7 @@ public class GreaterThanOrEqualNode extends Node {
     public GreaterThanOrEqualNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
         this.programPanel = programPanel;
-        this.nodeTheme = new Color(130, 140, 6);
+        this.nodeTheme = programPanel.flowForge.comparatorNodeTheme;
 
         inputXButton.setText("Values");
 

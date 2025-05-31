@@ -20,7 +20,7 @@ public class DivideNode extends Node {
         super(title, programPanel);
         this.programPanel = programPanel;
 
-        this.nodeTheme = new Color(86, 23, 163);
+        this.nodeTheme = programPanel.flowForge.arithmeticNodeTheme;
 
         inputXButton.setText("a / b");
         outputXButton.setText("Quotient");

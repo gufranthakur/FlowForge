@@ -20,7 +20,7 @@ public class ModulusNode extends Node {
         super(title, programPanel);
         this.programPanel = programPanel;
 
-        this.nodeTheme = new Color(95, 19, 181);
+        this.nodeTheme = programPanel.flowForge.arithmeticNodeTheme;
 
         inputXButton.setText("a % b");
         outputXButton.setText("Remainder");

@@ -21,7 +21,7 @@ public class AddNode extends Node {
         super(title, programPanel);
         this.programPanel = programPanel;
 
-        this.nodeTheme = new Color(73, 11, 142);
+        this.nodeTheme = programPanel.flowForge.arithmeticNodeTheme;
 
         inputXButton.setText("Integers");
         outputXButton.setText("Sum");

@@ -18,7 +18,7 @@ public class SubtractNode extends Node {
     public SubtractNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
         this.programPanel = programPanel;
-        this.nodeTheme = new Color(67, 23, 120);
+        this.nodeTheme = programPanel.flowForge.arithmeticNodeTheme;
         inputXButton.setText("Numbers");
         outputXButton.setText("Difference");
     }

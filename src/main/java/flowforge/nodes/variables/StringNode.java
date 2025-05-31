@@ -21,6 +21,7 @@ public class StringNode extends Node {
         this.programPanel = programPanel;
         this.setSize(200, 100);
 
+        this.nodeTheme = programPanel.flowForge.variableNodeTheme;
 
         textField = new JTextField();
         textField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Set value...");

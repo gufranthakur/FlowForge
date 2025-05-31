@@ -20,7 +20,7 @@ public class RandomNode extends Node {
         super(title, programPanel);
         this.programPanel = programPanel;
 
-        this.nodeTheme = new Color(125, 17, 191);
+        this.nodeTheme = programPanel.flowForge.arithmeticNodeTheme;
 
         inputXButton.setText("Range");
         outputXButton.setText("Value");

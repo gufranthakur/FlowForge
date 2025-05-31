@@ -21,7 +21,7 @@ public class EqualToNode extends Node {
         super(title, programPanel);
         this.programPanel = programPanel;
 
-        this.nodeTheme = new Color(130, 140, 6);
+        this.nodeTheme = programPanel.flowForge.comparatorNodeTheme;
 
         inputXButton.setText("Values");
 

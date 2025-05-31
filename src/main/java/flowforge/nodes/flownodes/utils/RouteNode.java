@@ -16,7 +16,7 @@ public class RouteNode extends Node {
         super(title, programPanel);
         this.programPanel = programPanel;
 
-        this.nodeTheme = new Color(5, 94, 92);
+        this.nodeTheme = programPanel.flowForge.utilNodeTheme;
 
         inputXButton.setVisible(false);
         outputXButton.setVisible(false);
