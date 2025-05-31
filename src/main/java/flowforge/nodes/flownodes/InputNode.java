@@ -18,7 +18,9 @@ public class InputNode extends Node {
     public InputNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
         this.programPanel = programPanel;
-        this.setSize(200, 150);
+
+        this.nodeTheme = new Color(2, 94, 64);
+
         inputXButton.setVisible(false);
         outputXButton.setText("Value");
 
@@ -45,9 +47,9 @@ public class InputNode extends Node {
             }
             SwingUtilities.invokeLater(() -> {
                 for (Node node : programPanel.nodes) {
-                    node.setBorder(new EmptyBorder(3, 3, 3, 3));
+                    node.restoreBorder();
                 }
-                this.setBorder(new LineBorder(new Color(255, 126, 23), 3));
+                this.setStepExecutedBorder();
             });
         }
         inputValue = JOptionPane.showInputDialog(inputField.getText());

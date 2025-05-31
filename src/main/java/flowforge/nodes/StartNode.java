@@ -23,6 +23,8 @@ public class StartNode extends Node{
 
         contentPanel.add(outputsPanel, BorderLayout.CENTER);
 
+        this.nodeTheme = new Color(5, 121, 9);
+
         this.pack();
         this.setLocation(20, 300);
     }

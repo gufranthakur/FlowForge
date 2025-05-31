@@ -20,7 +20,8 @@ public class AddNode extends Node {
     public AddNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
         this.programPanel = programPanel;
-        this.setSize(210, 150);
+
+        this.nodeTheme = new Color(73, 11, 142);
 
         inputXButton.setText("Integers");
         outputXButton.setText("Sum");
@@ -46,7 +47,7 @@ public class AddNode extends Node {
             }
             SwingUtilities.invokeLater(() -> {
                 for (Node node : programPanel.nodes) {
-                    node.setBorder(new EmptyBorder(3, 3, 3, 3));
+                    node.restoreBorder();
                 }
                 this.setStepExecutedBorder();
             });

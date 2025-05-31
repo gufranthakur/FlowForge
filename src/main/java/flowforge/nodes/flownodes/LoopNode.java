@@ -18,7 +18,8 @@ public class LoopNode extends Node {
     public LoopNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
         this.programPanel = programPanel;
-        this.setSize(260, 150);
+
+        this.nodeTheme = new Color(38, 17, 186);
 
         JPanel wrapperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1);
@@ -30,10 +31,11 @@ public class LoopNode extends Node {
         outputXButton.setVisible(true);
 
         inputXButton.setText("times");
-        outputXButton.setText("Iteration Value");
+        outputXButton.setText("Iteration");
 
         wrapperPanel.add(resetConnectionsButton);
         wrapperPanel.add(loopSpinner);
+        wrapperPanel.setBackground(getBackground());
         wrapperPanel.add(new JLabel("times"));
 
         resetConnectionsButton.setVisible(false);
@@ -61,9 +63,9 @@ public class LoopNode extends Node {
             }
             SwingUtilities.invokeLater(() -> {
                 for (Node node : programPanel.nodes) {
-                    node.setBorder(new EmptyBorder(3, 3, 3, 3));
+                    node.restoreBorder();
                 }
-                this.setBorder(new LineBorder(new Color(255, 126, 23), 3));
+                this.setStepExecutedBorder();
             });
         }
         loops = (Integer) loopSpinner.getValue();

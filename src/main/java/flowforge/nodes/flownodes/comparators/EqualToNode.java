@@ -20,10 +20,16 @@ public class EqualToNode extends Node {
     public EqualToNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
         this.programPanel = programPanel;
-        JLabel label = new JLabel(title);
+
+        this.nodeTheme = new Color(130, 140, 6);
+
+        inputXButton.setText("Values");
+
+        JLabel label = new JLabel("==");
         label.setFont(new Font(FlatInterFont.FAMILY, Font.PLAIN, 28));
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-        this.pack();
+
+        topPanel.setLayout(new FlowLayout());
+        topPanel.add(label);
     }
 
     public boolean getIsEqual() {
@@ -46,9 +52,9 @@ public class EqualToNode extends Node {
             }
             SwingUtilities.invokeLater(() -> {
                 for (Node node : programPanel.nodes) {
-                    node.setBorder(new EmptyBorder(3, 3, 3, 3));
+                    node.restoreBorder();
                 }
-                this.setBorder(new LineBorder(new Color(255, 126, 23), 3));
+                this.setStepExecutedBorder();
             });
         }
         if (inputXNodes.size() == 2) {

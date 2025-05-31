@@ -8,6 +8,7 @@ import flowforge.nodes.variables.BooleanNode;
 import flowforge.nodes.variables.IntegerNode;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
@@ -19,10 +20,15 @@ public class GreaterThanOrEqualNode extends Node {
     public GreaterThanOrEqualNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
         this.programPanel = programPanel;
-        JLabel label = new JLabel(title);
+        this.nodeTheme = new Color(130, 140, 6);
+
+        inputXButton.setText("Values");
+
+        JLabel label = new JLabel(">=");
         label.setFont(new Font(FlatInterFont.FAMILY, Font.PLAIN, 28));
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-        this.pack();
+
+        topPanel.setLayout(new FlowLayout());
+        topPanel.add(label);
     }
 
     public boolean getIsGreaterOrEqual() {
@@ -45,9 +51,9 @@ public class GreaterThanOrEqualNode extends Node {
             }
             SwingUtilities.invokeLater(() -> {
                 for (Node node : programPanel.nodes) {
-                    node.setBorder(new EmptyBorder(3, 3, 3, 3));
+                    node.restoreBorder();
                 }
-                this.setBorder(new LineBorder(new Color(255, 126, 23), 3));
+                this.setStepExecutedBorder();
             });
         }
         if (inputXNodes.size() == 2) {

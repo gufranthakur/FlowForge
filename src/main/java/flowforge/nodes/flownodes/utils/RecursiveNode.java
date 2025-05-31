@@ -16,6 +16,7 @@ public class RecursiveNode extends Node {
         this.programPanel = programPanel;
         this.setSize(200, 100);
 
+        this.nodeTheme = new Color(5, 94, 92);
 
         inputButton.setVisible(true);
         outputButton.setVisible(true);
@@ -37,9 +38,9 @@ public class RecursiveNode extends Node {
             }
             SwingUtilities.invokeLater(() -> {
                 for (Node node : programPanel.nodes) {
-                    node.setBorder(new EmptyBorder(3, 3, 3, 3));
+                    node.restoreBorder();
                 }
-                this.setBorder(new LineBorder(new Color(255, 126, 23), 3));
+                this.setStepExecutedBorder();
             });
         }
 

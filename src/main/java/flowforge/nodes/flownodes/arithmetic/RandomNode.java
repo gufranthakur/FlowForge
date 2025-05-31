@@ -19,10 +19,11 @@ public class RandomNode extends Node {
     public RandomNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
         this.programPanel = programPanel;
-        this.setSize(220, 170);
+
+        this.nodeTheme = new Color(125, 17, 191);
 
         inputXButton.setText("Range");
-        outputXButton.setText("Random Value");
+        outputXButton.setText("Value");
     }
 
     public Integer getResult() {
@@ -45,9 +46,9 @@ public class RandomNode extends Node {
             }
             SwingUtilities.invokeLater(() -> {
                 for (Node node : programPanel.nodes) {
-                    node.setBorder(new EmptyBorder(3, 3, 3, 3));
+                    node.restoreBorder();
                 }
-                this.setBorder(new LineBorder(new Color(255, 126, 23), 3));
+                this.setStepExecutedBorder();
             });
         }
         if (inputXNodes.size() != 2) return;

@@ -19,9 +19,10 @@ public class DivideNode extends Node {
     public DivideNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
         this.programPanel = programPanel;
-        this.setSize(230, 150);
 
-        inputXButton.setText("Divisor / Dividend");
+        this.nodeTheme = new Color(86, 23, 163);
+
+        inputXButton.setText("a / b");
         outputXButton.setText("Quotient");
     }
 
@@ -45,7 +46,7 @@ public class DivideNode extends Node {
             }
             SwingUtilities.invokeLater(() -> {
                 for (Node node : programPanel.nodes) {
-                    node.setBorder(new EmptyBorder(3, 3, 3, 3));
+                    node.restoreBorder();
                 }
                 this.setStepExecutedBorder();
             });

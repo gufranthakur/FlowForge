@@ -16,7 +16,8 @@ public class DelayNode extends Node {
     public DelayNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
         this.programPanel = programPanel;
-        this.setSize(200, 150);
+
+        this.nodeTheme = new Color(138, 46, 14);
 
         JPanel wrapperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1000, 0, Integer.MAX_VALUE, 100);
@@ -27,7 +28,8 @@ public class DelayNode extends Node {
         outputButton.setVisible(true);
         outputXButton.setVisible(false);
 
-        inputXButton.setText("Delay Value");
+
+        inputXButton.setText("Delay");
 
         wrapperPanel.setBackground(getBackground());
         wrapperPanel.add(resetConnectionsButton);
@@ -37,6 +39,7 @@ public class DelayNode extends Node {
         resetConnectionsButton.addActionListener(e -> {
             delaySpinner.setValue(1000);
         });
+        resetConnectionsButton.setVisible(false);
 
         contentPanel.add(wrapperPanel, BorderLayout.NORTH);
     }
@@ -53,9 +56,9 @@ public class DelayNode extends Node {
             }
             SwingUtilities.invokeLater(() -> {
                 for (Node node : programPanel.nodes) {
-                    node.setBorder(new EmptyBorder(3, 3, 3, 3));
+                    node.restoreBorder();
                 }
-                this.setBorder(new LineBorder(new Color(255, 126, 23), 3));
+                this.setStepExecutedBorder();
             });
         }
 

@@ -16,18 +16,16 @@ public class ConditionalLoopNode extends Node {
     public ConditionalLoopNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
         this.programPanel = programPanel;
-        this.setSize(170, 150);
 
-        JPanel wrapperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        this.nodeTheme = new Color(11, 35, 131);
 
         inputButton.setVisible(true);
         outputButton.setVisible(true);
         outputXButton.setVisible(false);
 
+
         inputXButton.setText("Condition");
 
-        wrapperPanel.add(resetConnectionsButton);
-        contentPanel.add(wrapperPanel, BorderLayout.NORTH);
     }
 
     @Override
@@ -42,9 +40,9 @@ public class ConditionalLoopNode extends Node {
             }
             SwingUtilities.invokeLater(() -> {
                 for (Node node : programPanel.nodes) {
-                    node.setBorder(new EmptyBorder(3, 3, 3, 3));
+                    node.restoreBorder();
                 }
-                this.setBorder(new LineBorder(new Color(255, 126, 23), 3));
+                this.setStepExecutedBorder();
             });
         }
         if (inputXNodes.size() != 1) return;

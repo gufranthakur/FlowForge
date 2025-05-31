@@ -45,12 +45,14 @@ public abstract class Node extends JPanel {
     public boolean isMinimized = false;
     public boolean isHighlighted = false;
     public boolean isCommented = false;
+    public boolean isNodeDuringStepExecution;
     public String comment;
 
-//    public Color connectionColor = Color.WHITE;
-//    public Color connectionColor2 = Color.WHITE;
-    public Color connectionColor = new Color(89, 105, 239);
-    public Color connectionColor2 = new Color(93, 168, 237);
+
+    public Color nodeTheme;
+    public Color stepExecutionNodeTheme;
+    public Color connectionColor = Color.WHITE;
+    public Color connectionColor2 = Color.WHITE;
     public Color connectionXColor = new Color(237, 121, 66);
     public Color connectionXColor2 = new Color(220, 197, 56);
 
@@ -131,15 +133,11 @@ public abstract class Node extends JPanel {
         setSize(200, 150);
         setLayout(new BorderLayout());
         setBackground(new Color(25, 25, 25));
-        putClientProperty(FlatClientProperties.STYLE, "arc : 20");
 
-        // Create titled border with the title
-
-
+        nodeTheme = programPanel.flowForge.theme.darker();
+        stepExecutionNodeTheme = new Color(229, 117, 42);
         restoreBorder();
 
-        // Set background color
-        //setBorder(new EmptyBorder(3, 3, 3, 3));
 
         contentPanel = new JPanel(new BorderLayout());
         topPanel = new JPanel();
@@ -191,7 +189,8 @@ public abstract class Node extends JPanel {
         revalidate();
     }
 
-    private void styleRadioButton(JRadioButton button, boolean isXConnection) {
+    public void styleRadioButton(JRadioButton button, boolean isXConnection) {
+        button.setFocusable(false);
         button.setOpaque(false);
         button.setForeground(Color.WHITE);
         button.setFont(button.getFont().deriveFont(14f));
@@ -200,8 +199,8 @@ public abstract class Node extends JPanel {
             button.putClientProperty(FlatClientProperties.STYLE,
                     "icon.selectedBackground: rgb(229,117,42);");
         }
-
     }
+
 
     private void loadActionListeners() {
         inputButton.addActionListener(e -> {
@@ -379,32 +378,56 @@ public abstract class Node extends JPanel {
 
     public void restoreBorder() {
         Border coloredBorder;
+        isNodeDuringStepExecution = false;
 
         if (!isHighlighted) coloredBorder = BorderFactory.createLineBorder(getBackground().brighter(), 2);
-        else coloredBorder = BorderFactory.createLineBorder(programPanel.flowForge.theme, 2);
+        else coloredBorder = BorderFactory.createLineBorder(nodeTheme, 2);
 
         TitledBorder titledBorder = BorderFactory.createTitledBorder(coloredBorder, title);
         titledBorder.setTitleColor(Color.WHITE);
 
         setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createEmptyBorder(5, 5, 5, 5),
+                BorderFactory.createEmptyBorder(3, 3, 3, 3),
                 titledBorder
         ));
     }
 
-    public void highlightNode() {
-
-    }
 
     public void setStepExecutedBorder() {
-        Border coloredBorder = BorderFactory.createLineBorder(new Color(229, 117, 42), 2);
+        isNodeDuringStepExecution = true;
+
+        Border coloredBorder = BorderFactory.createLineBorder(stepExecutionNodeTheme, 2);
         TitledBorder titledBorder = BorderFactory.createTitledBorder(coloredBorder, title);
         titledBorder.setTitleColor(Color.WHITE);
 
         setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createEmptyBorder(5, 5, 5, 5),
+                BorderFactory.createEmptyBorder(3, 3, 3, 3),
                 titledBorder
         ));
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2D = (Graphics2D) g;
+
+        if (isNodeDuringStepExecution) {
+            GradientPaint gradientPaint = new GradientPaint(
+                    0, 0,
+                    stepExecutionNodeTheme,
+                    getWidth() - 50, 80,
+                    getBackground());
+            g2D.setPaint(gradientPaint);
+        } else {
+            GradientPaint gradientPaint = new GradientPaint(
+                    0, 0,
+                    nodeTheme,
+                    getWidth() - 50, 80,
+                    getBackground());
+            g2D.setPaint(gradientPaint);
+        }
+
+        g2D.fillRect(0, 0, getWidth(), 20);
     }
 
     // Getters

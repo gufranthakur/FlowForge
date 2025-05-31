@@ -19,7 +19,8 @@ public class MultiplyNode extends Node {
     public MultiplyNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
         this.programPanel = programPanel;
-        this.setSize(210, 150);
+
+        this.nodeTheme = new Color(107, 48, 177);
 
         inputXButton.setText("Numbers");
         outputXButton.setText("Result");
@@ -45,9 +46,9 @@ public class MultiplyNode extends Node {
             }
             SwingUtilities.invokeLater(() -> {
                 for (Node node : programPanel.nodes) {
-                    node.setBorder(new EmptyBorder(3, 3, 3, 3));
+                    node.restoreBorder();
                 }
-                this.setBorder(new LineBorder(new Color(255, 126, 23), 3));
+                this.setStepExecutedBorder();
             });
         }
 

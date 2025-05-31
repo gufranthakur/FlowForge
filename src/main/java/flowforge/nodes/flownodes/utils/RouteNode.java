@@ -16,6 +16,8 @@ public class RouteNode extends Node {
         super(title, programPanel);
         this.programPanel = programPanel;
 
+        this.nodeTheme = new Color(5, 94, 92);
+
         inputXButton.setVisible(false);
         outputXButton.setVisible(false);
 
@@ -35,9 +37,9 @@ public class RouteNode extends Node {
             }
             SwingUtilities.invokeLater(() -> {
                 for (Node node : programPanel.nodes) {
-                    node.setBorder(new EmptyBorder(3, 3, 3, 3));
+                    node.restoreBorder();
                 }
-                this.setBorder(new LineBorder(new Color(255, 126, 23), 3));
+                this.setStepExecutedBorder();
             });
         }
 

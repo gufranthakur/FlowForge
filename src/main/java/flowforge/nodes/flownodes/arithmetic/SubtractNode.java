@@ -18,7 +18,7 @@ public class SubtractNode extends Node {
     public SubtractNode(String title, ProgramPanel programPanel) {
         super(title, programPanel);
         this.programPanel = programPanel;
-        this.setSize(240, 180);
+        this.nodeTheme = new Color(67, 23, 120);
         inputXButton.setText("Numbers");
         outputXButton.setText("Difference");
     }
@@ -43,9 +43,9 @@ public class SubtractNode extends Node {
             }
             SwingUtilities.invokeLater(() -> {
                 for (Node node : programPanel.nodes) {
-                    node.setBorder(new EmptyBorder(3, 3, 3, 3));
+                    node.restoreBorder();
                 }
-                this.setBorder(new LineBorder(new Color(255, 126, 23), 3));
+                this.setStepExecutedBorder();
             });
         }
 

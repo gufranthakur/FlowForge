@@ -27,6 +27,8 @@ public class PrintNode extends Node {
         outputButton.setVisible(true);
         outputXButton.setVisible(false);
 
+        this.nodeTheme = new Color(6, 79, 172);
+
         textField = new JTextField();
         textField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Print...");
         topPanel.add(textField);

@@ -22,12 +22,16 @@ public class LogicGateNode extends Node {
         this.programPanel = programPanel;
         this.gateType = gateType.toUpperCase();
 
-        label = new JLabel(gateType);
-        label.setFont(new Font(FlatInterFont.FAMILY, Font.PLAIN, 28));
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-        contentPanel.add(label, BorderLayout.CENTER);
+        this.nodeTheme = new Color(135, 9, 61);
 
-        this.setSize(240, 130);
+        inputXButton.setText("Values");
+
+        JLabel label = new JLabel(gateType);
+        label.setFont(new Font(FlatInterFont.FAMILY, Font.PLAIN, 28));
+
+        topPanel.setLayout(new FlowLayout());
+        topPanel.add(label);
+
     }
 
     public String getGateType() {
@@ -54,9 +58,9 @@ public class LogicGateNode extends Node {
             }
             SwingUtilities.invokeLater(() -> {
                 for (Node node : programPanel.nodes) {
-                    node.setBorder(new EmptyBorder(3, 3, 3, 3));
+                    node.restoreBorder();
                 }
-                this.setBorder(new LineBorder(new Color(255, 126, 23), 3));
+                this.setStepExecutedBorder();
             });
         }
         switch(gateType) {

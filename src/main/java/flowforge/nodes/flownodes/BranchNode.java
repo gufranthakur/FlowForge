@@ -42,6 +42,7 @@ public class BranchNode extends Node {
 
         outputButton.setText("True");
         outputFalseButton.setText("False");
+        styleRadioButton(outputFalseButton, true);
         outputXButton.setVisible(false);
 
         outputButton.addActionListener(e -> {
