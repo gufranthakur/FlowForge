@@ -26,11 +26,16 @@ learn the logic building skills in programming.
 4. The program should launch successfully.
 For a more in-depth guide, refer to [Documentation](https://gufrans-organization.gitbook.io/flowforge-docs/getting-started/installing-java-21)
 
-Alternatively, you can also run the project via the source code.
-1. Copy the project via the CLI, or by downloading the .zip file
-2. extract the zip and open the project in IntelliJ IDEA
-3. Navigate to FlowForge.java (which contains the main method)
-4. Click on run to execute the program
+# Alternatively, you can also run the project via the source code.
+IntelliJ IDEA is recommended.
+
+Make sure to have Java 21 installed. If you don't, you can download it within IntelliJ when the project is indexing, by clicking on "Configure SDK" on the top right corner
+
+1. Copy the HTTPS link of this repo
+2. Open IntelliJ IDEA, on the projects menu, click on "Clone Repository"
+3. Paste the link and clone it
+4. Navigate to the "FlowForge.java" File, located in the flowforge package
+5. Right click on the editor, and click on "Run FlowForge.main()" 
 
 ## To Contribute to FlowForge
 
