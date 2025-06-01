@@ -19,28 +19,42 @@ import flowforge.ui.panels.StartPanel;
 import javax.swing.*;
 import java.awt.*;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
+//The main Class of FlowForge. All the components have a reference to this clasn.
+//In a way, this is the glue between all the components and panels.
+
 public class FlowForge extends JFrame implements Runnable{
 
+    //Saves and loads nodes into JSON file.
     public DataManager dataManager;
     public String projectFilePath;
 
+    //Program panel container contains the program panel.
+    //This is needed because the actual program panel uses null layout.
     public JPanel programPanelContainer;
+    //The starting panel which contains open project and new project buttons.
     public StartPanel startPanel;
 
+    //Everything about the menubar
     public AppMenuBar menuBar;
     public AboutPanel aboutPanel;
     public ChangeLogPanel changeLogPanel;
 
+    //Control panel contains nodes, variables, properties, code executions and other things the user can operate with.
     public ControlPanel controlPanel;
+    //Program panel is where the nodes are placed and executed
     public ProgramPanel programPanel;
+    //A small in-built terminal that displays the output
     public Console console;
 
     public Color theme = new Color(26, 77, 236).brighter();
@@ -50,6 +64,7 @@ public class FlowForge extends JFrame implements Runnable{
     public Color utilNodeTheme = new Color(5, 94, 92);
     public Color variableNodeTheme = new Color(108, 5, 5);
 
+    //Responsible for execution and stopping execution of program.
     public ForgeExecutor forgeExecutor;
 
     private Thread flowForgeThread;
@@ -67,6 +82,7 @@ public class FlowForge extends JFrame implements Runnable{
     }
 
     public void init() {
+        //All core components of the app are initialized here. Every component has a reference to this class via the constructor
         flowForgeThread = new Thread(this);
 
         console = new Console(this);
@@ -90,6 +106,7 @@ public class FlowForge extends JFrame implements Runnable{
     }
 
     public void addComponent() {
+        //Only the start panel is added for now. Other components get added when the user opens/creates a project.
         controlPanel.addComponent();
         menuBar.addComponent();
 
@@ -103,6 +120,7 @@ public class FlowForge extends JFrame implements Runnable{
     }
 
     public void launch() {
+        //This is called when the user opens/creates a project. Start panel is removed and other components come into action
         programPanelContainer.add(programPanel);
 
         startPanel.setVisible(false);
@@ -118,7 +136,7 @@ public class FlowForge extends JFrame implements Runnable{
         this.repaint();
         this.revalidate();
     }
-
+    //This one kinda doesnt work properly, still in testing.
     public boolean checkForUpdate() {
 
         try {
@@ -133,24 +151,18 @@ public class FlowForge extends JFrame implements Runnable{
 
                 if (JOptionPane.showConfirmDialog(null,
                         "There is a new FlowForge version available. " + "\n" +
-                                "Proceed with installation?",
+                                "You can download it manually by clicking on \"Yes\"",
                         "New version Available", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 
-
-                    URL jarUrl = new URL("https://github.com/gufranthakur/FlowForge/releases/download/v1.7/FlowForge.jar");
-                    Path tempJar = Paths.get("FlowForge.jar");
-
-                    try (InputStream in = jarUrl.openStream()) {
-                        Files.copy(in, tempJar, StandardCopyOption.REPLACE_EXISTING);
+                    Desktop desktop = Desktop.getDesktop();
+                    try {
+                        desktop.browse(new URI("https://flow-forge-website.vercel.app/"));
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    } catch (URISyntaxException ex) {
+                        System.out.println("Exception caught : wrong URL");
                     }
-
-                    System.out.println("Download complete. Relaunching...");
-
-                    new ProcessBuilder("java", "-jar", tempJar.toAbsolutePath().toString()).start();
-                    System.exit(0);
-
                 }
-                return true;
             }
 
         } catch (Exception e) {
@@ -159,9 +171,10 @@ public class FlowForge extends JFrame implements Runnable{
                     "Could not check for update", JOptionPane.ERROR_MESSAGE);
             return false;
         }
-        return false;
+        return true;
     }
 
+    //Game loop, for smooth animations and responsiveness.
     @Override
     public void run() {
         double timePerFrame = 1000000000.0 / 120;
@@ -205,17 +218,16 @@ public class FlowForge extends JFrame implements Runnable{
 
     }
 
+    //Main method.
     public static void main(String[] args){
-        FlatMacDarkLaf.setup();
-        FlatJetBrainsMonoFont.install();
+        FlatMacDarkLaf.setup(); //Theme setup
+        FlatJetBrainsMonoFont.install(); //Font installation
 
-
+        //Swing is not thread safe, invoked in the EDT (Event dispatch thread)
         SwingUtilities.invokeLater(() -> {
             FlowForge flowForge = new FlowForge();
             flowForge.init();
             flowForge.addComponent();
-
-
         });
 
     }
