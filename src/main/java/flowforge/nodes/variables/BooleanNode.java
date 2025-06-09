@@ -17,7 +17,7 @@ public class BooleanNode extends Node {
     public BooleanNode(String title, ProgramPanel programPanel, Boolean booleanValue) {
         super(title, programPanel);
         this.programPanel = programPanel;
-        this.setSize(200, 100);
+        this.setSize(210, 90);
         this.nodeTheme = programPanel.flowForge.variableNodeTheme;
 
         checkBox = new JCheckBox("Set value : False");

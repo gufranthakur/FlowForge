@@ -42,6 +42,7 @@ public class FlowForge extends JFrame implements Runnable{
     //Program panel container contains the program panel.
     //This is needed because the actual program panel uses null layout.
     public JPanel programPanelContainer;
+    public JSplitPane consoleSplitPane;
     //The starting panel which contains open project and new project buttons.
     public StartPanel startPanel;
 
@@ -72,7 +73,7 @@ public class FlowForge extends JFrame implements Runnable{
 
     public FlowForge() {
         this.setTitle("FlowForge");
-        this.setSize(1000, 600);
+        this.setSize(1200, 700);
         this.setLocationRelativeTo(null);
         this.setLayout(new BorderLayout());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -98,6 +99,7 @@ public class FlowForge extends JFrame implements Runnable{
         changeLogPanel = new ChangeLogPanel(this);
 
         programPanelContainer = new JPanel(null);
+        consoleSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, programPanelContainer, console.getRootPanel());
 
         controlPanel.init();
         menuBar.init();
@@ -127,8 +129,7 @@ public class FlowForge extends JFrame implements Runnable{
         menuBar.launch();
 
         this.add(controlPanel.getRootPanel(), BorderLayout.WEST);
-        this.add(programPanelContainer, BorderLayout.CENTER);
-        this.add(console.getRootPanel(), BorderLayout.SOUTH);
+        this.add(consoleSplitPane, BorderLayout.CENTER);
 
         console.print("Welcome to FlowForge!");
 

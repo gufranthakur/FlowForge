@@ -3,6 +3,7 @@ package flowforge.ui.panels;
 import flowforge.FlowForge;
 import flowforge.nodes.flownodes.BranchNode;
 import flowforge.ui.popupMenus.NodePopupMenu;
+import flowforge.ui.popupMenus.ProgramPanelPopupMenu;
 import flowforge.ui.popupMenus.SearchPopupMenu;
 import flowforge.nodes.Node;
 import flowforge.nodes.StartNode;
@@ -36,10 +37,14 @@ public class ProgramPanel extends JPanel implements KeyListener {
     public NodePopupMenu nodePopupMenu;
     public SearchPopupMenu searchPopupMenu;
     public SearchXPopupMenu searchXPopupMenu;
+    public ProgramPanelPopupMenu programPanelPopupMenu;
 
     private Point currentMouseLocation;
     public boolean isExecutingSteps = false;
     public final Object stepExecutorLock = new Object();
+
+    public boolean showGrid = true;
+    public boolean snapToGrid = true;
 
     private Color bgColor = new Color(30, 30, 30);
 
@@ -60,6 +65,7 @@ public class ProgramPanel extends JPanel implements KeyListener {
         nodePopupMenu = new NodePopupMenu(this);
         searchPopupMenu = new SearchPopupMenu(this);
         searchXPopupMenu = new SearchXPopupMenu(this);
+        programPanelPopupMenu = new ProgramPanelPopupMenu(this);
 
         this.addMouseListener(new MouseAdapter() {
             @Override
@@ -70,13 +76,13 @@ public class ProgramPanel extends JPanel implements KeyListener {
 
                 if (selectedNode instanceof BranchNode) {
                     if (((BranchNode) selectedNode).isBeingTrueConnected || ((BranchNode) selectedNode).isBeingFalseConnected) {
-                        searchPopupMenu.show(getDesktopPane(), currentMouseLocation.x, currentMouseLocation.y);
+                        searchPopupMenu.show(getProgramPanel(), currentMouseLocation.x, currentMouseLocation.y);
                     }
                 } else {
                     if (selectedNode.isBeingConnected) {
-                        searchPopupMenu.show(getDesktopPane(), currentMouseLocation.x, currentMouseLocation.y);
+                        searchPopupMenu.show(getProgramPanel(), currentMouseLocation.x, currentMouseLocation.y);
                     } else if (selectedNode.isBeingXConnected) {
-                        searchXPopupMenu.show(getDesktopPane(), currentMouseLocation.x, currentMouseLocation.y);
+                        searchXPopupMenu.show(getProgramPanel(), currentMouseLocation.x, currentMouseLocation.y);
                     }
                 }
                 for (Node node : nodes) {
@@ -86,6 +92,14 @@ public class ProgramPanel extends JPanel implements KeyListener {
                     node.outputXButton.setEnabled(true);
                 }
 
+            }
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+                if (SwingUtilities.isRightMouseButton(e)) {
+                    programPanelPopupMenu.displayMenu(e.getX() + 10, e.getY() + 10, showGrid, snapToGrid);
+                }
             }
         });
 
@@ -237,18 +251,19 @@ public class ProgramPanel extends JPanel implements KeyListener {
         g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
-        int cellSize = 30;
-        int width = getWidth();
-        int height = getHeight();
-
         g2D.setColor(new Color(60, 60, 60));
+        if (showGrid) {
+            int cellSize = 30;
+            int width = getWidth();
+            int height = getHeight();
 
-        for (int x = 0; x <= width; x += cellSize) {
-            g2D.drawLine(x, 0, x, height);
-        }
+            for (int x = 0; x <= width; x += cellSize) {
+                g2D.drawLine(x, 0, x, height);
+            }
 
-        for (int y = 0; y <= height; y += cellSize) {
-            g2D.drawLine(0, y, width, y);
+            for (int y = 0; y <= height; y += cellSize) {
+                g2D.drawLine(0, y, width, y);
+            }
         }
 
         g2D.setStroke(new BasicStroke(2.0f));
@@ -320,7 +335,7 @@ public class ProgramPanel extends JPanel implements KeyListener {
 
     }
 
-    public JPanel getDesktopPane() {
+    public JPanel getProgramPanel() {
         return this;
     }
 

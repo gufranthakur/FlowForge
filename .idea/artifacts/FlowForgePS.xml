@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jpackage" name="FlowForgePS">
+    <output-path>$PROJECT_DIR$/out/artifacts/FlowForgePS</output-path>
+    <root id="root">
+      <element id="archive" name="FlowForge.jar">
+        <element id="module-output" name="FlowForge" />
+      </element>
+    </root>
+  </artifact>
+</component>

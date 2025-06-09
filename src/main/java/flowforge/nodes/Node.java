@@ -98,15 +98,21 @@ public abstract class Node extends JPanel {
             @Override
             public void mouseDragged(MouseEvent e) {
                 if (isDragging && dragStart != null) {
+                    int gridSize = 30; // Adjust this value as needed
+
                     Point current = e.getPoint();
                     Point parentLocation = getLocation();
 
                     int newX = parentLocation.x + current.x - dragStart.x;
                     int newY = parentLocation.y + current.y - dragStart.y;
 
+                    if (programPanel.snapToGrid) {
+                        newX = (newX / gridSize) * gridSize;
+                        newY = (newY / gridSize) * gridSize;
+                    }
                     setLocation(newX, newY);
                     updateNodeDimensions();
-                    programPanel.repaint(); // Repaint to update connections
+                    programPanel.repaint();
                 }
             }
         });
@@ -130,7 +136,7 @@ public abstract class Node extends JPanel {
 
     private void loadUI() {
         setLocation(300, 300);
-        setSize(200, 150);
+        setSize(210, 150);
         setLayout(new BorderLayout());
         setBackground(new Color(25, 25, 25));
 
@@ -445,12 +451,12 @@ public abstract class Node extends JPanel {
 
     public Point getInputPoint() {
         if (isMinimized) return new Point(getX(), getY() + 10);
-        return new Point(getX(), getY() + getHeight()/2 + 10);
+        return new Point(getX(), getY() + getHeight() / 2 + 15);
     }
 
     public Point getOutputPoint() {
         if (isMinimized) return new Point(getX() + getWidth(), getY() + 10);
-        return new Point(getX() + getWidth(), getY() + getHeight()/2 + 20);
+        return new Point(getX() + getWidth(), getY() + getHeight()/2 + 15);
     }
 
     public Point getInputXPoint() {
@@ -460,7 +466,7 @@ public abstract class Node extends JPanel {
 
     public Point getOutputXPoint() {
         if (isMinimized) return new Point(getX() + getWidth(), getY() + 25);
-        return new Point(getX() + getWidth(), getY() + getHeight() / 2 + 40);
+        return new Point(getX() + getWidth(), getY() + getHeight() / 2 + 30);
     }
 
     public abstract void execute(boolean isStepExecution);

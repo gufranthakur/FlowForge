@@ -17,7 +17,7 @@ public class IntegerNode extends Node {
     public IntegerNode(String title, ProgramPanel programPanel, Integer intValue) {
         super(title, programPanel);
         this.programPanel = programPanel;
-        this.setSize(200, 100);
+        this.setSize(210, 90);
 
         this.nodeTheme = programPanel.flowForge.variableNodeTheme;
 
@@ -46,9 +46,9 @@ public class IntegerNode extends Node {
             }
             SwingUtilities.invokeLater(() -> {
                 for (Node node : programPanel.nodes) {
-                    node.setBorder(new EmptyBorder(3, 3, 3, 3));
+                    node.restoreBorder();
                 }
-                this.setBorder(new LineBorder(new Color(255, 126, 23), 3));
+                this.setStepExecutedBorder();
             });
         }
         for (Node node : inputXNodes) {

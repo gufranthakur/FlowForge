@@ -19,6 +19,7 @@ public class Console {
 
     public Console(FlowForge flowForge) {
         this.flowForge = flowForge;
+        this.rootPanel.setMinimumSize(new Dimension(flowForge.getWidth(), 200));
 
         consoleTextPane.setFont(new Font(FlatJetBrainsMonoFont.FAMILY, Font.PLAIN, 16));
         rootPanel.setPreferredSize(new Dimension(flowForge.getWidth(), 250));

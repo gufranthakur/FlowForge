@@ -42,7 +42,7 @@ public class NodePopupMenu extends JPopupMenu {
                         || node instanceof IntegerNode
                         || node instanceof BooleanNode
                         || node instanceof BranchNode) {
-                    node.setSize(200, 100);
+                    node.setSize(210, 90);
                     node.isMinimized = false;
                     node.contentPanel.setVisible(true);
                     return;

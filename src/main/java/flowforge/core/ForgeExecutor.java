@@ -54,6 +54,9 @@ public class ForgeExecutor {
         ControlPanel controlPanel = flowForge.controlPanel;
         Console console = flowForge.console;
 
+
+
+
         if (!manualStop) {
             controlPanel.runStopButton.setText("▶ Run");
             controlPanel.runStopButton.setBackground(flowForge.theme);

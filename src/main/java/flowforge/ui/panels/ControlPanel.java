@@ -81,6 +81,8 @@ public class ControlPanel {
 
     public ControlPanel(FlowForge flowForge) {
         this.flowForge = flowForge;
+        this.rootPanel.setPreferredSize(new Dimension(300, flowForge.getHeight()));
+        this.rootPanel.setMaximumSize(new Dimension(300, flowForge.getHeight()));
         rootPanel.setOpaque(true);
 
         root = new DefaultMutableTreeNode("Flow Functions");

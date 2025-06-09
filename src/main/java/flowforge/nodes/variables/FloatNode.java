@@ -18,6 +18,7 @@ public class FloatNode extends Node {
         super(title, programPanel);
         this.programPanel = programPanel;
         this.nodeTheme = programPanel.flowForge.variableNodeTheme;
+        this.setSize(210, 90);
 
         SpinnerNumberModel model = new SpinnerNumberModel(1.0, 0.0, 10.0, 0.1);
 
@@ -47,9 +48,9 @@ public class FloatNode extends Node {
             }
             SwingUtilities.invokeLater(() -> {
                 for (Node node : programPanel.nodes) {
-                    node.setBorder(new EmptyBorder(3, 3, 3, 3));
+                    node.restoreBorder();
                 }
-                this.setBorder(new LineBorder(new Color(255, 126, 23), 3));
+                this.setStepExecutedBorder();
             });
         }
         for (Node node : inputXNodes) {
