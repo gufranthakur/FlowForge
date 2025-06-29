@@ -293,8 +293,11 @@ public class AppMenuBar extends JMenuBar {
         });
 
         showHideConsole.addActionListener(e -> {
-            var console = flowForge.console.getRootPanel();
-            console.setVisible(!console.isVisible());
+            if (!flowForge.console.isMinimized) flowForge.console.minimize();
+            else flowForge.console.resizeToDefault();
+
+            flowForge.repaint();
+            flowForge.revalidate();
         });
 
         showHideToolbar.addActionListener(e -> {

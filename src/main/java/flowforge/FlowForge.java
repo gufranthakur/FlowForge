@@ -118,7 +118,6 @@ public class FlowForge extends JFrame implements Runnable{
         isRunning = true;
 
         flowForgeThread.start();
-
     }
 
     public void launch() {
@@ -130,6 +129,9 @@ public class FlowForge extends JFrame implements Runnable{
 
         this.add(controlPanel.getRootPanel(), BorderLayout.WEST);
         this.add(consoleSplitPane, BorderLayout.CENTER);
+
+        consoleSplitPane.setDividerLocation(0.8);
+        consoleSplitPane.setResizeWeight(0.8);
 
         console.print("Welcome to FlowForge!");
 

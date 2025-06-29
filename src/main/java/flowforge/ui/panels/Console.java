@@ -17,6 +17,8 @@ public class Console {
 
     private FlowForge flowForge;
 
+    public boolean isMinimized = false;
+
     public Console(FlowForge flowForge) {
         this.flowForge = flowForge;
         this.rootPanel.setMinimumSize(new Dimension(flowForge.getWidth(), 200));
@@ -28,7 +30,7 @@ public class Console {
         clearButton.setBackground(toolbar.getBackground().brighter());
 
         closeButton.addActionListener(e -> {
-            rootPanel.setVisible(false);
+            minimize();
         });
         clearButton.addActionListener(e -> {
             consoleTextPane.setText("");
@@ -53,6 +55,16 @@ public class Console {
     public void printSaveStatement() {
         clear();
         print("Project saved successfully at location : \n" + flowForge.projectFilePath);
+    }
+
+    public void resizeToDefault() {
+        flowForge.consoleSplitPane.setDividerLocation(0.7);
+        isMinimized = false;
+    }
+
+    public void minimize() {
+        flowForge.consoleSplitPane.setDividerLocation(1.0);
+        isMinimized = true;
     }
 
 

@@ -157,7 +157,9 @@ public class ControlPanel {
 
     public void initListeners() {
         consoleButton.addActionListener(e -> {
-            flowForge.console.getRootPanel().setVisible(!flowForge.console.getRootPanel().isVisible());
+            if (flowForge.console.isMinimized) flowForge.console.resizeToDefault();
+            else flowForge.console.minimize();
+
         });
 
         runStopButton.addActionListener(e -> {
