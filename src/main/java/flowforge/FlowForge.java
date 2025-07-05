@@ -7,6 +7,7 @@ package flowforge;
 
 import com.formdev.flatlaf.fonts.jetbrains_mono.FlatJetBrainsMonoFont;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import flowforge.core.*;
 import flowforge.ui.MenuBar.AboutPanel;
 import flowforge.ui.MenuBar.AppMenuBar;
@@ -221,9 +222,11 @@ public class FlowForge extends JFrame implements Runnable{
 
     }
 
-    //Main method.
+    //Main method
     public static void main(String[] args){
-        FlatMacDarkLaf.setup(); //Theme setup
+        System.setProperty("sun.java2d.opengl", "true");
+
+        FlatMacDarkLaf.setup();
         FlatJetBrainsMonoFont.install(); //Font installation
 
         //Swing is not thread safe, invoked in the EDT (Event dispatch thread)

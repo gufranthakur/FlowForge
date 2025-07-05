@@ -16,7 +16,6 @@ import flowforge.nodes.variables.StringNode;
 import flowforge.ui.popupMenus.VariablePopupMenu;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
@@ -56,6 +55,10 @@ public class ControlPanel {
     private JLabel outputXConnectionLabel;
     public JButton runWithStepsButton;
     public JButton stopButton;
+    private JComboBox comboBox1;
+    private JButton addArrayButton;
+    private JScrollPane arrayScrollPane;
+    private JPanel arrayListPanel;
     private JComboBox nodeBox;
 
     public FlowForge flowForge;
@@ -74,6 +77,10 @@ public class ControlPanel {
     public DefaultMutableTreeNode variableRoot;
     private DefaultMutableTreeNode integerNode, stringNode, booleanNode, floatNode;
 
+    public JTree arrayTree;
+    public DefaultMutableTreeNode arrayRoot;
+    public DefaultMutableTreeNode intArrayNode, strArrayNode, boolArrayNode, floatArrayNode;
+
     public DefaultMutableTreeNode selectedVariableNode;
     public VariablePopupMenu variablePopupMenu;
 
@@ -81,8 +88,8 @@ public class ControlPanel {
 
     public ControlPanel(FlowForge flowForge) {
         this.flowForge = flowForge;
-        this.rootPanel.setPreferredSize(new Dimension(300, flowForge.getHeight()));
-        this.rootPanel.setMaximumSize(new Dimension(300, flowForge.getHeight()));
+        this.rootPanel.setPreferredSize(new Dimension(350, flowForge.getHeight()));
+        this.rootPanel.setMaximumSize(new Dimension(350, flowForge.getHeight()));
         rootPanel.setOpaque(true);
 
         root = new DefaultMutableTreeNode("Flow Functions");
@@ -93,6 +100,10 @@ public class ControlPanel {
         variableTree = new JTree(variableRoot);
         variableTree.setFont(new Font(FlatInterFont.FAMILY, Font.PLAIN, 16));
         variablePopupMenu = new VariablePopupMenu(this);
+
+        arrayRoot = new DefaultMutableTreeNode("Arrays");
+        arrayTree = new JTree(arrayRoot);
+        arrayTree.setFont(new Font(FlatInterFont.FAMILY, Font.PLAIN, 16));
     }
 
     public void init() {
@@ -153,6 +164,11 @@ public class ControlPanel {
         stringNode = new DefaultMutableTreeNode("Strings");
         booleanNode = new DefaultMutableTreeNode("Booleans");
         floatNode = new DefaultMutableTreeNode("Floats");
+
+        intArrayNode = new DefaultMutableTreeNode("Integers");
+        strArrayNode = new DefaultMutableTreeNode("String");
+        boolArrayNode = new DefaultMutableTreeNode("Boolean");
+        floatArrayNode = new DefaultMutableTreeNode("Floats");
     }
 
     public void initListeners() {
@@ -340,11 +356,18 @@ public class ControlPanel {
         variableRoot.add(booleanNode);
         variableRoot.add(floatNode);
 
+        arrayRoot.add(intArrayNode);
+        arrayRoot.add(strArrayNode);
+        arrayRoot.add(boolArrayNode);
+        arrayRoot.add(floatArrayNode);
+
         nodesListPanel.add(functionsTree, BorderLayout.CENTER);
         variableListPanel.add(variableTree, BorderLayout.CENTER);
+        arrayListPanel.add(arrayTree, BorderLayout.CENTER);
 
         functionsTree.expandRow(0);
         variableTree.expandRow(0);
+        arrayTree.expandRow(0);
     }
 
     public void loadVariables() {
