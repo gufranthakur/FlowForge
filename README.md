@@ -1,3 +1,5 @@
+# (Notice - FlowForge is in maintainance mode. It is being re-written in JavaFX) 
+
 ![Screenshot 2025-05-22 122154](https://github.com/user-attachments/assets/86369f96-669e-4f77-a618-2b1ce441f1de)
 
 ![Static Badge](https://img.shields.io/badge/Flow-Forge-blue)
