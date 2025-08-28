@@ -66,12 +66,12 @@ public class ControlPanel {
     public JTree functionsTree;
     public DefaultMutableTreeNode root;
     private DefaultMutableTreeNode flowNode, comparators, logicGates, arithmeticNode, utilityNode;
-    private DefaultMutableTreeNode print, branch, input, delay, loop, conditionalLoop, //Flow Nodes
-            equalTo, greaterThan, lessThan, // Comparator Nodes
-            greaterThanEqualTo, lessThanEqualTo, notEqualTo, //Comparator Nodes
-            notGate, andGate, orGate, nandGate, norGate, xorGate,// Logic Gate Nodes
-            add, subtract, multiply, divide, modulus, random, eval, // Arithmetic Nodes
-            route, recursive; //Utility Nodes
+    private DefaultMutableTreeNode print, branch, input, delay, loop, conditionalLoop,
+            equalTo, greaterThan, lessThan,
+            greaterThanEqualTo, lessThanEqualTo, notEqualTo,
+            notGate, andGate, orGate, nandGate, norGate, xorGate,
+            add, subtract, multiply, divide, modulus, random, eval,
+            route, recursive;
 
     public JTree variableTree;
     public DefaultMutableTreeNode variableRoot;
@@ -88,6 +88,7 @@ public class ControlPanel {
 
     public ControlPanel(FlowForge flowForge) {
         this.flowForge = flowForge;
+        createUIComponents();
         this.rootPanel.setPreferredSize(new Dimension(350, flowForge.getHeight()));
         this.rootPanel.setMaximumSize(new Dimension(350, flowForge.getHeight()));
         rootPanel.setOpaque(true);
@@ -104,6 +105,204 @@ public class ControlPanel {
         arrayRoot = new DefaultMutableTreeNode("Arrays");
         arrayTree = new JTree(arrayRoot);
         arrayTree.setFont(new Font(FlatInterFont.FAMILY, Font.PLAIN, 16));
+    }
+
+    private void createUIComponents() {
+        rootPanel = new JPanel();
+        rootPanel.setLayout(new BorderLayout());
+        rootPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        createToolBar();
+        createTabbedPane();
+
+        rootPanel.add(toolBar, BorderLayout.NORTH);
+        rootPanel.add(rootTabbedPane, BorderLayout.CENTER);
+    }
+
+    private void createToolBar() {
+        toolBar = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
+        runStopButton = new JButton("▶ Run");
+        runStopButton.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
+        runStopButton.setBackground(new Color(-16401911));
+
+        runWithStepsButton = new JButton("▶ Run with Steps");
+        runWithStepsButton.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
+        runWithStepsButton.setBackground(new Color(-33257));
+
+        stopButton = new JButton("■");
+        stopButton.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
+        stopButton.setBackground(new Color(-53968));
+        stopButton.setVisible(false);
+
+        consoleButton = new JButton("📜");
+        consoleButton.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 18));
+
+        toolBar.add(runStopButton);
+        toolBar.add(runWithStepsButton);
+        toolBar.add(stopButton);
+        toolBar.add(Box.createHorizontalGlue());
+        toolBar.add(consoleButton);
+    }
+
+    private void createTabbedPane() {
+        rootTabbedPane = new JTabbedPane();
+        rootTabbedPane.setPreferredSize(new Dimension(240, 200));
+
+        createNodeControlPanel();
+        createVariableControlPanel();
+        createPropertiesPanel();
+
+        rootTabbedPane.addTab("Functions", nodeControlPanel);
+        rootTabbedPane.addTab("Variables", variableControlPanel);
+        rootTabbedPane.addTab("Properties", propertiesPanel);
+    }
+
+    private void createNodeControlPanel() {
+        nodeControlPanel = new JPanel(new BorderLayout());
+        nodeControlPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+        JLabel functionsLabel = new JLabel("Functions");
+        functionsLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
+        functionsLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        nodesListPanel = new JPanel(new BorderLayout());
+        nodesScrollPanel = new JScrollPane(nodesListPanel);
+
+        nodeControlPanel.add(functionsLabel, BorderLayout.NORTH);
+        nodeControlPanel.add(nodesScrollPanel, BorderLayout.CENTER);
+    }
+
+    private void createVariableControlPanel() {
+        variableControlPanel = new JPanel();
+        variableControlPanel.setLayout(new BoxLayout(variableControlPanel, BoxLayout.Y_AXIS));
+        variableControlPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+        JLabel variablesLabel = new JLabel("Variables");
+        variablesLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
+        variablesLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JPanel variableInputPanel = new JPanel(new FlowLayout());
+        variableBox = new JComboBox();
+        variableBox.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
+        addButton = new JButton("Add");
+        addButton.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
+        addButton.setBackground(new Color(-12693268));
+
+        variableInputPanel.add(variableBox);
+        variableInputPanel.add(addButton);
+
+        variableListPanel = new JPanel(new BorderLayout());
+        variableScrollPanel = new JScrollPane(variableListPanel);
+
+        JLabel arraysLabel = new JLabel("Arrays");
+        arraysLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
+        arraysLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        arraysLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JPanel arrayInputPanel = new JPanel(new FlowLayout());
+        comboBox1 = new JComboBox();
+        comboBox1.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
+        addArrayButton = new JButton("Add");
+        addArrayButton.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
+        addArrayButton.setBackground(new Color(-12704020));
+
+        arrayInputPanel.add(comboBox1);
+        arrayInputPanel.add(addArrayButton);
+
+        arrayListPanel = new JPanel(new BorderLayout());
+        arrayScrollPane = new JScrollPane(arrayListPanel);
+
+        variableControlPanel.add(variablesLabel);
+        variableControlPanel.add(variableInputPanel);
+        variableControlPanel.add(variableScrollPanel);
+        variableControlPanel.add(arraysLabel);
+        variableControlPanel.add(arrayInputPanel);
+        variableControlPanel.add(arrayScrollPane);
+    }
+
+    private void createPropertiesPanel() {
+        propertiesPanel = new JPanel(new BorderLayout());
+        propertiesPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+        JLabel propertiesLabel = new JLabel("Properties");
+        propertiesLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
+        propertiesLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        detailsPanel = new JPanel();
+        detailsPanel.setLayout(new BoxLayout(detailsPanel, BoxLayout.Y_AXIS));
+        detailsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        nodeNameLabel = new JLabel("Node Name : ");
+        nodeNameLabel.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
+
+        nodeSerialNoLabel = new JLabel("Node Serial No.");
+        nodeSerialNoLabel.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
+
+        nodeLocationLabel = new JLabel("Location : ");
+        nodeLocationLabel.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
+
+        nodeSizeLabel = new JLabel("Size : ");
+        nodeSizeLabel.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
+
+        createConnectionPanel();
+
+        connectionsDisplayLabel = new JLabel("");
+        connectionsDisplayLabel.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
+
+        detailsPanel.add(nodeNameLabel);
+        detailsPanel.add(nodeSerialNoLabel);
+        detailsPanel.add(nodeLocationLabel);
+        detailsPanel.add(nodeSizeLabel);
+        detailsPanel.add(connectionPanel);
+        detailsPanel.add(connectionsDisplayLabel);
+        detailsPanel.add(Box.createVerticalGlue());
+
+        propertiesPanel.add(propertiesLabel, BorderLayout.NORTH);
+        propertiesPanel.add(detailsPanel, BorderLayout.CENTER);
+    }
+
+    private void createConnectionPanel() {
+        connectionPanel = new JPanel();
+        connectionPanel.setLayout(new BoxLayout(connectionPanel, BoxLayout.Y_AXIS));
+
+        JLabel connectionsTitle = new JLabel("Connections : ");
+        connectionsTitle.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
+        connectionsTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JLabel inputLabel = new JLabel("Input Connections : ");
+        inputLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
+
+        inputConnectionsLabel = new JLabel("[]");
+        inputConnectionsLabel.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
+
+        JLabel outputLabel = new JLabel("Output Connections : ");
+        outputLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
+
+        outputConnectionsLabel = new JLabel("[]");
+        outputConnectionsLabel.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
+
+        JLabel inputXLabel = new JLabel("Input-X Connections : ");
+        inputXLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
+
+        inputXConnectionsLabel = new JLabel("[]");
+        inputXConnectionsLabel.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
+
+        JLabel outputXLabel = new JLabel("Output-X Connections : ");
+        outputXLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
+
+        outputXConnectionLabel = new JLabel("[]");
+        outputXConnectionLabel.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
+
+        connectionPanel.add(connectionsTitle);
+        connectionPanel.add(inputLabel);
+        connectionPanel.add(inputConnectionsLabel);
+        connectionPanel.add(outputLabel);
+        connectionPanel.add(outputConnectionsLabel);
+        connectionPanel.add(inputXLabel);
+        connectionPanel.add(inputXConnectionsLabel);
+        connectionPanel.add(outputXLabel);
+        connectionPanel.add(outputXConnectionLabel);
     }
 
     public void init() {
@@ -129,34 +328,34 @@ public class ControlPanel {
         loop = new DefaultMutableTreeNode("Loop");
         conditionalLoop = new DefaultMutableTreeNode("Conditional-Loop");
 
-            comparators = new DefaultMutableTreeNode("Comparators");
-                equalTo = new DefaultMutableTreeNode("Equals to");
-                greaterThan = new DefaultMutableTreeNode("Greater than");
-                lessThan = new DefaultMutableTreeNode("Less than");
-                greaterThanEqualTo = new DefaultMutableTreeNode("Greater than or equal to");
-                lessThanEqualTo = new DefaultMutableTreeNode("Less than or equal to");
-                notEqualTo = new DefaultMutableTreeNode("Not equal to");
+        comparators = new DefaultMutableTreeNode("Comparators");
+        equalTo = new DefaultMutableTreeNode("Equals to");
+        greaterThan = new DefaultMutableTreeNode("Greater than");
+        lessThan = new DefaultMutableTreeNode("Less than");
+        greaterThanEqualTo = new DefaultMutableTreeNode("Greater than or equal to");
+        lessThanEqualTo = new DefaultMutableTreeNode("Less than or equal to");
+        notEqualTo = new DefaultMutableTreeNode("Not equal to");
 
-            logicGates = new DefaultMutableTreeNode("Logic gates");
-                notGate = new DefaultMutableTreeNode("NOT");
-                andGate = new DefaultMutableTreeNode("AND");
-                orGate = new DefaultMutableTreeNode("OR");
-                nandGate = new DefaultMutableTreeNode("NAND");
-                norGate = new DefaultMutableTreeNode("NOR");
-                xorGate = new DefaultMutableTreeNode("XOR");
+        logicGates = new DefaultMutableTreeNode("Logic gates");
+        notGate = new DefaultMutableTreeNode("NOT");
+        andGate = new DefaultMutableTreeNode("AND");
+        orGate = new DefaultMutableTreeNode("OR");
+        nandGate = new DefaultMutableTreeNode("NAND");
+        norGate = new DefaultMutableTreeNode("NOR");
+        xorGate = new DefaultMutableTreeNode("XOR");
 
-            arithmeticNode = new DefaultMutableTreeNode("Arithmetic");
-                eval = new DefaultMutableTreeNode("Eval");
-                add = new DefaultMutableTreeNode("Add");
-                subtract = new DefaultMutableTreeNode("Subtract");
-                multiply = new DefaultMutableTreeNode("Multiply");
-                divide = new DefaultMutableTreeNode("Divide");
-                modulus = new DefaultMutableTreeNode("Modulus");
-                random = new DefaultMutableTreeNode("Random");
+        arithmeticNode = new DefaultMutableTreeNode("Arithmetic");
+        eval = new DefaultMutableTreeNode("Eval");
+        add = new DefaultMutableTreeNode("Add");
+        subtract = new DefaultMutableTreeNode("Subtract");
+        multiply = new DefaultMutableTreeNode("Multiply");
+        divide = new DefaultMutableTreeNode("Divide");
+        modulus = new DefaultMutableTreeNode("Modulus");
+        random = new DefaultMutableTreeNode("Random");
 
-            utilityNode = new DefaultMutableTreeNode("Utility");
-                route = new DefaultMutableTreeNode("Route");
-                recursive = new DefaultMutableTreeNode("Recurse");
+        utilityNode = new DefaultMutableTreeNode("Utility");
+        route = new DefaultMutableTreeNode("Route");
+        recursive = new DefaultMutableTreeNode("Recurse");
     }
 
     public void initVariableNodes() {
@@ -175,7 +374,6 @@ public class ControlPanel {
         consoleButton.addActionListener(e -> {
             if (flowForge.console.isMinimized) flowForge.console.resizeToDefault();
             else flowForge.console.minimize();
-
         });
 
         runStopButton.addActionListener(e -> {
@@ -218,9 +416,7 @@ public class ControlPanel {
             for (Node node : flowForge.programPanel.nodes) {
                 node.restoreBorder();
             }
-
         });
-
 
         functionsTree.addMouseListener(new MouseAdapter() {
             @Override
@@ -257,7 +453,6 @@ public class ControlPanel {
                         }
                     }
                 }
-
             }
         });
 
@@ -317,7 +512,6 @@ public class ControlPanel {
         }
     }
 
-
     public void addComponent() {
         root.add(print);
         root.add(branch);
@@ -326,30 +520,30 @@ public class ControlPanel {
         root.add(loop);
         root.add(conditionalLoop);
         root.add(arithmeticNode);
-            arithmeticNode.add(eval);
-            arithmeticNode.add(add);
-            arithmeticNode.add(subtract);
-            arithmeticNode.add(multiply);
-            arithmeticNode.add(divide);
-            arithmeticNode.add(modulus);
-            arithmeticNode.add(random);
+        arithmeticNode.add(eval);
+        arithmeticNode.add(add);
+        arithmeticNode.add(subtract);
+        arithmeticNode.add(multiply);
+        arithmeticNode.add(divide);
+        arithmeticNode.add(modulus);
+        arithmeticNode.add(random);
         root.add(utilityNode);
-            utilityNode.add(route);
-            utilityNode.add(recursive);
+        utilityNode.add(route);
+        utilityNode.add(recursive);
         root.add(comparators);
-            comparators.add(equalTo);
-            comparators.add(greaterThan);
-            comparators.add(lessThan);
-            comparators.add(greaterThanEqualTo);
-            comparators.add(lessThanEqualTo);
-            comparators.add(notEqualTo);
+        comparators.add(equalTo);
+        comparators.add(greaterThan);
+        comparators.add(lessThan);
+        comparators.add(greaterThanEqualTo);
+        comparators.add(lessThanEqualTo);
+        comparators.add(notEqualTo);
         root.add(logicGates);
-            logicGates.add(notGate);
-            logicGates.add(andGate);
-            logicGates.add(orGate);
-            logicGates.add(nandGate);
-            logicGates.add(norGate);
-            logicGates.add(xorGate);
+        logicGates.add(notGate);
+        logicGates.add(andGate);
+        logicGates.add(orGate);
+        logicGates.add(nandGate);
+        logicGates.add(norGate);
+        logicGates.add(xorGate);
 
         variableRoot.add(integerNode);
         variableRoot.add(stringNode);
@@ -371,7 +565,6 @@ public class ControlPanel {
     }
 
     public void loadVariables() {
-
         integerNode.removeAllChildren();
         stringNode.removeAllChildren();
         floatNode.removeAllChildren();
@@ -429,8 +622,6 @@ public class ControlPanel {
         outputConnectionsLabel.setText(returnIOConnectionList(selectedNode, "Output"));
         inputXConnectionsLabel.setText(returnIOConnectionList(selectedNode, "InputX"));
         outputXConnectionLabel.setText(returnIOConnectionList(selectedNode, "OutputX"));
-
-
     }
 
     public String returnIOConnectionList(Node selectedNode, String connectionType) {
