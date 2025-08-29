@@ -182,7 +182,9 @@ public class ControlPanel {
         variablesLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
         variablesLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JPanel variableInputPanel = new JPanel(new FlowLayout());
+        JPanel variableInputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        variableInputPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, variableInputPanel.getPreferredSize().height));
+
         variableBox = new JComboBox();
         variableBox.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
         addButton = new JButton("Add");
@@ -200,7 +202,9 @@ public class ControlPanel {
         arraysLabel.setHorizontalAlignment(SwingConstants.CENTER);
         arraysLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JPanel arrayInputPanel = new JPanel(new FlowLayout());
+        JPanel arrayInputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        arrayInputPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, arrayInputPanel.getPreferredSize().height));
+
         comboBox1 = new JComboBox();
         comboBox1.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
         addArrayButton = new JButton("Add");
