@@ -1,12 +1,9 @@
-# (Notice - FlowForge is feature-freezed. It is being re-written in JavaFX) 
-
 ![Screenshot 2025-05-22 122154](https://github.com/user-attachments/assets/86369f96-669e-4f77-a618-2b1ce441f1de)
 
 ![Static Badge](https://img.shields.io/badge/Flow-Forge-blue)
 ![label](https://img.shields.io/badge/Java-v21-orange)  
 
-FlowForge is a visual-based programming IDE (Similiar to Unreal Engine blueprints) that helps programmers create programs with drag and drop nodes. With a modern UI and simplistic approach towards visual programming, beginners can easily grasp and 
-learn the logic building skills in programming.
+FlowForge is a visual-based programming IDE (Similiar to Unreal Engine blueprints) that helps programmers create programs with drag and drop nodes. With a modern UI and simplistic approach. It's a toy Visual programming language I created for fun, but if I ever create a game engine in the future, I will definetely use this for the scripting :)
 
 # Features
 * Drag and drop functionality for nodes
@@ -26,18 +23,16 @@ learn the logic building skills in programming.
 2. Download the FlowForge.jar file from releases
 3. Double click the FlowForge.jar to execute it
 4. The program should launch successfully.
-For a more in-depth guide, refer to [Documentation](https://gufrans-organization.gitbook.io/flowforge-docs/getting-started/installing-java-21)
 
 # Alternatively, you can also run the project via the source code.
 IntelliJ IDEA is recommended.
 
 Make sure to have Java 21 installed. If you don't, you can download it within IntelliJ when the project is indexing, by clicking on "Configure SDK" on the top right corner
 
-1. Copy the HTTPS link of this repo
-2. Open IntelliJ IDEA, on the projects menu, click on "Clone Repository"
-3. Paste the link and clone it
-4. Navigate to the "FlowForge.java" File, located in the flowforge package
-5. Right click on the editor, and click on "Run FlowForge.main()" 
+1. Open IntelliJ IDEA, on the projects menu, click on "Clone Repository"
+2. Paste the git repo link and clone it
+3. Navigate to the "FlowForge.java" File, located in the flowforge package
+4. Right click on the editor, and click on "Run FlowForge.main()" 
 
 ## To Contribute to FlowForge
 
