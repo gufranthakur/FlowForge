@@ -225,6 +225,8 @@ public class FlowForge extends JFrame implements Runnable{
     //Main method
     public static void main(String[] args){
         System.setProperty("sun.java2d.opengl", "true");
+        System.setProperty("apple.laf.useScreenMenuBar", "true");
+        System.setProperty("apple.awt.application.appearance", "system");
 
         FlatMacDarkLaf.setup();
         FlatJetBrainsMonoFont.install(); //Font installation
