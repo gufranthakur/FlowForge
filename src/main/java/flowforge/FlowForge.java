@@ -7,7 +7,6 @@ package flowforge;
 
 import com.formdev.flatlaf.fonts.jetbrains_mono.FlatJetBrainsMonoFont;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
-import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import flowforge.core.*;
 import flowforge.ui.MenuBar.AboutPanel;
 import flowforge.ui.MenuBar.AppMenuBar;
@@ -21,15 +20,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 
 //The main Class of FlowForge. All the components have a reference to this clasn.
 //In a way, this is the glue between all the components and panels.
@@ -73,7 +67,7 @@ public class FlowForge extends JFrame implements Runnable{
     private boolean isRunning = false;
 
     public FlowForge() {
-        this.setTitle("FlowForge");
+        this.setTitle("FlowForge 1.7.1");
         this.setSize(1200, 700);
         this.setLocationRelativeTo(null);
         this.setLayout(new BorderLayout());
@@ -144,9 +138,9 @@ public class FlowForge extends JFrame implements Runnable{
     public boolean checkForUpdate() {
 
         try {
-            String currentVersion = "1.7";
-            URL versionUrl = new URL("https://flow-forge-website.vercel.app/version.txt");
-
+            String currentVersion = "1.7.1";
+            URL versionUrl = new URI("https://flow-forge-website.vercel.app/version.txt").toURL();
+            
             BufferedReader reader = new BufferedReader(new InputStreamReader(versionUrl.openStream()));
             String latestVersion = reader.readLine().trim();
             reader.close();
