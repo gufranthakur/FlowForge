@@ -16,8 +16,15 @@ FlowForge is a visual-based programming IDE (Similiar to Unreal Engine blueprint
 
 ![Screenshot 2025-05-31 190915](https://github.com/user-attachments/assets/36548bdb-a787-41e5-9965-20ab00a64aef)
 
+# How to run FlowForge with JBang
 
-# How to run FlowForge
+1. Make sure you have JBang installed (https://jbang.dev/download)
+2. Try it using: `jbang flowforge@gufranthakur/FlowForge` 
+3. If you want to install it you can do:
+   `jbang app install flowforge@gufranthakur/FlowForge` and run it
+   using `flowforge`
+
+# How to run FlowForge manually
 
 1. Make sure you have Java installed (JDK 21+)
 2. Download the FlowForge.jar file from releases
