@@ -1,0 +1,8 @@
+{
+  "aliases": {
+    "flowforge": {
+      "script-ref": "https://github.com/gufranthakur/FlowForge/releases/latest/download/FlowForge.jar",
+      "java": "21"
+    }
+  }
+}
