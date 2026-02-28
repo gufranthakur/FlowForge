@@ -1,8 +1,10 @@
 # Contributing to FlowForge
 
 Thank you for considering contributing to FlowForge! Your help makes this project better for everyone.
-FlowForge is a visual-based programming IDE (Similiar to Unreal Engine blueprints) that helps programmers create programs with drag and drop nodes. 
-With a modern UI and simplistic approach towards visual programming, beginners can easily grasp and learn the logic building skills in programming.
+FlowForge is a visual-based programming IDE (Similiar to Unreal Engine blueprints) that helps programmers create
+programs with drag and drop nodes.
+With a modern UI and simplistic approach towards visual programming, beginners can easily grasp and learn the logic
+building skills in programming.
 
 ---
 
@@ -43,7 +45,6 @@ With a modern UI and simplistic approach towards visual programming, beginners c
 - **Help with documentation**  
   Fix typos, improve explanations, or expand tutorials and usage guides.
 
-   
 ## Development Guidelines
 
 - Use Java 21 or later.
@@ -55,20 +56,24 @@ With a modern UI and simplistic approach towards visual programming, beginners c
 
 
 1. To develope a new feature
-   * If it's a node : implement it in the node package, it must extend the abstract node class.
-      * nodes must be placed accordingly in sub-node packages. (variable, flownodes, arithmetic, comparators)
-      * When implementing a new node, make sure to implement it in the DataManager.java as well.
-   * If it's a new View/Panel : implement in core package. If it's a parent view with multiple child views, create a package within the core package.
-      * It is advised to design the UI for the views using intelliJ's GUI Designer
-      * Please avoid using GUI designers from netbeans. The boilerplate code it generates is very difficult to refractor and debug
+    * If it's a node : implement it in the node package, it must extend the abstract node class.
+        * nodes must be placed accordingly in sub-node packages. (variable, flownodes, arithmetic, comparators)
+        * When implementing a new node, make sure to implement it in the DataManager.java as well.
+    * If it's a new View/Panel : implement in core package. If it's a parent view with multiple child views, create a
+      package within the core package.
+        * It is advised to design the UI for the views using intelliJ's GUI Designer
+        * Please avoid using GUI designers from netbeans. The boilerplate code it generates is very difficult to
+          refractor and debug
 
 2. To fix bugs
     * Please send a screenshot of the bug with the commit message.
-    * Alognside it, also include a brief message in the code itself (why the bug occured, how it was fixed, and how it was produced)
-    
+    * Alognside it, also include a brief message in the code itself (why the bug occured, how it was fixed, and how it
+      was produced)
+
 3. To make any minor adjustments, or improve existing features
     * Commit message should be detailed as to why the feature was implemented
-    * Please make sure that any additional adjustments are neccesary and needed, as FlowForge aims to be simple and light-weight
+    * Please make sure that any additional adjustments are neccesary and needed, as FlowForge aims to be simple and
+      light-weight
 
 ## License
 

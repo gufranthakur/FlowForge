@@ -1,20 +1,20 @@
 package flowforge.nodes.variables;
 
-import flowforge.ui.panels.ProgramPanel;
 import flowforge.nodes.Node;
 import flowforge.nodes.flownodes.InputNode;
+import flowforge.ui.panels.ProgramPanel;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 
-public class BooleanNode extends Node {
+public class BooleanNode extends Node
+{
 
-    private ProgramPanel programPanel;
     public JCheckBox checkBox;
+    private ProgramPanel programPanel;
 
-    public BooleanNode(String title, ProgramPanel programPanel, Boolean booleanValue) {
+    public BooleanNode(String title, ProgramPanel programPanel, Boolean booleanValue)
+    {
         super(title, programPanel);
         this.programPanel = programPanel;
         this.setSize(210, 90);
@@ -22,10 +22,14 @@ public class BooleanNode extends Node {
 
         checkBox = new JCheckBox("Set value : False");
 
-        checkBox.addActionListener(e -> {
-            if (!checkBox.isSelected()) {
+        checkBox.addActionListener(e ->
+        {
+            if (!checkBox.isSelected())
+            {
                 checkBox.setText("Set value : False");
-            } else {
+            }
+            else
+            {
                 checkBox.setText("Set value : True");
             }
         });
@@ -44,44 +48,56 @@ public class BooleanNode extends Node {
     }
 
     @Override
-    public void execute(boolean isStepExecution) {
-        if (isStepExecution) {
-            synchronized (programPanel.stepExecutorLock) {
-                try {
+    public void execute(boolean isStepExecution)
+    {
+        if (isStepExecution)
+        {
+            synchronized (programPanel.stepExecutorLock)
+            {
+                try
+                {
                     programPanel.stepExecutorLock.wait();
-                } catch (InterruptedException e) {
+                }
+                catch (InterruptedException e)
+                {
                     throw new RuntimeException(e);
                 }
             }
-            SwingUtilities.invokeLater(() -> {
-                for (Node node : programPanel.nodes) {
+            SwingUtilities.invokeLater(() ->
+            {
+                for (Node node : programPanel.nodes)
+                {
                     node.restoreBorder();
                 }
                 this.setStepExecutedBorder();
             });
         }
-        for (Node node : inputXNodes) {
-            if (node != null) {
+        for (Node node : inputXNodes)
+        {
+            if (node != null)
+            {
                 if (node instanceof InputNode) System.out.println("Error");
                 else setBooleanValue(checkBox.isSelected());
             }
         }
 
-        for (Node nodes : outputNodes) {
+        for (Node nodes : outputNodes)
+        {
             if (nodes != null) nodes.execute(isStepExecution);
         }
 
     }
 
-    public Boolean getValue() {
+    public Boolean getValue()
+    {
         return programPanel.booleans.get(title);
     }
 
-    public void setBooleanValue(Boolean booleanValue) {
+    public void setBooleanValue(Boolean booleanValue)
+    {
         programPanel.booleans.put(title, booleanValue);
         System.out.println(programPanel.booleans);
     }
-
 
 
 }

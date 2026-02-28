@@ -26,7 +26,8 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-public class SearchXPopupMenu extends JPopupMenu {
+public class SearchXPopupMenu extends JPopupMenu
+{
 
     private ProgramPanel programPanel;
 
@@ -35,7 +36,8 @@ public class SearchXPopupMenu extends JPopupMenu {
     private DefaultMutableTreeNode root;
 
 
-    public SearchXPopupMenu(ProgramPanel programPanel) {
+    public SearchXPopupMenu(ProgramPanel programPanel)
+    {
         this.programPanel = programPanel;
 
         initList();
@@ -43,7 +45,9 @@ public class SearchXPopupMenu extends JPopupMenu {
         initListeners();
         initUI();
     }
-    private void initList() {
+
+    private void initList()
+    {
         nodesList = new ArrayList<>();
         nodesList.add("Create Integer");
         nodesList.add("Create String");
@@ -57,9 +61,11 @@ public class SearchXPopupMenu extends JPopupMenu {
     }
 
 
-    private void initTree() {
+    private void initTree()
+    {
         root = new DefaultMutableTreeNode("Results");
-        for (String s : nodesList) {
+        for (String s : nodesList)
+        {
             root.add(new DefaultMutableTreeNode(s));
         }
 
@@ -68,21 +74,27 @@ public class SearchXPopupMenu extends JPopupMenu {
 
     }
 
-    private void initListeners() {
-        searchTree.addMouseListener(new MouseAdapter() {
+    private void initListeners()
+    {
+        searchTree.addMouseListener(new MouseAdapter()
+        {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseClicked(MouseEvent e)
+            {
                 super.mouseClicked(e);
                 DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) searchTree.getLastSelectedPathComponent();
                 addNodeThroughSearch(selectedNode);
             }
         });
-        searchTree.addKeyListener(new KeyAdapter() {
+        searchTree.addKeyListener(new KeyAdapter()
+        {
             @Override
-            public void keyPressed(KeyEvent e) {
+            public void keyPressed(KeyEvent e)
+            {
                 super.keyPressed(e);
                 DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) searchTree.getLastSelectedPathComponent();
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER)
+                {
                     addNodeThroughSearch(selectedNode);
                 }
             }
@@ -90,7 +102,8 @@ public class SearchXPopupMenu extends JPopupMenu {
 
     }
 
-    private void initUI() {
+    private void initUI()
+    {
         JPanel contentPanel = new JPanel();
         JTextField searchField = new JTextField();
 
@@ -105,19 +118,23 @@ public class SearchXPopupMenu extends JPopupMenu {
 
         searchField.setFont(new Font(FlatInterFont.FAMILY, Font.PLAIN, 16));
         searchField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Search...");
-        searchField.getDocument().addDocumentListener(new DocumentListener() {
+        searchField.getDocument().addDocumentListener(new DocumentListener()
+        {
             @Override
-            public void insertUpdate(DocumentEvent e) {
+            public void insertUpdate(DocumentEvent e)
+            {
                 filter(searchField.getText());
             }
 
             @Override
-            public void removeUpdate(DocumentEvent e) {
+            public void removeUpdate(DocumentEvent e)
+            {
                 filter(searchField.getText());
             }
 
             @Override
-            public void changedUpdate(DocumentEvent e) {
+            public void changedUpdate(DocumentEvent e)
+            {
                 filter(searchField.getText());
             }
         });
@@ -136,32 +153,39 @@ public class SearchXPopupMenu extends JPopupMenu {
 
         this.add(contentPanel);
 
-        this.addPopupMenuListener(new PopupMenuListener() {
+        this.addPopupMenuListener(new PopupMenuListener()
+        {
             @Override
-            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+            public void popupMenuWillBecomeVisible(PopupMenuEvent e)
+            {
                 // When the popup menu is about to be shown
             }
 
             @Override
-            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+            public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
+            {
                 programPanel.selectedNode.inputButton.setSelected(true);
                 programPanel.selectedNode.outputButton.setSelected(true);
             }
 
             @Override
-            public void popupMenuCanceled(PopupMenuEvent e) {
+            public void popupMenuCanceled(PopupMenuEvent e)
+            {
                 programPanel.selectedNode.inputButton.setSelected(true);
                 programPanel.selectedNode.outputButton.setSelected(true);
             }
         });
     }
 
-    private void filter(String search) {
+    private void filter(String search)
+    {
         search = search.trim().toLowerCase();
 
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Functions");
-        for (String s : nodesList) {
-            if (s.toLowerCase().contains(search) || search.isEmpty()) {
+        for (String s : nodesList)
+        {
+            if (s.toLowerCase().contains(search) || search.isEmpty())
+            {
                 root.add(new DefaultMutableTreeNode(s));
             }
         }
@@ -172,43 +196,53 @@ public class SearchXPopupMenu extends JPopupMenu {
         revalidate();
     }
 
-    private void addNodeThroughSearch(DefaultMutableTreeNode selectedNode) {
+    private void addNodeThroughSearch(DefaultMutableTreeNode selectedNode)
+    {
 
         if (selectedNode == null) return;
 
         String selected = selectedNode.getUserObject().toString();
 
-        switch (selected) {
-            case "Create Integer" : {
+        switch (selected)
+        {
+            case "Create Integer":
+            {
                 String varName = JOptionPane.showInputDialog(null, "Enter Variable name");
-                if (!variableAlreadyExists(varName)) {
+                if (!variableAlreadyExists(varName))
+                {
                     programPanel.addVariable(varName, "Integer");
                     programPanel.addNewNode(new IntegerNode(varName, programPanel, 0), false);
                     reloadVariableTree();
                 }
             }
             break;
-            case "Create String" : {
+            case "Create String":
+            {
                 String varName = JOptionPane.showInputDialog(null, "Enter Variable name");
-                if (!variableAlreadyExists(varName)) {
+                if (!variableAlreadyExists(varName))
+                {
                     programPanel.addVariable(varName, "String");
                     programPanel.addNewNode(new StringNode(varName, programPanel, ""), false);
                     reloadVariableTree();
                 }
             }
             break;
-            case "Create Boolean" : {
+            case "Create Boolean":
+            {
                 String varName = JOptionPane.showInputDialog(null, "Enter Variable name");
-                if (!variableAlreadyExists(varName)) {
+                if (!variableAlreadyExists(varName))
+                {
                     programPanel.addVariable(varName, "Boolean");
                     programPanel.addNewNode(new BooleanNode(varName, programPanel, false), false);
                     reloadVariableTree();
                 }
             }
             break;
-            case "Create Float" : {
+            case "Create Float":
+            {
                 String varName = JOptionPane.showInputDialog(null, "Enter Variable name");
-                if (!variableAlreadyExists(varName)) {
+                if (!variableAlreadyExists(varName))
+                {
                     programPanel.addVariable(varName, "Float");
                     programPanel.addNewNode(new FloatNode(varName, programPanel, 0.0f), false);
                     reloadVariableTree();
@@ -218,19 +252,27 @@ public class SearchXPopupMenu extends JPopupMenu {
         }
 
 
-        if (programPanel.integers.containsKey(selected)) {
+        if (programPanel.integers.containsKey(selected))
+        {
             programPanel.addNewNode(new IntegerNode(selected, programPanel, 0), false);
-        } else if (programPanel.strings.containsKey(selected)) {
+        }
+        else if (programPanel.strings.containsKey(selected))
+        {
             programPanel.addNewNode(new StringNode(selected, programPanel, ""), false);
-        } else if (programPanel.booleans.containsKey(selected)) {
+        }
+        else if (programPanel.booleans.containsKey(selected))
+        {
             programPanel.addNewNode(new BooleanNode(selected, programPanel, false), false);
-        } else if (programPanel.floats.containsKey(selected)) {
+        }
+        else if (programPanel.floats.containsKey(selected))
+        {
             programPanel.addNewNode(new FloatNode(selected, programPanel, 0.0f), false);
         }
 
         getThis().setVisible(false);
 
-        if (programPanel.selectedNode.isBeingXConnected) {
+        if (programPanel.selectedNode.isBeingXConnected)
+        {
             programPanel.startXConnection(programPanel.selectedNode);
             programPanel.finishXConnection(programPanel.nodes.getLast());
 
@@ -240,17 +282,21 @@ public class SearchXPopupMenu extends JPopupMenu {
         programPanel.selectedNode = null;
     }
 
-    public boolean variableAlreadyExists(String varName) {
+    public boolean variableAlreadyExists(String varName)
+    {
 
-        if (varName.isEmpty()) {
+        if (varName.isEmpty())
+        {
             return true;
         }
 
         Enumeration<TreeNode> enumeration = programPanel.flowForge.controlPanel.variableRoot.depthFirstEnumeration();
 
-        while (enumeration.hasMoreElements()) {
+        while (enumeration.hasMoreElements())
+        {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) enumeration.nextElement();
-            if (varName.equals(node.getUserObject().toString())) {
+            if (varName.equals(node.getUserObject().toString()))
+            {
                 JOptionPane.showMessageDialog(null,
                         "Variable name already in use", "Error", JOptionPane.ERROR_MESSAGE);
                 return true;
@@ -259,14 +305,16 @@ public class SearchXPopupMenu extends JPopupMenu {
         return false;
     }
 
-    public void reloadVariableTree() {
+    public void reloadVariableTree()
+    {
         programPanel.flowForge.controlPanel.loadVariables();
         programPanel.flowForge.controlPanel.refreshTree();
 
         repopulateSearchTree();
     }
 
-    private void repopulateSearchTree() {
+    private void repopulateSearchTree()
+    {
         DefaultTreeModel model = (DefaultTreeModel) searchTree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         root.removeAllChildren();
@@ -274,7 +322,8 @@ public class SearchXPopupMenu extends JPopupMenu {
 
         initList();
 
-        for (String s : nodesList) {
+        for (String s : nodesList)
+        {
             root.add(new DefaultMutableTreeNode(s));
         }
 
@@ -283,7 +332,8 @@ public class SearchXPopupMenu extends JPopupMenu {
     }
 
 
-    private JPopupMenu getThis() {
+    private JPopupMenu getThis()
+    {
         return this;
     }
 

@@ -1,4 +1,5 @@
 package flowforge.nodes.variables;
 
-public class arrayNode {
+public class ArrayNode
+{
 }

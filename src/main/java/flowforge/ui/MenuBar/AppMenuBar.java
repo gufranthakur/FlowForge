@@ -1,9 +1,5 @@
 package flowforge.ui.MenuBar;
 
-import com.formdev.flatlaf.FlatLaf;
-import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
-import com.formdev.flatlaf.themes.FlatMacDarkLaf;
-import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import flowforge.FlowForge;
 import flowforge.nodes.Node;
 import flowforge.nodes.StartNode;
@@ -21,40 +17,38 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class AppMenuBar extends JMenuBar {
+public class AppMenuBar extends JMenuBar
+{
 
+    public boolean aboutPanelVisible, changelogPanelVisible = false;
     private FlowForge flowForge;
     private GraphicsEnvironment environment;
     private GraphicsDevice device;
-
     private JMenu moreMenu;
-        private JMenuItem aboutItem, chengelogItem, checkForUpdateItem;
+    private JMenuItem aboutItem, chengelogItem, checkForUpdateItem;
     private JMenu projectMenu;
-        private JMenuItem newProjectItem, openProjectItem, closeProjectItem,
+    private JMenuItem newProjectItem, openProjectItem, closeProjectItem,
             saveProjectItem, saveAsProjectItem, viewDocumentationItem, exitAppItem,
             projectPropertiesItem, settingsItem;
-
     private JMenu viewMenu;
-        private JMenuItem fullscreenItem, presentationModeItem,
-                showHideSideBar, showHideConsole, showHideToolbar;
-
+    private JMenuItem fullscreenItem, presentationModeItem,
+            showHideSideBar, showHideConsole, showHideToolbar;
     private JMenu codeMenu;
-        private JMenuItem runItem, runWithStepsItem, stopExecutionItem,
-                minimizeAllNodesItem, maximiseAllNodesItem, removeAllHighlightItem,
-                clearAllConnectionsItem, removeAllNodesItem;
-
-
-    public boolean aboutPanelVisible, changelogPanelVisible = false;
+    private JMenuItem runItem, runWithStepsItem, stopExecutionItem,
+            minimizeAllNodesItem, maximiseAllNodesItem, removeAllHighlightItem,
+            clearAllConnectionsItem, removeAllNodesItem;
     private boolean isFullScreen, isPresentationMode;
 
-    public AppMenuBar(FlowForge flowForge) {
+    public AppMenuBar(FlowForge flowForge)
+    {
         this.flowForge = flowForge;
 
         environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
         device = environment.getDefaultScreenDevice();
     }
 
-    public void init() {
+    public void init()
+    {
         // Initialize main menu items
         moreMenu = new JMenu("More");
         projectMenu = new JMenu("Project");
@@ -99,7 +93,8 @@ public class AppMenuBar extends JMenuBar {
 
     }
 
-    public void addComponent() {
+    public void addComponent()
+    {
         this.add(moreMenu);
         moreMenu.add(aboutItem);
         moreMenu.add(chengelogItem);
@@ -143,15 +138,18 @@ public class AppMenuBar extends JMenuBar {
         flowForge.setJMenuBar(this);
     }
 
-    public void initListeners() {
+    public void initListeners()
+    {
         initStartMenuListeners();
         initProjectMenuListeners();
         initViewMenuListeners();
         initCodeMenuItems();
     }
 
-    private void initStartMenuListeners() {
-        aboutItem.addActionListener(e -> {
+    private void initStartMenuListeners()
+    {
+        aboutItem.addActionListener(e ->
+        {
             if (aboutPanelVisible) return;
             flowForge.remove(flowForge.startPanel);
             flowForge.add(flowForge.aboutPanel.getRootPanel(), BorderLayout.CENTER);
@@ -162,7 +160,8 @@ public class AppMenuBar extends JMenuBar {
             flowForge.repaint();
         });
 
-        chengelogItem.addActionListener(e -> {
+        chengelogItem.addActionListener(e ->
+        {
             if (changelogPanelVisible) return;
             flowForge.remove(flowForge.startPanel);
             flowForge.add(flowForge.changeLogPanel.getRootPanel(), BorderLayout.CENTER);
@@ -173,8 +172,10 @@ public class AppMenuBar extends JMenuBar {
             flowForge.repaint();
         });
 
-        checkForUpdateItem.addActionListener(e -> {
-            if (!flowForge.checkForUpdate()) {
+        checkForUpdateItem.addActionListener(e ->
+        {
+            if (!flowForge.checkForUpdate())
+            {
                 JOptionPane.showMessageDialog(null,
                         "FlowForge is up to date",
                         "No updates available", JOptionPane.INFORMATION_MESSAGE);
@@ -183,17 +184,21 @@ public class AppMenuBar extends JMenuBar {
         });
     }
 
-    private void initProjectMenuListeners() {
-        newProjectItem.addActionListener(e -> {
+    private void initProjectMenuListeners()
+    {
+        newProjectItem.addActionListener(e ->
+        {
             flowForge.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             getNewInstance(true);
         });
 
-        openProjectItem.addActionListener(e -> {
+        openProjectItem.addActionListener(e ->
+        {
             JFileChooser fileChooser = new JFileChooser();
             FileNameExtensionFilter filter = new FileNameExtensionFilter("FlowForge Programs", "flow");
             fileChooser.setFileFilter(filter);
-            if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
+            {
                 String filePath = fileChooser.getSelectedFile().getAbsolutePath();
 
                 flowForge.launch();
@@ -209,16 +214,20 @@ public class AppMenuBar extends JMenuBar {
             }
         });
 
-        saveProjectItem.addActionListener(e -> {
+        saveProjectItem.addActionListener(e ->
+        {
             flowForge.dataManager.saveProgram(flowForge.projectFilePath);
             flowForge.console.printSaveStatement();
         });
 
-        saveAsProjectItem.addActionListener( e -> {
+        saveAsProjectItem.addActionListener(e ->
+        {
             JFileChooser fileChooser = new JFileChooser();
-            if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION)
+            {
                 String filePath = fileChooser.getSelectedFile().getAbsolutePath();
-                if (!filePath.endsWith(".flow")) {
+                if (!filePath.endsWith(".flow"))
+                {
                     filePath += ".flow";
                 }
                 flowForge.dataManager.saveProgram(filePath);
@@ -227,41 +236,56 @@ public class AppMenuBar extends JMenuBar {
             }
         });
 
-        closeProjectItem.addActionListener(e -> {
+        closeProjectItem.addActionListener(e ->
+        {
             if (JOptionPane.showConfirmDialog(
                     null, "Any unsaved changes will be lost",
-                    "Close Project?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    "Close Project?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
+            {
                 getNewInstance(false);
                 flowForge.dispose();
             }
         });
 
-        exitAppItem.addActionListener(e -> {
+        exitAppItem.addActionListener(e ->
+        {
             if (JOptionPane.showConfirmDialog(null, "Any unsaved changes will be lost",
-                    "Exit FlowForge?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_NO_OPTION) {
+                    "Exit FlowForge?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_NO_OPTION)
+            {
                 System.exit(0);
             }
         });
 
-        viewDocumentationItem.addActionListener(e -> {
+        viewDocumentationItem.addActionListener(e ->
+        {
             Desktop desktop = Desktop.getDesktop();
-            try {
+            try
+            {
                 desktop.browse(new URI("https://gufrans-organization.gitbook.io/flowforge-docs"));
-            } catch (IOException ex) {
+            }
+            catch (IOException ex)
+            {
                 throw new RuntimeException(ex);
-            } catch (URISyntaxException ex) {
+            }
+            catch (URISyntaxException ex)
+            {
                 System.out.println("Exception caught : wrong URL");
             }
         });
     }
 
-    private void initViewMenuListeners() {
-        fullscreenItem.addActionListener(e -> {
-            if (!isFullScreen) {
+    private void initViewMenuListeners()
+    {
+        fullscreenItem.addActionListener(e ->
+        {
+            if (!isFullScreen)
+            {
                 flowForge.dispose();
                 flowForge.setUndecorated(true);
                 device.setFullScreenWindow(flowForge);
-            } else {
+            }
+            else
+            {
                 device.setFullScreenWindow(null);
                 flowForge.dispose();
                 flowForge.setUndecorated(false);
@@ -270,16 +294,20 @@ public class AppMenuBar extends JMenuBar {
             isFullScreen = !isFullScreen;
         });
 
-        presentationModeItem.addActionListener(e -> {
+        presentationModeItem.addActionListener(e ->
+        {
             var controlPanel = flowForge.controlPanel.getRootPanel();
             var console = flowForge.console.getRootPanel();
             var toolbar = flowForge.controlPanel.toolBar;
 
-            if (!isPresentationMode) {
+            if (!isPresentationMode)
+            {
                 controlPanel.setVisible(false);
                 console.setVisible(false);
                 toolbar.setVisible(false);
-            } else {
+            }
+            else
+            {
                 controlPanel.setVisible(true);
                 console.setVisible(true);
                 toolbar.setVisible(true);
@@ -287,12 +315,14 @@ public class AppMenuBar extends JMenuBar {
             isPresentationMode = !isPresentationMode;
         });
 
-        showHideSideBar.addActionListener(e -> {
+        showHideSideBar.addActionListener(e ->
+        {
             var controlPanel = flowForge.controlPanel.getRootPanel();
             controlPanel.setVisible(!controlPanel.isVisible());
         });
 
-        showHideConsole.addActionListener(e -> {
+        showHideConsole.addActionListener(e ->
+        {
             if (!flowForge.console.isMinimized) flowForge.console.minimize();
             else flowForge.console.resizeToDefault();
 
@@ -300,28 +330,35 @@ public class AppMenuBar extends JMenuBar {
             flowForge.revalidate();
         });
 
-        showHideToolbar.addActionListener(e -> {
+        showHideToolbar.addActionListener(e ->
+        {
             var toolbar = flowForge.controlPanel.toolBar;
             toolbar.setVisible(!toolbar.isVisible());
         });
 
     }
 
-    private void initCodeMenuItems() {
-        runItem.addActionListener(e -> {
+    private void initCodeMenuItems()
+    {
+        runItem.addActionListener(e ->
+        {
             flowForge.controlPanel.runStopButton.doClick();
         });
 
-        runWithStepsItem.addActionListener(e -> {
+        runWithStepsItem.addActionListener(e ->
+        {
             flowForge.controlPanel.runWithStepsButton.doClick();
         });
 
-        stopExecutionItem.addActionListener(e -> {
+        stopExecutionItem.addActionListener(e ->
+        {
             flowForge.controlPanel.stopButton.doClick();
         });
 
-        minimizeAllNodesItem.addActionListener(e -> {
-            for (Node node : flowForge.programPanel.nodes) {
+        minimizeAllNodesItem.addActionListener(e ->
+        {
+            for (Node node : flowForge.programPanel.nodes)
+            {
                 node.setSize(150, 40);
                 node.isMinimized = true;
                 node.contentPanel.setVisible(false);
@@ -330,16 +367,21 @@ public class AppMenuBar extends JMenuBar {
             flowForge.programPanel.revalidate();
         });
 
-        maximiseAllNodesItem.addActionListener(e -> {
-            for (Node node : flowForge.programPanel.nodes) {
+        maximiseAllNodesItem.addActionListener(e ->
+        {
+            for (Node node : flowForge.programPanel.nodes)
+            {
                 if (node instanceof StringNode
                         || node instanceof IntegerNode
                         || node instanceof BooleanNode
-                        || node instanceof BranchNode) {
+                        || node instanceof BranchNode)
+                {
                     node.setSize(200, 100);
                     node.isMinimized = false;
                     node.contentPanel.setVisible(true);
-                } else {
+                }
+                else
+                {
                     node.setSize(200, 150);
                     node.isMinimized = false;
                     node.contentPanel.setVisible(true);
@@ -350,33 +392,42 @@ public class AppMenuBar extends JMenuBar {
             flowForge.programPanel.revalidate();
         });
 
-        removeAllHighlightItem.addActionListener(e -> {
-            for (Node node : flowForge.programPanel.nodes) {
+        removeAllHighlightItem.addActionListener(e ->
+        {
+            for (Node node : flowForge.programPanel.nodes)
+            {
                 node.isHighlighted = false;
                 node.restoreBorder();
             }
         });
 
-        clearAllConnectionsItem.addActionListener(e -> {
+        clearAllConnectionsItem.addActionListener(e ->
+        {
             int confirm = JOptionPane.showConfirmDialog(null,
-                    "This action cannot be reversed.\nAll connections will be cleared", "Delete all connections?" ,
+                    "This action cannot be reversed.\nAll connections will be cleared", "Delete all connections?",
                     JOptionPane.YES_NO_OPTION);
-            if (confirm == JOptionPane.YES_OPTION) {
-                for (Node node : flowForge.programPanel.nodes) {
+            if (confirm == JOptionPane.YES_OPTION)
+            {
+                for (Node node : flowForge.programPanel.nodes)
+                {
                     node.disconnectAll();
                 }
             }
 
         });
 
-        removeAllNodesItem.addActionListener(e -> {
+        removeAllNodesItem.addActionListener(e ->
+        {
             int confirm = JOptionPane.showConfirmDialog(null,
-                    "This action cannot be reversed.\nAll Nodes will be deleted", "Delete all Nodes?" ,
+                    "This action cannot be reversed.\nAll Nodes will be deleted", "Delete all Nodes?",
                     JOptionPane.YES_NO_OPTION);
-            if (confirm == JOptionPane.YES_OPTION) {
-                for (int i = flowForge.programPanel.nodes.size() - 1; i >= 0; i--) {
+            if (confirm == JOptionPane.YES_OPTION)
+            {
+                for (int i = flowForge.programPanel.nodes.size() - 1; i >= 0; i--)
+                {
                     Node node = flowForge.programPanel.nodes.get(i);
-                    if (!(node instanceof StartNode)) {
+                    if (!(node instanceof StartNode))
+                    {
                         flowForge.programPanel.removeNode(node);
                     }
                 }
@@ -384,20 +435,25 @@ public class AppMenuBar extends JMenuBar {
         });
     }
 
-    private FlowForge getNewInstance(boolean launchOnCreation) {
+    private FlowForge getNewInstance(boolean launchOnCreation)
+    {
         FlowForge newInstance = new FlowForge();
         newInstance.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
-        flowForge.addWindowListener(new WindowAdapter() {
+        flowForge.addWindowListener(new WindowAdapter()
+        {
             @Override
-            public void windowClosed(WindowEvent e) {
+            public void windowClosed(WindowEvent e)
+            {
                 newInstance.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             }
         });
 
-        newInstance.addWindowListener(new WindowAdapter() {
+        newInstance.addWindowListener(new WindowAdapter()
+        {
             @Override
-            public void windowClosing(WindowEvent e) {
+            public void windowClosing(WindowEvent e)
+            {
                 flowForge.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             }
         });
@@ -411,8 +467,8 @@ public class AppMenuBar extends JMenuBar {
     }
 
 
-
-    public void launch() {
+    public void launch()
+    {
         this.remove(moreMenu);
 
         this.add(projectMenu);

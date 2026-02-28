@@ -5,9 +5,11 @@
  */
 package flowforge;
 
+import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.fonts.jetbrains_mono.FlatJetBrainsMonoFont;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
-import flowforge.core.*;
+import flowforge.core.DataManager;
+import flowforge.core.ForgeExecutor;
 import flowforge.ui.MenuBar.AboutPanel;
 import flowforge.ui.MenuBar.AppMenuBar;
 import flowforge.ui.MenuBar.ChangeLogPanel;
@@ -28,7 +30,8 @@ import java.net.URL;
 //The main Class of FlowForge. All the components have a reference to this clasn.
 //In a way, this is the glue between all the components and panels.
 
-public class FlowForge extends JFrame implements Runnable{
+public class FlowForge extends JFrame implements Runnable
+{
 
     //Saves and loads nodes into JSON file.
     public DataManager dataManager;
@@ -66,7 +69,8 @@ public class FlowForge extends JFrame implements Runnable{
     private Thread flowForgeThread;
     private boolean isRunning = false;
 
-    public FlowForge() {
+    public FlowForge()
+    {
         this.setTitle("FlowForge 1.7.1");
         this.setSize(1200, 700);
         this.setLocationRelativeTo(null);
@@ -77,7 +81,31 @@ public class FlowForge extends JFrame implements Runnable{
         this.setIconImage(icon);
     }
 
-    public void init() {
+    //Main method
+    public static void main(String[] args)
+    {
+        var osName = System.getProperty("os.name").toLowerCase();
+
+        System.setProperty("sun.java2d.opengl", osName.startsWith("win") ? "false" : "true");
+        System.setProperty("apple.laf.useScreenMenuBar", "true");
+        System.setProperty("apple.awt.application.appearance", "system");
+        System.setProperty("sun.java2d.noddraw", osName.startsWith("win") ? "true" : "false");
+        FlatMacDarkLaf.setup();
+        FlatLaf.setPreferredMonospacedFontFamily( FlatJetBrainsMonoFont.FAMILY );
+        FlatJetBrainsMonoFont.install(); //Font installation
+
+        //Swing is not thread safe, invoked in the EDT (Event dispatch thread)
+        SwingUtilities.invokeLater(() ->
+        {
+            FlowForge flowForge = new FlowForge();
+            flowForge.init();
+            flowForge.addComponent();
+        });
+
+    }
+
+    public void init()
+    {
         //All core components of the app are initialized here. Every component has a reference to this class via the constructor
         flowForgeThread = new Thread(this);
 
@@ -102,7 +130,8 @@ public class FlowForge extends JFrame implements Runnable{
 
     }
 
-    public void addComponent() {
+    public void addComponent()
+    {
         //Only the start panel is added for now. Other components get added when the user opens/creates a project.
         controlPanel.addComponent();
         menuBar.addComponent();
@@ -115,7 +144,8 @@ public class FlowForge extends JFrame implements Runnable{
         flowForgeThread.start();
     }
 
-    public void launch() {
+    public void launch()
+    {
         //This is called when the user opens/creates a project. Start panel is removed and other components come into action
         programPanelContainer.add(programPanel);
 
@@ -134,36 +164,48 @@ public class FlowForge extends JFrame implements Runnable{
         this.repaint();
         this.revalidate();
     }
-    //This one kinda doesnt work properly, still in testing.
-    public boolean checkForUpdate() {
 
-        try {
+    //This one kinda doesnt work properly, still in testing.
+    public boolean checkForUpdate()
+    {
+
+        try
+        {
             String currentVersion = "1.7.1";
             URL versionUrl = new URI("https://flow-forge-website.vercel.app/version.txt").toURL();
-            
+
             BufferedReader reader = new BufferedReader(new InputStreamReader(versionUrl.openStream()));
             String latestVersion = reader.readLine().trim();
             reader.close();
 
-            if (!latestVersion.equals(currentVersion)) {
+            if (!latestVersion.equals(currentVersion))
+            {
 
                 if (JOptionPane.showConfirmDialog(null,
                         "There is a new FlowForge version available. " + "\n" +
                                 "You can download it manually by clicking on \"Yes\"",
-                        "New version Available", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                        "New version Available", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
+                {
 
                     Desktop desktop = Desktop.getDesktop();
-                    try {
+                    try
+                    {
                         desktop.browse(new URI("https://flow-forge-website.vercel.app/"));
-                    } catch (IOException ex) {
+                    }
+                    catch (IOException ex)
+                    {
                         throw new RuntimeException(ex);
-                    } catch (URISyntaxException ex) {
+                    }
+                    catch (URISyntaxException ex)
+                    {
                         System.out.println("Exception caught : wrong URL");
                     }
                 }
             }
 
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             JOptionPane.showMessageDialog(null,
                     "Please connect to an internet",
                     "Could not check for update", JOptionPane.ERROR_MESSAGE);
@@ -174,7 +216,8 @@ public class FlowForge extends JFrame implements Runnable{
 
     //Game loop, for smooth animations and responsiveness.
     @Override
-    public void run() {
+    public void run()
+    {
         double timePerFrame = 1000000000.0 / 120;
         double timePerUpdate = 1000000000.0 / 60;
 
@@ -187,50 +230,36 @@ public class FlowForge extends JFrame implements Runnable{
         double deltaU = 0;
         double deltaF = 0;
 
-        while (isRunning) {
+        while (isRunning)
+        {
             long currentTime = System.nanoTime();
 
             deltaU += (currentTime - previousTime) / timePerUpdate;
             deltaF += (currentTime - previousTime) / timePerFrame;
             previousTime = currentTime;
 
-            if (deltaU >= 1) {
+            if (deltaU >= 1)
+            {
                 programPanel.moveCamera();
                 updates++;
                 deltaU--;
             }
 
-            if (deltaF >= 1) {
+            if (deltaF >= 1)
+            {
                 programPanel.repaint();
                 frames++;
                 deltaF--;
             }
 
-            if (System.currentTimeMillis() - lastCheck >= 1000) {
+            if (System.currentTimeMillis() - lastCheck >= 1000)
+            {
                 lastCheck = System.currentTimeMillis();
                 frames = 0;
                 updates = 0;
 
             }
         }
-
-    }
-
-    //Main method
-    public static void main(String[] args){
-        System.setProperty("sun.java2d.opengl", "true");
-        System.setProperty("apple.laf.useScreenMenuBar", "true");
-        System.setProperty("apple.awt.application.appearance", "system");
-
-        FlatMacDarkLaf.setup();
-        FlatJetBrainsMonoFont.install(); //Font installation
-
-        //Swing is not thread safe, invoked in the EDT (Event dispatch thread)
-        SwingUtilities.invokeLater(() -> {
-            FlowForge flowForge = new FlowForge();
-            flowForge.init();
-            flowForge.addComponent();
-        });
 
     }
 

@@ -1,10 +1,12 @@
 package flowforge.ui.MenuBar;
 
 import flowforge.FlowForge;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class ChangeLogPanel {
+public class ChangeLogPanel
+{
     private JPanel rootPanel;
     private JScrollPane contentScrollPane;
     private JPanel contentPanel;
@@ -12,7 +14,8 @@ public class ChangeLogPanel {
     private JTextArea textPane;
     private FlowForge flowForge;
 
-    public ChangeLogPanel(FlowForge flowForge) {
+    public ChangeLogPanel(FlowForge flowForge)
+    {
         this.flowForge = flowForge;
 
         // Initialize the GUI components
@@ -22,7 +25,8 @@ public class ChangeLogPanel {
         contentScrollPane.getVerticalScrollBar().setUnitIncrement(14);
     }
 
-    private void initializeComponents() {
+    private void initializeComponents()
+    {
         // Create root panel with BorderLayout
         rootPanel = new JPanel(new BorderLayout());
         rootPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -67,9 +71,11 @@ public class ChangeLogPanel {
         rootPanel.add(buttonPanel, BorderLayout.SOUTH);
     }
 
-    private void setupEventHandlers() {
+    private void setupEventHandlers()
+    {
         backButton.setBackground(flowForge.theme);
-        backButton.addActionListener(e -> {
+        backButton.addActionListener(e ->
+        {
             flowForge.remove(this.getRootPanel());
             flowForge.add(flowForge.startPanel, BorderLayout.CENTER);
             flowForge.menuBar.changelogPanelVisible = false;
@@ -78,7 +84,8 @@ public class ChangeLogPanel {
         });
     }
 
-    public JPanel getRootPanel() {
+    public JPanel getRootPanel()
+    {
         return rootPanel;
     }
 }

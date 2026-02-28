@@ -1,26 +1,25 @@
 package flowforge.nodes.flownodes.arithmetic;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import flowforge.ui.panels.ProgramPanel;
 import flowforge.nodes.Node;
 import flowforge.nodes.flownodes.PrintNode;
+import flowforge.ui.panels.ProgramPanel;
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-import java.awt.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class EvalNode extends Node {
+public class EvalNode extends Node
+{
 
-    private ProgramPanel programPanel;
     public JTextField expressionField;
+    private ProgramPanel programPanel;
     private float result;
 
-    public EvalNode(String title, ProgramPanel programPanel) {
+    public EvalNode(String title, ProgramPanel programPanel)
+    {
         super(title, programPanel);
         this.programPanel = programPanel;
 
@@ -36,17 +35,25 @@ public class EvalNode extends Node {
     }
 
     @Override
-    public void execute(boolean isStepExecution) {
-        if (isStepExecution) {
-            synchronized (programPanel.stepExecutorLock) {
-                try {
+    public void execute(boolean isStepExecution)
+    {
+        if (isStepExecution)
+        {
+            synchronized (programPanel.stepExecutorLock)
+            {
+                try
+                {
                     programPanel.stepExecutorLock.wait();
-                } catch (InterruptedException e) {
+                }
+                catch (InterruptedException e)
+                {
                     throw new RuntimeException(e);
                 }
             }
-            SwingUtilities.invokeLater(() -> {
-                for (Node node : programPanel.nodes) {
+            SwingUtilities.invokeLater(() ->
+            {
+                for (Node node : programPanel.nodes)
+                {
                     node.restoreBorder();
                 }
                 this.setStepExecutedBorder();
@@ -54,39 +61,52 @@ public class EvalNode extends Node {
         }
 
         String expressionStr = expressionField.getText().trim();
-        if (!expressionStr.isEmpty()) {
-            try {
+        if (!expressionStr.isEmpty())
+        {
+            try
+            {
                 expressionStr = replaceVariables(expressionStr);
                 Expression expression = new ExpressionBuilder(expressionStr).build();
                 double doubleResult = expression.evaluate();
                 result = (float) doubleResult;
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 result = Float.NaN;
                 System.err.println("Error evaluating expression: " + e.getMessage());
             }
-        } else {
+        }
+        else
+        {
             result = 0.0f;
         }
 
-        for (Node node : outputXNodes) {
+        for (Node node : outputXNodes)
+        {
             if (node != null && !(node instanceof PrintNode)) node.execute(isStepExecution);
         }
-        for (Node node : outputNodes) {
+        for (Node node : outputNodes)
+        {
             if (node != null) node.execute(isStepExecution);
         }
     }
 
-    private String replaceVariables(String expression) {
+    private String replaceVariables(String expression)
+    {
         Pattern pattern = Pattern.compile("\\{([^{}]+)\\}");
         Matcher matcher = pattern.matcher(expression);
         StringBuffer result = new StringBuffer();
 
-        while (matcher.find()) {
+        while (matcher.find())
+        {
             String varName = matcher.group(1);
-            try {
+            try
+            {
                 String replacement = getVariableValue(varName);
                 matcher.appendReplacement(result, replacement);
-            } catch (RuntimeException e) {
+            }
+            catch (RuntimeException e)
+            {
                 matcher.appendReplacement(result, "0");
                 System.err.println("Variable not found, using 0: " + varName);
             }
@@ -95,19 +115,28 @@ public class EvalNode extends Node {
         return result.toString();
     }
 
-    private String getVariableValue(String varName) {
-        if (programPanel.integers.containsKey(varName)) {
+    private String getVariableValue(String varName)
+    {
+        if (programPanel.integers.containsKey(varName))
+        {
             return programPanel.integers.get(varName).toString();
-        } else if (programPanel.floats.containsKey(varName)) {
+        }
+        else if (programPanel.floats.containsKey(varName))
+        {
             return programPanel.floats.get(varName).toString();
-        } else if (programPanel.strings.containsKey(varName)) {
+        }
+        else if (programPanel.strings.containsKey(varName))
+        {
             return programPanel.strings.get(varName);
-        } else {
+        }
+        else
+        {
             throw new RuntimeException("Variable not found: " + varName);
         }
     }
 
-    public float getResult() {
+    public float getResult()
+    {
         return result;
     }
 }

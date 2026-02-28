@@ -9,7 +9,8 @@ import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
-public class StartPanel extends JPanel implements ComponentListener {
+public class StartPanel extends JPanel implements ComponentListener
+{
 
     private final FlowForge flowForge;
 
@@ -23,7 +24,8 @@ public class StartPanel extends JPanel implements ComponentListener {
 
     int titleWidth = 400, titleHeight = 200, mottoWidth = 400, mottoHeight = 100;
 
-    public StartPanel(FlowForge flowForge) {
+    public StartPanel(FlowForge flowForge)
+    {
         this.flowForge = flowForge;
         this.addComponentListener(this);
         this.setBounds(0, 0, flowForge.getWidth(), flowForge.getHeight());
@@ -49,11 +51,13 @@ public class StartPanel extends JPanel implements ComponentListener {
         openProjectButton = new JButton("Open Project");
         openProjectButton.setForeground(Color.WHITE);
         openProjectButton.setFont(new Font(FlatJetBrainsMonoFont.FAMILY, Font.BOLD, 18));
-        openProjectButton.addActionListener(e -> {
+        openProjectButton.addActionListener(e ->
+        {
             JFileChooser fileChooser = new JFileChooser();
             FileNameExtensionFilter filter = new FileNameExtensionFilter("FlowForge Programs", "flow");
             fileChooser.setFileFilter(filter);
-            if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
+            {
                 String filePath = fileChooser.getSelectedFile().getAbsolutePath();
 
                 flowForge.launch();
@@ -64,7 +68,8 @@ public class StartPanel extends JPanel implements ComponentListener {
 
         openProjectButton.setBackground(flowForge.theme);
 
-        createProjectButton.addActionListener(e -> {
+        createProjectButton.addActionListener(e ->
+        {
             flowForge.launch();
         });
 
@@ -75,9 +80,9 @@ public class StartPanel extends JPanel implements ComponentListener {
     }
 
 
-
     @Override
-    public void paintComponent(Graphics g) {
+    public void paintComponent(Graphics g)
+    {
         super.paintComponent(g);
         Graphics2D g2D = (Graphics2D) g;
 
@@ -88,8 +93,10 @@ public class StartPanel extends JPanel implements ComponentListener {
     }
 
     @Override
-    public void componentResized(ComponentEvent e) {
-        if (titleLabel != null && mottoLabel!=null && openProjectButton!= null) {
+    public void componentResized(ComponentEvent e)
+    {
+        if (titleLabel != null && mottoLabel != null && openProjectButton != null)
+        {
             titleLabel.setBounds(getWidth() / 2 - titleWidth / 2,
                     (getHeight() / 2 - titleHeight / 2) - 50,
                     titleWidth, titleHeight);
@@ -107,17 +114,20 @@ public class StartPanel extends JPanel implements ComponentListener {
     }
 
     @Override
-    public void componentMoved(ComponentEvent e) {
+    public void componentMoved(ComponentEvent e)
+    {
 
     }
 
     @Override
-    public void componentShown(ComponentEvent e) {
+    public void componentShown(ComponentEvent e)
+    {
 
     }
 
     @Override
-    public void componentHidden(ComponentEvent e) {
+    public void componentHidden(ComponentEvent e)
+    {
 
     }
 

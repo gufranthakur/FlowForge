@@ -1,7 +1,6 @@
 package flowforge.core;
 
 import com.google.gson.*;
-import flowforge.ui.panels.ProgramPanel;
 import flowforge.nodes.Node;
 import flowforge.nodes.StartNode;
 import flowforge.nodes.flownodes.*;
@@ -9,12 +8,20 @@ import flowforge.nodes.flownodes.arithmetic.*;
 import flowforge.nodes.flownodes.comparators.*;
 import flowforge.nodes.flownodes.logicgates.LogicGateNode;
 import flowforge.nodes.flownodes.utils.RouteNode;
-import flowforge.nodes.variables.*;
+import flowforge.nodes.variables.BooleanNode;
+import flowforge.nodes.variables.IntegerNode;
+import flowforge.nodes.variables.StringNode;
+import flowforge.ui.panels.ProgramPanel;
 
 import javax.swing.*;
-import java.io.*;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /*
     The DataManager class is responsible for saving and loading applications into a JSON File
@@ -28,11 +35,13 @@ import java.util.*;
              InputX Node   OutputX Nodes           Then the nodes stored in these arraylists are stored
  */
 
-public class DataManager {
+public class DataManager
+{
     private ProgramPanel programPanel;
     private Gson gson;
 
-    public DataManager(ProgramPanel programPanel) {
+    public DataManager(ProgramPanel programPanel)
+    {
         this.programPanel = programPanel;
         this.gson = new GsonBuilder()
                 .setPrettyPrinting()
@@ -45,17 +54,22 @@ public class DataManager {
         > Saves the entire program in a .json file
         > Using a Swing Worker to avoid freezing the UI
      */
-    public void saveProgram(String filePath) {
-        SwingWorker<Void, Void> dataSaverWorker = new SwingWorker<>() {
+    public void saveProgram(String filePath)
+    {
+        SwingWorker<Void, Void> dataSaverWorker = new SwingWorker<>()
+        {
             @Override
-            protected Void doInBackground(){
+            protected Void doInBackground()
+            {
 
-                try (FileWriter writer = new FileWriter(filePath)) {
+                try (FileWriter writer = new FileWriter(filePath))
+                {
                     JsonObject programData = new JsonObject();
 
                     // Store all nodes with their positions, connections and properties
                     JsonArray nodesArray = new JsonArray();
-                    for (Node node : programPanel.nodes) {
+                    for (Node node : programPanel.nodes)
+                    {
                         JsonObject nodeObj = new JsonObject();
 
                         // Store basic node metadata
@@ -72,14 +86,16 @@ public class DataManager {
 
                         // Store primary output connections (flow path)
                         JsonArray outputConnections = new JsonArray();
-                        for (Node outputNode : node.outputNodes) {
+                        for (Node outputNode : node.outputNodes)
+                        {
                             outputConnections.add(programPanel.nodes.indexOf(outputNode));
                         }
                         nodeObj.add("outputConnections", outputConnections);
 
                         // Store secondary output connections (alternate flow path)
                         JsonArray outputXConnections = new JsonArray();
-                        for (Node outputXNode : node.outputXNodes) {
+                        for (Node outputXNode : node.outputXNodes)
+                        {
                             outputXConnections.add(programPanel.nodes.indexOf(outputXNode));
                         }
                         nodeObj.add("outputXConnections", outputXConnections);
@@ -92,19 +108,22 @@ public class DataManager {
                         nodesArray.add(nodeObj);
 
                         // Special handling for BranchNode connections
-                        if (node instanceof BranchNode) {
+                        if (node instanceof BranchNode)
+                        {
                             BranchNode branchNode = (BranchNode) node;
 
                             // Save true branch connections
                             JsonArray trueConnections = new JsonArray();
-                            for (Node trueNode : branchNode.getTrueNodes()) {
+                            for (Node trueNode : branchNode.getTrueNodes())
+                            {
                                 trueConnections.add(programPanel.nodes.indexOf(trueNode));
                             }
                             nodeObj.add("trueConnections", trueConnections);
 
                             // Save false branch connections
                             JsonArray falseConnections = new JsonArray();
-                            for (Node falseNode : branchNode.getFalseNodes()) {
+                            for (Node falseNode : branchNode.getFalseNodes())
+                            {
                                 falseConnections.add(programPanel.nodes.indexOf(falseNode));
                             }
                             nodeObj.add("falseConnections", falseConnections);
@@ -117,28 +136,32 @@ public class DataManager {
 
                     // Integer variables
                     JsonObject integers = new JsonObject();
-                    for (Map.Entry<String, Integer> entry : programPanel.integers.entrySet()) {
+                    for (Map.Entry<String, Integer> entry : programPanel.integers.entrySet())
+                    {
                         integers.addProperty(entry.getKey(), entry.getValue());
                     }
                     variables.add("integers", integers);
 
                     // String variables
                     JsonObject strings = new JsonObject();
-                    for (Map.Entry<String, String> entry : programPanel.strings.entrySet()) {
+                    for (Map.Entry<String, String> entry : programPanel.strings.entrySet())
+                    {
                         strings.addProperty(entry.getKey(), entry.getValue());
                     }
                     variables.add("strings", strings);
 
                     // Boolean variables
                     JsonObject booleans = new JsonObject();
-                    for (Map.Entry<String, Boolean> entry : programPanel.booleans.entrySet()) {
+                    for (Map.Entry<String, Boolean> entry : programPanel.booleans.entrySet())
+                    {
                         booleans.addProperty(entry.getKey(), entry.getValue());
                     }
                     variables.add("booleans", booleans);
 
                     // Float variables
                     JsonObject floats = new JsonObject();
-                    for (Map.Entry<String, Float> entry : programPanel.floats.entrySet()) {
+                    for (Map.Entry<String, Float> entry : programPanel.floats.entrySet())
+                    {
                         floats.addProperty(entry.getKey(), entry.getValue());
                     }
                     variables.add("floats", floats);
@@ -147,7 +170,9 @@ public class DataManager {
 
                     // Write the complete program structure to file
                     writer.write(gson.toJson(programData));
-                } catch (IOException e) {
+                }
+                catch (IOException e)
+                {
                     JOptionPane.showMessageDialog(null, e.getMessage(), "Fatal Error while saving program", JOptionPane.ERROR_MESSAGE);
                 }
 
@@ -161,38 +186,57 @@ public class DataManager {
     /**
      * Extracts and stores node-specific properties based on node type.
      * Different node types have different configurable properties that need saving.
-     * @param node The node whose properties need to be saved
+     *
+     * @param node       The node whose properties need to be saved
      * @param properties JSON object to store the properties in
      */
-    private void saveNodeProperties(Node node, JsonObject properties) {
-        if (node instanceof PrintNode) {
+    private void saveNodeProperties(Node node, JsonObject properties)
+    {
+        if (node instanceof PrintNode)
+        {
             PrintNode printNode = (PrintNode) node;
             properties.addProperty("text", printNode.textField.getText());
-        } else if (node instanceof DelayNode delayNode) {
+        }
+        else if (node instanceof DelayNode delayNode)
+        {
             properties.addProperty("delay", delayNode.delaySpinner.getValue().toString());
-        } else if (node instanceof LogicGateNode logicNode) {
+        }
+        else if (node instanceof LogicGateNode logicNode)
+        {
             properties.addProperty("gateType", logicNode.getGateType());
-        } else if (node instanceof LoopNode loopNode) {
+        }
+        else if (node instanceof LoopNode loopNode)
+        {
             properties.addProperty("loops", loopNode.loopSpinner.getValue().toString());
-            if (loopNode.getIterationValue() != null) {
+            if (loopNode.getIterationValue() != null)
+            {
                 properties.addProperty("iterationValue", loopNode.getIterationValue());
             }
-        } else if (node instanceof InputNode inputNode) {
+        }
+        else if (node instanceof InputNode inputNode)
+        {
             properties.addProperty("inputString", inputNode.inputField.getText());
-        } else if (node instanceof EvalNode evalNode) {
+        }
+        else if (node instanceof EvalNode evalNode)
+        {
             properties.addProperty("expression", evalNode.expressionField.getText());
         }
 
 
-        else if (node instanceof IntegerNode) {
+        else if (node instanceof IntegerNode)
+        {
             IntegerNode intNode = (IntegerNode) node;
             properties.addProperty("name", intNode.getTitle());
             properties.addProperty("value", intNode.getValue());
-        } else if (node instanceof StringNode) {
+        }
+        else if (node instanceof StringNode)
+        {
             StringNode strNode = (StringNode) node;
             properties.addProperty("name", strNode.getTitle());
             properties.addProperty("value", strNode.getValue());
-        } else if (node instanceof BooleanNode) {
+        }
+        else if (node instanceof BooleanNode)
+        {
             BooleanNode boolNode = (BooleanNode) node;
             properties.addProperty("name", boolNode.getTitle());
             properties.addProperty("value", boolNode.getValue());
@@ -204,43 +248,55 @@ public class DataManager {
      * Loads a program from a JSON file.
      * Reconstructs the entire program state including nodes, connections and variables.
      * Uses a two-pass approach: first create all nodes, then establish connections.
+     *
      * @param filePath Path to the program file to load
      */
-    public void loadProgram(String filePath) {
-        try (FileReader reader = new FileReader(filePath)) {
+    public void loadProgram(String filePath)
+    {
+        try (FileReader reader = new FileReader(filePath))
+        {
             // Reset current program state before loading
             programPanel.clearAll();
 
             JsonObject programData = JsonParser.parseReader(reader).getAsJsonObject();
 
             // First restore variables since nodes might depend on them
-            if (programData.has("variables")) {
+            if (programData.has("variables"))
+            {
                 JsonObject variables = programData.getAsJsonObject("variables");
 
-                if (variables.has("integers")) {
+                if (variables.has("integers"))
+                {
                     JsonObject integers = variables.getAsJsonObject("integers");
-                    for (Map.Entry<String, JsonElement> entry : integers.entrySet()) {
+                    for (Map.Entry<String, JsonElement> entry : integers.entrySet())
+                    {
                         programPanel.integers.put(entry.getKey(), entry.getValue().getAsInt());
                     }
                 }
 
-                if (variables.has("strings")) {
+                if (variables.has("strings"))
+                {
                     JsonObject strings = variables.getAsJsonObject("strings");
-                    for (Map.Entry<String, JsonElement> entry : strings.entrySet()) {
+                    for (Map.Entry<String, JsonElement> entry : strings.entrySet())
+                    {
                         programPanel.strings.put(entry.getKey(), entry.getValue().getAsString());
                     }
                 }
 
-                if (variables.has("booleans")) {
+                if (variables.has("booleans"))
+                {
                     JsonObject booleans = variables.getAsJsonObject("booleans");
-                    for (Map.Entry<String, JsonElement> entry : booleans.entrySet()) {
+                    for (Map.Entry<String, JsonElement> entry : booleans.entrySet())
+                    {
                         programPanel.booleans.put(entry.getKey(), entry.getValue().getAsBoolean());
                     }
                 }
 
-                if  (variables.has("floats")) {
+                if (variables.has("floats"))
+                {
                     JsonObject floats = variables.getAsJsonObject("floats");
-                    for (Map.Entry<String, JsonElement> entry : floats.entrySet()) {
+                    for (Map.Entry<String, JsonElement> entry : floats.entrySet())
+                    {
                         programPanel.floats.put(entry.getKey(), entry.getValue().getAsFloat());
                     }
                 }
@@ -251,11 +307,13 @@ public class DataManager {
             List<Node> newNodes = new ArrayList<>();
             Map<Integer, Node> idToNodeMap = new HashMap<>();
 
-            if (programData.has("nodes")) {
+            if (programData.has("nodes"))
+            {
                 JsonArray nodesArray = programData.getAsJsonArray("nodes");
 
                 // First pass: create all nodes without connections
-                for (JsonElement nodeElement : nodesArray) {
+                for (JsonElement nodeElement : nodesArray)
+                {
                     JsonObject nodeObj = nodeElement.getAsJsonObject();
                     int id = nodeObj.get("id").getAsInt();
                     String type = nodeObj.get("type").getAsString();
@@ -263,7 +321,8 @@ public class DataManager {
                     int x = nodeObj.get("x").getAsInt();
                     int y = nodeObj.get("y").getAsInt();
 
-                    try {
+                    try
+                    {
                         boolean isHighlighted = nodeObj.get("isHighlighted").getAsBoolean();
                         boolean isCommented = nodeObj.get("isCommented").getAsBoolean();
                         boolean isMinimized = nodeObj.get("isMinimized").getAsBoolean();
@@ -277,25 +336,31 @@ public class DataManager {
                         // Create the node with its specific type and properties
                         Node node = createNode(type, title, properties);
 
-                        if (node != null) {
+                        if (node != null)
+                        {
                             if (!node.isMinimized) node.restoreDimensions(isMinimized, x, y);
                             newNodes.add(node);
                             idToNodeMap.put(id, node);
 
-                            if (isCommented) {
+                            if (isCommented)
+                            {
                                 node.isCommented = true;
                                 node.comment = comment;
                                 node.setToolTipText(comment);
                             }
-                            if (isHighlighted) {
+                            if (isHighlighted)
+                            {
                                 node.isHighlighted = true;
                                 node.restoreBorder();
                             }
-                            if (isMinimized) {
+                            if (isMinimized)
+                            {
                                 node.isMinimized = true;
                             }
                         }
-                    } catch (NullPointerException e) {
+                    }
+                    catch (NullPointerException e)
+                    {
                         JOptionPane.showMessageDialog(null, "The file you opened was for a " + "\n" + "older version of FlowForge",
                                 "Fatal file error", JOptionPane.ERROR_MESSAGE);
                         return;
@@ -304,28 +369,34 @@ public class DataManager {
                 }
 
                 // Add all nodes to the program panel
-                for (Node node : newNodes) {
+                for (Node node : newNodes)
+                {
                     programPanel.addNode(node);
                 }
 
                 // Second pass: establish connections between nodes
-                for (JsonElement nodeElement : nodesArray) {
+                for (JsonElement nodeElement : nodesArray)
+                {
                     JsonObject nodeObj = nodeElement.getAsJsonObject();
                     int id = nodeObj.get("id").getAsInt();
                     Node currentNode = idToNodeMap.get(id);
 
-                    if (currentNode == null) {
+                    if (currentNode == null)
+                    {
                         continue;
                     }
 
                     // Restore primary output connections
-                    if (nodeObj.has("outputConnections")) {
+                    if (nodeObj.has("outputConnections"))
+                    {
                         JsonArray outputConnections = nodeObj.getAsJsonArray("outputConnections");
-                        for (JsonElement connectionElement : outputConnections) {
+                        for (JsonElement connectionElement : outputConnections)
+                        {
                             int targetId = connectionElement.getAsInt();
                             Node targetNode = idToNodeMap.get(targetId);
 
-                            if (targetNode != null) {
+                            if (targetNode != null)
+                            {
                                 // Establish connection and update UI state
                                 currentNode.connectTo(targetNode);
                                 currentNode.outputButton.setSelected(true);
@@ -335,13 +406,16 @@ public class DataManager {
                     }
 
                     // Restore secondary (X) output connections
-                    if (nodeObj.has("outputXConnections")) {
+                    if (nodeObj.has("outputXConnections"))
+                    {
                         JsonArray outputXConnections = nodeObj.getAsJsonArray("outputXConnections");
-                        for (JsonElement connectionElement : outputXConnections) {
+                        for (JsonElement connectionElement : outputXConnections)
+                        {
                             int targetId = connectionElement.getAsInt();
                             Node targetNode = idToNodeMap.get(targetId);
 
-                            if (targetNode != null) {
+                            if (targetNode != null)
+                            {
                                 currentNode.connectToX(targetNode);
                                 currentNode.outputXButton.setSelected(true);
                                 targetNode.inputXButton.setSelected(true);
@@ -350,30 +424,37 @@ public class DataManager {
                     }
 
                     // Restore branch node-specific connections
-                    if (currentNode instanceof BranchNode) {
+                    if (currentNode instanceof BranchNode)
+                    {
                         BranchNode branchNode = (BranchNode) currentNode;
 
                         // Restore true branch connections
-                        if (nodeObj.has("trueConnections")) {
+                        if (nodeObj.has("trueConnections"))
+                        {
                             JsonArray trueConnections = nodeObj.getAsJsonArray("trueConnections");
-                            for (JsonElement connectionElement : trueConnections) {
+                            for (JsonElement connectionElement : trueConnections)
+                            {
                                 int targetId = connectionElement.getAsInt();
                                 Node targetNode = idToNodeMap.get(targetId);
 
-                                if (targetNode != null) {
+                                if (targetNode != null)
+                                {
                                     branchNode.addTrueNode(targetNode);
                                 }
                             }
                         }
 
                         // Restore false branch connections
-                        if (nodeObj.has("falseConnections")) {
+                        if (nodeObj.has("falseConnections"))
+                        {
                             JsonArray falseConnections = nodeObj.getAsJsonArray("falseConnections");
-                            for (JsonElement connectionElement : falseConnections) {
+                            for (JsonElement connectionElement : falseConnections)
+                            {
                                 int targetId = connectionElement.getAsInt();
                                 Node targetNode = idToNodeMap.get(targetId);
 
-                                if (targetNode != null) {
+                                if (targetNode != null)
+                                {
                                     branchNode.addFalseNode(targetNode);
                                 }
                             }
@@ -384,13 +465,17 @@ public class DataManager {
 
             programPanel.repaint();
 
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             e.printStackTrace();
         }
 
         // Update the startNode reference in ProgramPanel for execution
-        for (Node node : programPanel.nodes) {
-            if (node instanceof StartNode) {
+        for (Node node : programPanel.nodes)
+        {
+            if (node instanceof StartNode)
+            {
                 programPanel.startNode = (StartNode) node;
                 break;
             }
@@ -400,19 +485,24 @@ public class DataManager {
     /**
      * Creates a node of the specified type with its properties.
      * Factory method to instantiate various node types with their specific configurations.
-     * @param type The class name of the node to create
-     * @param title The display title for the node
+     *
+     * @param type       The class name of the node to create
+     * @param title      The display title for the node
      * @param properties Node-specific configuration values
      * @return A properly configured node instance or null if creation fails
      */
-    private Node createNode(String type, String title, JsonObject properties) {
-        try {
-            switch (type) {
+    private Node createNode(String type, String title, JsonObject properties)
+    {
+        try
+        {
+            switch (type)
+            {
                 case "StartNode":
                     return new StartNode(title, programPanel);
                 case "PrintNode":
                     PrintNode printNode = new PrintNode(title, programPanel);
-                    if (properties.has("text")) {
+                    if (properties.has("text"))
+                    {
                         printNode.textField.setText(properties.get("text").getAsString());
                     }
                     return printNode;
@@ -422,7 +512,8 @@ public class DataManager {
 
                 case "InputNode":
                     InputNode inputNode = new InputNode(title, programPanel);
-                    if (properties.has("inputString")) {
+                    if (properties.has("inputString"))
+                    {
                         inputNode.inputValue = (properties.get("inputString").getAsString());
                         inputNode.inputField.setText(inputNode.inputValue);
                     }
@@ -430,17 +521,20 @@ public class DataManager {
 
                 case "DelayNode":
                     DelayNode delayNode = new DelayNode(title, programPanel);
-                    if (properties.has("delay")) {
+                    if (properties.has("delay"))
+                    {
                         delayNode.delaySpinner.setValue(Integer.parseInt(properties.get("delay").getAsString()));
                     }
                     return delayNode;
 
                 case "LoopNode":
                     LoopNode loopNode = new LoopNode(title, programPanel);
-                    if (properties.has("loops")) {
+                    if (properties.has("loops"))
+                    {
                         loopNode.loopSpinner.setValue(Integer.parseInt(properties.get("loops").getAsString()));
                     }
-                    if (properties.has("iterationValue")) {
+                    if (properties.has("iterationValue"))
+                    {
                         loopNode.setIterationValue(properties.get("iterationValue").getAsInt());
                     }
                     return loopNode;
@@ -480,21 +574,22 @@ public class DataManager {
                 case "MultiplyNode":
                     return new MultiplyNode(title, programPanel);
 
-                case "DivideNode" :
+                case "DivideNode":
                     return new DivideNode(title, programPanel);
 
-                case "ModulusNode" :
+                case "ModulusNode":
                     return new ModulusNode(title, programPanel);
 
-                case "RandomNode" :
+                case "RandomNode":
                     return new RandomNode(title, programPanel);
 
-                case "RouteNode" :
+                case "RouteNode":
                     return new RouteNode(title, programPanel);
 
-                case "EvalNode" :
+                case "EvalNode":
                     EvalNode evalNode = new EvalNode("EvalNode", programPanel);
-                    if (properties.has("expression")) {
+                    if (properties.has("expression"))
+                    {
                         evalNode.expressionField.setText(properties.get("expression").getAsString());
                     }
                     return evalNode;
@@ -523,7 +618,9 @@ public class DataManager {
                 default:
                     return null;
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
             return null;
         }
@@ -533,9 +630,11 @@ public class DataManager {
      * Custom serializer for Node objects to prevent circular reference issues.
      * Simplifies node serialization by only including essential identification information.
      */
-    private static class NodeSerializer implements JsonSerializer<Node> {
+    private static class NodeSerializer implements JsonSerializer<Node>
+    {
         @Override
-        public JsonElement serialize(Node src, Type typeOfSrc, JsonSerializationContext context) {
+        public JsonElement serialize(Node src, Type typeOfSrc, JsonSerializationContext context)
+        {
             JsonObject result = new JsonObject();
             // Only serialize basic identity information to avoid circular references
             result.addProperty("id", System.identityHashCode(src));
@@ -548,10 +647,12 @@ public class DataManager {
      * Custom deserializer for Node objects.
      * Actual node creation is handled by the createNode method, this is just a placeholder.
      */
-    private static class NodeDeserializer implements JsonDeserializer<Node> {
+    private static class NodeDeserializer implements JsonDeserializer<Node>
+    {
         @Override
         public Node deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-                throws JsonParseException {
+                throws JsonParseException
+        {
             // Actual node creation happens in createNode method
             return null;
         }

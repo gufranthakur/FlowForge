@@ -1,20 +1,20 @@
 package flowforge.nodes.variables;
 
-import flowforge.ui.panels.ProgramPanel;
 import flowforge.nodes.Node;
 import flowforge.nodes.flownodes.InputNode;
 import flowforge.nodes.flownodes.arithmetic.*;
+import flowforge.ui.panels.ProgramPanel;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 
-public class FloatNode extends Node {
-    private ProgramPanel programPanel;
+public class FloatNode extends Node
+{
     public JSpinner spinner;
+    private ProgramPanel programPanel;
 
-    public FloatNode(String title, ProgramPanel programPanel, Float floatValue) {
+    public FloatNode(String title, ProgramPanel programPanel, Float floatValue)
+    {
         super(title, programPanel);
         this.programPanel = programPanel;
         this.nodeTheme = programPanel.flowForge.variableNodeTheme;
@@ -37,25 +37,36 @@ public class FloatNode extends Node {
     }
 
     @Override
-    public void execute(boolean isStepExecution) {
-        if (isStepExecution) {
-            synchronized (programPanel.stepExecutorLock) {
-                try {
+    public void execute(boolean isStepExecution)
+    {
+        if (isStepExecution)
+        {
+            synchronized (programPanel.stepExecutorLock)
+            {
+                try
+                {
                     programPanel.stepExecutorLock.wait();
-                } catch (InterruptedException e) {
+                }
+                catch (InterruptedException e)
+                {
                     throw new RuntimeException(e);
                 }
             }
-            SwingUtilities.invokeLater(() -> {
-                for (Node node : programPanel.nodes) {
+            SwingUtilities.invokeLater(() ->
+            {
+                for (Node node : programPanel.nodes)
+                {
                     node.restoreBorder();
                 }
                 this.setStepExecutedBorder();
             });
         }
-        for (Node node : inputXNodes) {
-            if (node != null) {
-                switch (node) {
+        for (Node node : inputXNodes)
+        {
+            if (node != null)
+            {
+                switch (node)
+                {
                     case InputNode inputNode -> setFloatValue(Float.parseFloat(inputNode.inputValue));
                     case AddNode addNode -> setFloatValue(addNode.getResult());
                     case SubtractNode subtractNode -> setFloatValue(subtractNode.getResult());
@@ -69,21 +80,23 @@ public class FloatNode extends Node {
             }
         }
 
-        for (Node nodes : outputNodes) {
+        for (Node nodes : outputNodes)
+        {
             if (nodes != null) nodes.execute(isStepExecution);
         }
 
     }
 
-    public float getValue() {
+    public float getValue()
+    {
         return programPanel.floats.get(title);
     }
 
-    public void setFloatValue(float floatValue) {
+    public void setFloatValue(float floatValue)
+    {
         programPanel.floats.put(title, floatValue);
         System.out.println(programPanel.floats);
     }
-
 
 
 }

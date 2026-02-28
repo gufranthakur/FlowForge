@@ -1,19 +1,19 @@
 package flowforge.nodes.flownodes;
 
-import flowforge.ui.panels.ProgramPanel;
 import flowforge.nodes.Node;
 import flowforge.nodes.variables.IntegerNode;
+import flowforge.ui.panels.ProgramPanel;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 
-public class DelayNode extends Node {
-    private ProgramPanel programPanel;
+public class DelayNode extends Node
+{
     public JSpinner delaySpinner;
+    private ProgramPanel programPanel;
 
-    public DelayNode(String title, ProgramPanel programPanel) {
+    public DelayNode(String title, ProgramPanel programPanel)
+    {
         super(title, programPanel);
         this.programPanel = programPanel;
 
@@ -39,17 +39,25 @@ public class DelayNode extends Node {
     }
 
     @Override
-    public void execute(boolean isStepExecution) {
-        if (isStepExecution) {
-            synchronized (programPanel.stepExecutorLock) {
-                try {
+    public void execute(boolean isStepExecution)
+    {
+        if (isStepExecution)
+        {
+            synchronized (programPanel.stepExecutorLock)
+            {
+                try
+                {
                     programPanel.stepExecutorLock.wait();
-                } catch (InterruptedException e) {
+                }
+                catch (InterruptedException e)
+                {
                     throw new RuntimeException(e);
                 }
             }
-            SwingUtilities.invokeLater(() -> {
-                for (Node node : programPanel.nodes) {
+            SwingUtilities.invokeLater(() ->
+            {
+                for (Node node : programPanel.nodes)
+                {
                     node.restoreBorder();
                 }
                 this.setStepExecutedBorder();
@@ -58,23 +66,30 @@ public class DelayNode extends Node {
 
         int delay = (Integer) delaySpinner.getValue();
 
-        for (Node node : inputXNodes) {
-            if (node != null) {
+        for (Node node : inputXNodes)
+        {
+            if (node != null)
+            {
                 if (node instanceof InputNode) delay = Integer.parseInt(((InputNode) node).inputValue);
                 else if (node instanceof IntegerNode) delay = ((IntegerNode) node).getValue();
                 else System.out.println("Error");
             }
         }
 
-        synchronized (programPanel.stepExecutorLock) {
-            try {
+        synchronized (programPanel.stepExecutorLock)
+        {
+            try
+            {
                 programPanel.stepExecutorLock.wait(delay);
-            } catch (InterruptedException e) {
+            }
+            catch (InterruptedException e)
+            {
                 throw new RuntimeException(e);
             }
         }
 
-        for (Node node : outputNodes) {
+        for (Node node : outputNodes)
+        {
             if (node != null) node.execute(isStepExecution);
         }
     }

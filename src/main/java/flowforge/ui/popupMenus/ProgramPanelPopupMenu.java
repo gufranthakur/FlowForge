@@ -4,14 +4,16 @@ import flowforge.ui.panels.ProgramPanel;
 
 import javax.swing.*;
 
-public class ProgramPanelPopupMenu extends JPopupMenu {
+public class ProgramPanelPopupMenu extends JPopupMenu
+{
 
     private ProgramPanel programPanel;
 
     private JMenuItem showGrid, snapToGrid,
             addNode, createInteger, createString, createBoolean, createFloat;
 
-    public ProgramPanelPopupMenu(ProgramPanel programPanel) {
+    public ProgramPanelPopupMenu(ProgramPanel programPanel)
+    {
         this.programPanel = programPanel;
 
         initUI();
@@ -19,7 +21,8 @@ public class ProgramPanelPopupMenu extends JPopupMenu {
         addComponents();
     }
 
-    private void initUI() {
+    private void initUI()
+    {
         showGrid = new JMenuItem("Show Grid");
         snapToGrid = new JMenuItem("Snap to Grid");
 
@@ -30,17 +33,21 @@ public class ProgramPanelPopupMenu extends JPopupMenu {
         createFloat = new JMenuItem("Create Float");
     }
 
-    private void initListeners() {
-        showGrid.addActionListener(e -> {
+    private void initListeners()
+    {
+        showGrid.addActionListener(e ->
+        {
             programPanel.showGrid = !programPanel.showGrid;
         });
 
-        snapToGrid.addActionListener(e -> {
+        snapToGrid.addActionListener(e ->
+        {
             programPanel.snapToGrid = !programPanel.snapToGrid;
         });
     }
 
-    private void addComponents() {
+    private void addComponents()
+    {
         this.add(showGrid);
         this.add(snapToGrid);
         this.addSeparator();
@@ -51,18 +58,25 @@ public class ProgramPanelPopupMenu extends JPopupMenu {
         this.add(createFloat);
     }
 
-    public void displayMenu(int x, int y, boolean showGrid, boolean snapToGrid) {
+    public void displayMenu(int x, int y, boolean showGrid, boolean snapToGrid)
+    {
         this.show(programPanel, x, y);
 
-        if (showGrid) {
+        if (showGrid)
+        {
             this.showGrid.setText("Hide Grid");
-        } else {
+        }
+        else
+        {
             this.showGrid.setText("Show Grid");
         }
 
-        if (snapToGrid) {
+        if (snapToGrid)
+        {
             this.snapToGrid.setText("Snap to Grid ✓");
-        } else {
+        }
+        else
+        {
             this.snapToGrid.setText("Snap to Grid");
         }
     }

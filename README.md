@@ -1,13 +1,16 @@
 ![Screenshot 2025-05-22 122154](https://github.com/user-attachments/assets/86369f96-669e-4f77-a618-2b1ce441f1de)
 
 ![Static Badge](https://img.shields.io/badge/Flow-Forge-blue)
-![label](https://img.shields.io/badge/Java-v21-orange)  
+![label](https://img.shields.io/badge/Java-v21-orange)
 
-FlowForge is a visual-based programming IDE (Similiar to Unreal Engine blueprints) that helps programmers create programs with drag and drop nodes. With a modern UI and simplistic approach. It's a toy Visual programming language I created for fun, but if I ever create a game engine in the future, I will definetely use this for the scripting :)
+FlowForge is a visual-based programming IDE (Similiar to Unreal Engine blueprints) that helps programmers create
+programs with drag and drop nodes. With a modern UI and simplistic approach. It's a toy Visual programming language I
+created for fun, but if I ever create a game engine in the future, I will definetely use this for the scripting :)
 
 # Features
+
 * Drag and drop functionality for nodes
-* Simulate and run programs within the IDE 
+* Simulate and run programs within the IDE
 * Basic Functions: Print, Branch, Input, Delay, Loop, and Conditional-Loop.
 * Arithmetic Operations, Comparators and Logic Gates
 * Step-by-step execution mode for debugging
@@ -19,7 +22,7 @@ FlowForge is a visual-based programming IDE (Similiar to Unreal Engine blueprint
 # How to run FlowForge with JBang
 
 1. Make sure you have JBang installed (https://jbang.dev/download)
-2. Try it using: `jbang flowforge@gufranthakur/FlowForge` 
+2. Try it using: `jbang flowforge@gufranthakur/FlowForge`
 3. If you want to install it you can do:
    `jbang app install flowforge@gufranthakur/FlowForge` and run it
    using `flowforge`
@@ -32,21 +35,22 @@ FlowForge is a visual-based programming IDE (Similiar to Unreal Engine blueprint
 4. The program should launch successfully.
 
 # Alternatively, you can also run the project via the source code.
+
 IntelliJ IDEA is recommended.
 
-Make sure to have Java 21 installed. If you don't, you can download it within IntelliJ when the project is indexing, by clicking on "Configure SDK" on the top right corner
+Make sure to have Java 21 installed. If you don't, you can download it within IntelliJ when the project is indexing, by
+clicking on "Configure SDK" on the top right corner
 
 1. Open IntelliJ IDEA, on the projects menu, click on "Clone Repository"
 2. Paste the git repo link and clone it
 3. Navigate to the "FlowForge.java" File, located in the flowforge package
-4. Right click on the editor, and click on "Run FlowForge.main()" 
+4. Right click on the editor, and click on "Run FlowForge.main()"
 
 ## To Contribute to FlowForge
 
 We welcome contributions of all kinds — from bug reports and feature suggestions to code, design, and documentation!
 
 Check out our [Contributing Guidelines](CONTRIBUTING.md) to get started.
-
 
 ## License
 

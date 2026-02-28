@@ -25,16 +25,29 @@ import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.Enumeration;
 
-public class ControlPanel {
+public class ControlPanel
+{
+    public JComboBox variableBox;
+    public JPanel toolBar;
+    public JButton runStopButton;
+    public JButton runWithStepsButton;
+    public JButton stopButton;
+    public FlowForge flowForge;
+    public JTree functionsTree;
+    public DefaultMutableTreeNode root;
+    public JTree variableTree;
+    public DefaultMutableTreeNode variableRoot;
+    public JTree arrayTree;
+    public DefaultMutableTreeNode arrayRoot;
+    public DefaultMutableTreeNode intArrayNode, strArrayNode, boolArrayNode, floatArrayNode;
+    public DefaultMutableTreeNode selectedVariableNode;
+    public VariablePopupMenu variablePopupMenu;
     private JPanel rootPanel;
     private JButton addNodeButton;
     private JPanel nodesListPanel;
     private JTextField variableNameField;
-    public JComboBox variableBox;
     private JPanel variableListPanel;
-    public JPanel toolBar;
     private JButton consoleButton;
-    public JButton runStopButton;
     private JButton addButton;
     private JTabbedPane rootTabbedPane;
     private JPanel nodeControlPanel;
@@ -53,18 +66,11 @@ public class ControlPanel {
     private JLabel outputConnectionsLabel;
     private JLabel inputXConnectionsLabel;
     private JLabel outputXConnectionLabel;
-    public JButton runWithStepsButton;
-    public JButton stopButton;
     private JComboBox comboBox1;
     private JButton addArrayButton;
     private JScrollPane arrayScrollPane;
     private JPanel arrayListPanel;
     private JComboBox nodeBox;
-
-    public FlowForge flowForge;
-
-    public JTree functionsTree;
-    public DefaultMutableTreeNode root;
     private DefaultMutableTreeNode flowNode, comparators, logicGates, arithmeticNode, utilityNode;
     private DefaultMutableTreeNode print, branch, input, delay, loop, conditionalLoop,
             equalTo, greaterThan, lessThan,
@@ -72,21 +78,11 @@ public class ControlPanel {
             notGate, andGate, orGate, nandGate, norGate, xorGate,
             add, subtract, multiply, divide, modulus, random, eval,
             route, recursive;
-
-    public JTree variableTree;
-    public DefaultMutableTreeNode variableRoot;
     private DefaultMutableTreeNode integerNode, stringNode, booleanNode, floatNode;
-
-    public JTree arrayTree;
-    public DefaultMutableTreeNode arrayRoot;
-    public DefaultMutableTreeNode intArrayNode, strArrayNode, boolArrayNode, floatArrayNode;
-
-    public DefaultMutableTreeNode selectedVariableNode;
-    public VariablePopupMenu variablePopupMenu;
-
     private boolean programIsRunning = false;
 
-    public ControlPanel(FlowForge flowForge) {
+    public ControlPanel(FlowForge flowForge)
+    {
         this.flowForge = flowForge;
         createUIComponents();
         this.rootPanel.setPreferredSize(new Dimension(350, flowForge.getHeight()));
@@ -107,7 +103,8 @@ public class ControlPanel {
         arrayTree.setFont(new Font(FlatInterFont.FAMILY, Font.PLAIN, 16));
     }
 
-    private void createUIComponents() {
+    private void createUIComponents()
+    {
         rootPanel = new JPanel();
         rootPanel.setLayout(new BorderLayout());
         rootPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -119,7 +116,8 @@ public class ControlPanel {
         rootPanel.add(rootTabbedPane, BorderLayout.CENTER);
     }
 
-    private void createToolBar() {
+    private void createToolBar()
+    {
         toolBar = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
         runStopButton = new JButton("▶ Run");
@@ -145,7 +143,8 @@ public class ControlPanel {
         toolBar.add(consoleButton);
     }
 
-    private void createTabbedPane() {
+    private void createTabbedPane()
+    {
         rootTabbedPane = new JTabbedPane();
         rootTabbedPane.setPreferredSize(new Dimension(240, 200));
 
@@ -158,7 +157,8 @@ public class ControlPanel {
         rootTabbedPane.addTab("Properties", propertiesPanel);
     }
 
-    private void createNodeControlPanel() {
+    private void createNodeControlPanel()
+    {
         nodeControlPanel = new JPanel(new BorderLayout());
         nodeControlPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
@@ -173,7 +173,8 @@ public class ControlPanel {
         nodeControlPanel.add(nodesScrollPanel, BorderLayout.CENTER);
     }
 
-    private void createVariableControlPanel() {
+    private void createVariableControlPanel()
+    {
         variableControlPanel = new JPanel();
         variableControlPanel.setLayout(new BoxLayout(variableControlPanel, BoxLayout.Y_AXIS));
         variableControlPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -225,7 +226,8 @@ public class ControlPanel {
         variableControlPanel.add(arrayScrollPane);
     }
 
-    private void createPropertiesPanel() {
+    private void createPropertiesPanel()
+    {
         propertiesPanel = new JPanel(new BorderLayout());
         propertiesPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
@@ -266,7 +268,8 @@ public class ControlPanel {
         propertiesPanel.add(detailsPanel, BorderLayout.CENTER);
     }
 
-    private void createConnectionPanel() {
+    private void createConnectionPanel()
+    {
         connectionPanel = new JPanel();
         connectionPanel.setLayout(new BoxLayout(connectionPanel, BoxLayout.Y_AXIS));
 
@@ -309,12 +312,14 @@ public class ControlPanel {
         connectionPanel.add(outputXConnectionLabel);
     }
 
-    public void init() {
+    public void init()
+    {
         detailsPanel.setBackground(rootPanel.getBackground().brighter());
         connectionPanel.setBackground(rootPanel.getBackground().brighter());
         runStopButton.setBackground(flowForge.theme);
 
-        for (String s : Arrays.asList("Integer", "String", "Boolean", "Float")) {
+        for (String s : Arrays.asList("Integer", "String", "Boolean", "Float"))
+        {
             variableBox.addItem(s);
         }
         initFunctionNodes();
@@ -322,7 +327,8 @@ public class ControlPanel {
         initListeners();
     }
 
-    public void initFunctionNodes() {
+    public void initFunctionNodes()
+    {
         flowNode = new DefaultMutableTreeNode("Flow");
 
         print = new DefaultMutableTreeNode("Print");
@@ -362,7 +368,8 @@ public class ControlPanel {
         recursive = new DefaultMutableTreeNode("Recurse");
     }
 
-    public void initVariableNodes() {
+    public void initVariableNodes()
+    {
         integerNode = new DefaultMutableTreeNode("Integers");
         stringNode = new DefaultMutableTreeNode("Strings");
         booleanNode = new DefaultMutableTreeNode("Booleans");
@@ -374,26 +381,34 @@ public class ControlPanel {
         floatArrayNode = new DefaultMutableTreeNode("Floats");
     }
 
-    public void initListeners() {
-        consoleButton.addActionListener(e -> {
+    public void initListeners()
+    {
+        consoleButton.addActionListener(e ->
+        {
             if (flowForge.console.isMinimized) flowForge.console.resizeToDefault();
             else flowForge.console.minimize();
         });
 
-        runStopButton.addActionListener(e -> {
-            if (!flowForge.forgeExecutor.getIsExecuting()) {
+        runStopButton.addActionListener(e ->
+        {
+            if (!flowForge.forgeExecutor.getIsExecuting())
+            {
                 flowForge.forgeExecutor.execute();
                 runStopButton.setText("Stop");
                 runStopButton.setBackground(stopButton.getBackground());
-            } else {
+            }
+            else
+            {
                 flowForge.forgeExecutor.stopExecution(true);
                 runStopButton.setText("▶ Run");
                 runStopButton.setBackground(flowForge.theme);
             }
         });
 
-        runWithStepsButton.addActionListener(e -> {
-            if (!flowForge.programPanel.isExecutingSteps) {
+        runWithStepsButton.addActionListener(e ->
+        {
+            if (!flowForge.programPanel.isExecutingSteps)
+            {
                 flowForge.programPanel.isExecutingSteps = true;
 
                 runWithStepsButton.setText("Next Step");
@@ -402,57 +417,78 @@ public class ControlPanel {
 
                 flowForge.forgeExecutor.executeByStep();
 
-            } else {
-                synchronized (flowForge.programPanel.stepExecutorLock) {
+            }
+            else
+            {
+                synchronized (flowForge.programPanel.stepExecutorLock)
+                {
                     flowForge.programPanel.stepExecutorLock.notify();
                 }
                 flowForge.programPanel.requestFocus();
             }
         });
 
-        stopButton.addActionListener(e -> {
+        stopButton.addActionListener(e ->
+        {
             flowForge.programPanel.isExecutingSteps = false;
 
             runWithStepsButton.setText("▶ Run with Steps");
             stopButton.setVisible(false);
             runStopButton.setEnabled(true);
 
-            for (Node node : flowForge.programPanel.nodes) {
+            for (Node node : flowForge.programPanel.nodes)
+            {
                 node.restoreBorder();
             }
         });
 
-        functionsTree.addMouseListener(new MouseAdapter() {
+        functionsTree.addMouseListener(new MouseAdapter()
+        {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseClicked(MouseEvent e)
+            {
                 super.mouseClicked(e);
                 getSelectedNodeAtTree(functionsTree, true);
             }
         });
 
-        variableTree.addMouseListener(new MouseAdapter() {
+        variableTree.addMouseListener(new MouseAdapter()
+        {
             @Override
-            public void mousePressed(MouseEvent e) {
+            public void mousePressed(MouseEvent e)
+            {
                 super.mousePressed(e);
                 DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) variableTree.getLastSelectedPathComponent();
                 selectedVariableNode = selectedNode;
 
-                if (SwingUtilities.isRightMouseButton(e)) {
-                    if (selectedNode.isLeaf()) {
+                if (SwingUtilities.isRightMouseButton(e))
+                {
+                    if (selectedNode.isLeaf())
+                    {
                         variablePopupMenu.show(variableTree, e.getX() + 10, e.getY() + 10);
                     }
-                } else {
-                    if (selectedNode != null && selectedNode.getParent() != null) {
+                }
+                else
+                {
+                    if (selectedNode != null && selectedNode.getParent() != null)
+                    {
                         DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) selectedNode.getParent();
 
                         String variableName = (String) selectedNode.getUserObject();
-                        if (parentNode.getUserObject().equals("Integers")) {
+                        if (parentNode.getUserObject().equals("Integers"))
+                        {
                             flowForge.programPanel.addNewNode(new IntegerNode(variableName, flowForge.programPanel, 0), true);
-                        } else if (parentNode.getUserObject().equals("Strings")) {
+                        }
+                        else if (parentNode.getUserObject().equals("Strings"))
+                        {
                             flowForge.programPanel.addNewNode(new StringNode(variableName, flowForge.programPanel, ""), true);
-                        } else if (parentNode.getUserObject().equals("Booleans")) {
+                        }
+                        else if (parentNode.getUserObject().equals("Booleans"))
+                        {
                             flowForge.programPanel.addNewNode(new BooleanNode(variableName, flowForge.programPanel, false), true);
-                        } else if (parentNode.getUserObject().equals("Floats")) {
+                        }
+                        else if (parentNode.getUserObject().equals("Floats"))
+                        {
                             flowForge.programPanel.addNewNode(new FloatNode(variableName, flowForge.programPanel, 0.0f), true);
                         }
                     }
@@ -460,15 +496,18 @@ public class ControlPanel {
             }
         });
 
-        addButton.addActionListener(e -> {
+        addButton.addActionListener(e ->
+        {
             String variableName = JOptionPane.showInputDialog("Enter variable name");
             if (variableName.isEmpty() || variableName == null) return;
 
             Enumeration<TreeNode> enumeration = variableRoot.depthFirstEnumeration();
 
-            while (enumeration.hasMoreElements()) {
+            while (enumeration.hasMoreElements())
+            {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) enumeration.nextElement();
-                if (variableName.equals(node.getUserObject().toString())) {
+                if (variableName.equals(node.getUserObject().toString()))
+                {
                     JOptionPane.showMessageDialog(null,
                             "Variable name already in use", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -482,41 +521,98 @@ public class ControlPanel {
         });
     }
 
-    public void getSelectedNodeAtTree(JTree tree, boolean inCenter) {
+    public void getSelectedNodeAtTree(JTree tree, boolean inCenter)
+    {
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
         if (selectedNode == null) return;
-        switch (selectedNode.getUserObject().toString()) {
-            case "Print" : flowForge.programPanel.addNewNode(new PrintNode("Print", flowForge.programPanel), inCenter); break;
-            case "Branch" : flowForge.programPanel.addNewNode(new BranchNode("Branch", flowForge.programPanel), inCenter); break;
-            case "Equals to" : flowForge.programPanel.addNewNode(new EqualToNode("Equals to", flowForge.programPanel), inCenter); break;
-            case "Greater than" : flowForge.programPanel.addNewNode(new GreaterThanNode("Greater than", flowForge.programPanel), inCenter); break;
-            case "Less than" : flowForge.programPanel.addNewNode(new LessThanNode("Less than", flowForge.programPanel), inCenter); break;
-            case "Greater than or equal to" : flowForge.programPanel.addNewNode(new GreaterThanOrEqualNode("Greater than equal to", flowForge.programPanel), inCenter); break;
-            case "Less than or equal to" : flowForge.programPanel.addNewNode(new LessThanOrEqualNode("Less than equal to", flowForge.programPanel), inCenter); break;
-            case "Not equal to" : flowForge.programPanel.addNewNode(new NotEqualToNode("Not equal to", flowForge.programPanel), inCenter); break;
-            case "NOT" : flowForge.programPanel.addNewNode(new LogicGateNode("NOT", flowForge.programPanel, "NOT"), inCenter); break;
-            case "AND" : flowForge.programPanel.addNewNode(new LogicGateNode("AND", flowForge.programPanel, "AND"), inCenter); break;
-            case "OR" : flowForge.programPanel.addNewNode(new LogicGateNode("OR", flowForge.programPanel, "OR"), inCenter); break;
-            case "NAND" : flowForge.programPanel.addNewNode(new LogicGateNode("NAND", flowForge.programPanel, "NAND"), inCenter); break;
-            case "NOR" : flowForge.programPanel.addNewNode(new LogicGateNode("NOR", flowForge.programPanel, "NOR"), inCenter); break;
-            case "XOR" : flowForge.programPanel.addNewNode(new LogicGateNode("XOR", flowForge.programPanel, "XOR"), inCenter); break;
-            case "Input" : flowForge.programPanel.addNewNode(new InputNode("Input", flowForge.programPanel), inCenter); break;
-            case "Delay" : flowForge.programPanel.addNewNode(new DelayNode("Delay", flowForge.programPanel), inCenter); break;
-            case "Loop" : flowForge.programPanel.addNewNode(new LoopNode("Loop", flowForge.programPanel), inCenter); break;
-            case "Conditional-Loop" : flowForge.programPanel.addNewNode(new ConditionalLoopNode("Conditional Loop", flowForge.programPanel), inCenter); break;
-            case "Add" : flowForge.programPanel.addNewNode(new AddNode("Add", flowForge.programPanel), inCenter); break;
-            case "Subtract" : flowForge.programPanel.addNewNode(new SubtractNode("Subtract", flowForge.programPanel), inCenter); break;
-            case "Multiply" : flowForge.programPanel.addNewNode(new MultiplyNode("Multiply", flowForge.programPanel), inCenter); break;
-            case "Divide" : flowForge.programPanel.addNewNode(new DivideNode("Divide", flowForge.programPanel), inCenter); break;
-            case "Modulus" : flowForge.programPanel.addNewNode(new ModulusNode("Modulus", flowForge.programPanel), inCenter); break;
-            case "Random" : flowForge.programPanel.addNewNode(new RandomNode("Random", flowForge.programPanel), inCenter); break;
-            case "Route" : flowForge.programPanel.addNewNode(new RouteNode("Route", flowForge.programPanel), inCenter); break;
-            case "Recurse" : flowForge.programPanel.addNewNode(new RecursiveNode("Recurse", flowForge.programPanel), inCenter); break;
-            case "Eval" : flowForge.programPanel.addNewNode(new EvalNode("Eval", flowForge.programPanel), inCenter); break;
+        switch (selectedNode.getUserObject().toString())
+        {
+            case "Print":
+                flowForge.programPanel.addNewNode(new PrintNode("Print", flowForge.programPanel), inCenter);
+                break;
+            case "Branch":
+                flowForge.programPanel.addNewNode(new BranchNode("Branch", flowForge.programPanel), inCenter);
+                break;
+            case "Equals to":
+                flowForge.programPanel.addNewNode(new EqualToNode("Equals to", flowForge.programPanel), inCenter);
+                break;
+            case "Greater than":
+                flowForge.programPanel.addNewNode(new GreaterThanNode("Greater than", flowForge.programPanel), inCenter);
+                break;
+            case "Less than":
+                flowForge.programPanel.addNewNode(new LessThanNode("Less than", flowForge.programPanel), inCenter);
+                break;
+            case "Greater than or equal to":
+                flowForge.programPanel.addNewNode(new GreaterThanOrEqualNode("Greater than equal to", flowForge.programPanel), inCenter);
+                break;
+            case "Less than or equal to":
+                flowForge.programPanel.addNewNode(new LessThanOrEqualNode("Less than equal to", flowForge.programPanel), inCenter);
+                break;
+            case "Not equal to":
+                flowForge.programPanel.addNewNode(new NotEqualToNode("Not equal to", flowForge.programPanel), inCenter);
+                break;
+            case "NOT":
+                flowForge.programPanel.addNewNode(new LogicGateNode("NOT", flowForge.programPanel, "NOT"), inCenter);
+                break;
+            case "AND":
+                flowForge.programPanel.addNewNode(new LogicGateNode("AND", flowForge.programPanel, "AND"), inCenter);
+                break;
+            case "OR":
+                flowForge.programPanel.addNewNode(new LogicGateNode("OR", flowForge.programPanel, "OR"), inCenter);
+                break;
+            case "NAND":
+                flowForge.programPanel.addNewNode(new LogicGateNode("NAND", flowForge.programPanel, "NAND"), inCenter);
+                break;
+            case "NOR":
+                flowForge.programPanel.addNewNode(new LogicGateNode("NOR", flowForge.programPanel, "NOR"), inCenter);
+                break;
+            case "XOR":
+                flowForge.programPanel.addNewNode(new LogicGateNode("XOR", flowForge.programPanel, "XOR"), inCenter);
+                break;
+            case "Input":
+                flowForge.programPanel.addNewNode(new InputNode("Input", flowForge.programPanel), inCenter);
+                break;
+            case "Delay":
+                flowForge.programPanel.addNewNode(new DelayNode("Delay", flowForge.programPanel), inCenter);
+                break;
+            case "Loop":
+                flowForge.programPanel.addNewNode(new LoopNode("Loop", flowForge.programPanel), inCenter);
+                break;
+            case "Conditional-Loop":
+                flowForge.programPanel.addNewNode(new ConditionalLoopNode("Conditional Loop", flowForge.programPanel), inCenter);
+                break;
+            case "Add":
+                flowForge.programPanel.addNewNode(new AddNode("Add", flowForge.programPanel), inCenter);
+                break;
+            case "Subtract":
+                flowForge.programPanel.addNewNode(new SubtractNode("Subtract", flowForge.programPanel), inCenter);
+                break;
+            case "Multiply":
+                flowForge.programPanel.addNewNode(new MultiplyNode("Multiply", flowForge.programPanel), inCenter);
+                break;
+            case "Divide":
+                flowForge.programPanel.addNewNode(new DivideNode("Divide", flowForge.programPanel), inCenter);
+                break;
+            case "Modulus":
+                flowForge.programPanel.addNewNode(new ModulusNode("Modulus", flowForge.programPanel), inCenter);
+                break;
+            case "Random":
+                flowForge.programPanel.addNewNode(new RandomNode("Random", flowForge.programPanel), inCenter);
+                break;
+            case "Route":
+                flowForge.programPanel.addNewNode(new RouteNode("Route", flowForge.programPanel), inCenter);
+                break;
+            case "Recurse":
+                flowForge.programPanel.addNewNode(new RecursiveNode("Recurse", flowForge.programPanel), inCenter);
+                break;
+            case "Eval":
+                flowForge.programPanel.addNewNode(new EvalNode("Eval", flowForge.programPanel), inCenter);
+                break;
         }
     }
 
-    public void addComponent() {
+    public void addComponent()
+    {
         root.add(print);
         root.add(branch);
         root.add(input);
@@ -568,42 +664,50 @@ public class ControlPanel {
         arrayTree.expandRow(0);
     }
 
-    public void loadVariables() {
+    public void loadVariables()
+    {
         integerNode.removeAllChildren();
         stringNode.removeAllChildren();
         floatNode.removeAllChildren();
         booleanNode.removeAllChildren();
 
-        for (String key : flowForge.programPanel.integers.keySet()) {
+        for (String key : flowForge.programPanel.integers.keySet())
+        {
             DefaultMutableTreeNode node = new DefaultMutableTreeNode();
             node.setUserObject(key);
             integerNode.add(node);
         }
-        for (String key : flowForge.programPanel.strings.keySet()) {
+        for (String key : flowForge.programPanel.strings.keySet())
+        {
             DefaultMutableTreeNode node = new DefaultMutableTreeNode();
             node.setUserObject(key);
             stringNode.add(node);
         }
-        for (String key : flowForge.programPanel.booleans.keySet()) {
+        for (String key : flowForge.programPanel.booleans.keySet())
+        {
             DefaultMutableTreeNode node = new DefaultMutableTreeNode();
             node.setUserObject(key);
             booleanNode.add(node);
         }
-        for (String key : flowForge.programPanel.floats.keySet()) {
+        for (String key : flowForge.programPanel.floats.keySet())
+        {
             DefaultMutableTreeNode node = new DefaultMutableTreeNode();
             node.setUserObject(key);
             floatNode.add(node);
         }
     }
 
-    public void refreshTree() {
+    public void refreshTree()
+    {
         java.util.Enumeration<javax.swing.tree.TreePath> expanded = variableTree.getExpandedDescendants(new javax.swing.tree.TreePath(root));
 
         DefaultTreeModel model = (DefaultTreeModel) variableTree.getModel();
         model.reload();
 
-        if (expanded != null) {
-            while (expanded.hasMoreElements()) {
+        if (expanded != null)
+        {
+            while (expanded.hasMoreElements())
+            {
                 javax.swing.tree.TreePath treePath = expanded.nextElement();
                 variableTree.expandPath(treePath);
             }
@@ -611,12 +715,14 @@ public class ControlPanel {
         variableTree.expandRow(0);
     }
 
-    public void updateVariableTree() {
+    public void updateVariableTree()
+    {
         loadVariables();
         refreshTree();
     }
 
-    public void updatePropertiesPanel(Node selectedNode) {
+    public void updatePropertiesPanel(Node selectedNode)
+    {
         nodeNameLabel.setText("Node Name : " + selectedNode.getTitle());
         nodeSerialNoLabel.setText("Node ID : " + flowForge.programPanel.nodes.indexOf(selectedNode));
         nodeLocationLabel.setText("Location : " + selectedNode.getX() + ", " + selectedNode.getY());
@@ -628,35 +734,41 @@ public class ControlPanel {
         outputXConnectionLabel.setText(returnIOConnectionList(selectedNode, "OutputX"));
     }
 
-    public String returnIOConnectionList(Node selectedNode, String connectionType) {
+    public String returnIOConnectionList(Node selectedNode, String connectionType)
+    {
         StringBuilder builder = new StringBuilder();
 
         builder.append("[");
-        switch (connectionType) {
-            case "Input" :
+        switch (connectionType)
+        {
+            case "Input":
                 for (Node node : selectedNode.inputNodes) builder.append(node.getTitle()).append(", ");
                 break;
-            case "Output" :
+            case "Output":
                 for (Node node : selectedNode.outputNodes) builder.append(node.getTitle()).append(", ");
                 break;
-            case "InputX" :
+            case "InputX":
                 for (Node node : selectedNode.inputXNodes) builder.append(node.getTitle()).append(", ");
                 break;
-            case "OutputX" :
+            case "OutputX":
                 for (Node node : selectedNode.outputXNodes)
                     builder.append(node.getTitle()).append(", ");
                 break;
         }
-        try {
+        try
+        {
             builder.deleteCharAt(builder.length() - 2);
             builder.append("]");
-        } catch (StringIndexOutOfBoundsException e) {
+        }
+        catch (StringIndexOutOfBoundsException e)
+        {
             return "[]";
         }
         return builder.toString();
     }
 
-    public JPanel getRootPanel() {
+    public JPanel getRootPanel()
+    {
         return rootPanel;
     }
 }

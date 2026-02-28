@@ -7,7 +7,8 @@ import flowforge.ui.panels.ProgramPanel;
 
 import javax.swing.*;
 
-public class ForgeExecutor {
+public class ForgeExecutor
+{
 
     private final FlowForge flowForge;
     private ProgramPanel programPanel;
@@ -17,14 +18,16 @@ public class ForgeExecutor {
     private boolean isExecuting = false;
     private SwingWorker<Void, Void> nodeExecutor;
 
-    public ForgeExecutor(FlowForge flowForge) {
+    public ForgeExecutor(FlowForge flowForge)
+    {
         this.flowForge = flowForge;
         this.programPanel = flowForge.programPanel;
         this.controlPanel = flowForge.controlPanel;
         this.console = flowForge.console;
     }
 
-    public void execute() {
+    public void execute()
+    {
         programPanel.flowForge.console.clear();
         console.print("Program Execution started");
         console.print("Total nodes : " + programPanel.getNodeAmount());
@@ -32,15 +35,19 @@ public class ForgeExecutor {
 
         isExecuting = true;
 
-        nodeExecutor = new SwingWorker<>() {
+        nodeExecutor = new SwingWorker<>()
+        {
             @Override
-            protected Void doInBackground()  {
+            protected Void doInBackground()
+            {
                 isExecuting = true;
                 programPanel.startNode.execute(false);
                 return null;
             }
+
             @Override
-            protected void done() {
+            protected void done()
+            {
                 console.getRootPanel().setVisible(true);
                 console.print("");
                 stopExecution(false);
@@ -50,18 +57,20 @@ public class ForgeExecutor {
         nodeExecutor.execute();
     }
 
-    public void stopExecution(boolean manualStop) {
+    public void stopExecution(boolean manualStop)
+    {
         ControlPanel controlPanel = flowForge.controlPanel;
         Console console = flowForge.console;
 
 
-
-
-        if (!manualStop) {
+        if (!manualStop)
+        {
             controlPanel.runStopButton.setText("▶ Run");
             controlPanel.runStopButton.setBackground(flowForge.theme);
             console.print("Execution completed successfully");
-        } else {
+        }
+        else
+        {
             nodeExecutor.cancel(true);
             console.print("Execution Stopped");
         }
@@ -70,27 +79,34 @@ public class ForgeExecutor {
     }
 
 
-    public boolean getIsExecuting() {
+    public boolean getIsExecuting()
+    {
         return isExecuting;
     }
 
 
-    public void executeByStep() {
+    public void executeByStep()
+    {
         programPanel.flowForge.console.clear();
         console.print("Step Execution started");
         console.print("Total nodes : " + programPanel.getNodeAmount());
         console.print("");
 
-        SwingWorker<Void, Void> nodeStepExecutor = new SwingWorker<>() {
+        SwingWorker<Void, Void> nodeStepExecutor = new SwingWorker<>()
+        {
             @Override
-            protected Void doInBackground()  {
-                synchronized (programPanel.stepExecutorLock) {
+            protected Void doInBackground()
+            {
+                synchronized (programPanel.stepExecutorLock)
+                {
                     programPanel.startNode.execute(true);
                 }
                 return null;
             }
+
             @Override
-            protected void done() {
+            protected void done()
+            {
                 console.print("");
                 console.print("Step Execution completed");
                 console.print("Click on the stop button to exit out of execution mode");

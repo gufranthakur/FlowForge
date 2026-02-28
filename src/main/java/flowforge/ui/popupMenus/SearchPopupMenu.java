@@ -21,7 +21,8 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchPopupMenu extends JPopupMenu {
+public class SearchPopupMenu extends JPopupMenu
+{
 
     private ProgramPanel programPanel;
 
@@ -30,7 +31,8 @@ public class SearchPopupMenu extends JPopupMenu {
     private DefaultMutableTreeNode root;
 
 
-    public SearchPopupMenu(ProgramPanel programPanel) {
+    public SearchPopupMenu(ProgramPanel programPanel)
+    {
         this.programPanel = programPanel;
 
         initList();
@@ -38,7 +40,9 @@ public class SearchPopupMenu extends JPopupMenu {
         initListeners();
         initUI();
     }
-    private void initList() {
+
+    private void initList()
+    {
         nodesList = new ArrayList<>();
         nodesList.add("Print");
         nodesList.add("Branch");
@@ -74,9 +78,11 @@ public class SearchPopupMenu extends JPopupMenu {
     }
 
 
-    private void initTree() {
+    private void initTree()
+    {
         root = new DefaultMutableTreeNode("Results");
-        for (String s : nodesList) {
+        for (String s : nodesList)
+        {
             root.add(new DefaultMutableTreeNode(s));
         }
 
@@ -85,19 +91,25 @@ public class SearchPopupMenu extends JPopupMenu {
 
     }
 
-    private void initListeners() {
-        searchTree.addMouseListener(new MouseAdapter() {
+    private void initListeners()
+    {
+        searchTree.addMouseListener(new MouseAdapter()
+        {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseClicked(MouseEvent e)
+            {
                 super.mouseClicked(e);
                 addNodeThroughSearch();
             }
         });
-        searchTree.addKeyListener(new KeyAdapter() {
+        searchTree.addKeyListener(new KeyAdapter()
+        {
             @Override
-            public void keyPressed(KeyEvent e) {
+            public void keyPressed(KeyEvent e)
+            {
                 super.keyPressed(e);
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER)
+                {
                     addNodeThroughSearch();
                 }
             }
@@ -105,7 +117,8 @@ public class SearchPopupMenu extends JPopupMenu {
 
     }
 
-    private void initUI() {
+    private void initUI()
+    {
         JPanel contentPanel = new JPanel();
         JTextField searchField = new JTextField();
 
@@ -120,19 +133,23 @@ public class SearchPopupMenu extends JPopupMenu {
 
         searchField.setFont(new Font(FlatInterFont.FAMILY, Font.PLAIN, 16));
         searchField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Search...");
-        searchField.getDocument().addDocumentListener(new DocumentListener() {
+        searchField.getDocument().addDocumentListener(new DocumentListener()
+        {
             @Override
-            public void insertUpdate(DocumentEvent e) {
+            public void insertUpdate(DocumentEvent e)
+            {
                 filter(searchField.getText());
             }
 
             @Override
-            public void removeUpdate(DocumentEvent e) {
+            public void removeUpdate(DocumentEvent e)
+            {
                 filter(searchField.getText());
             }
 
             @Override
-            public void changedUpdate(DocumentEvent e) {
+            public void changedUpdate(DocumentEvent e)
+            {
                 filter(searchField.getText());
             }
         });
@@ -151,32 +168,39 @@ public class SearchPopupMenu extends JPopupMenu {
 
         this.add(contentPanel);
 
-        this.addPopupMenuListener(new PopupMenuListener() {
+        this.addPopupMenuListener(new PopupMenuListener()
+        {
             @Override
-            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+            public void popupMenuWillBecomeVisible(PopupMenuEvent e)
+            {
                 // When the popup menu is about to be shown
             }
 
             @Override
-            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+            public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
+            {
                 programPanel.selectedNode.inputButton.setSelected(true);
                 programPanel.selectedNode.outputButton.setSelected(true);
             }
 
             @Override
-            public void popupMenuCanceled(PopupMenuEvent e) {
+            public void popupMenuCanceled(PopupMenuEvent e)
+            {
                 programPanel.selectedNode.inputButton.setSelected(true);
                 programPanel.selectedNode.outputButton.setSelected(true);
             }
         });
     }
 
-    private void filter(String search) {
+    private void filter(String search)
+    {
         search = search.trim().toLowerCase();
 
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Functions");
-        for (String s : nodesList) {
-            if (s.toLowerCase().contains(search) || search.isEmpty()) {
+        for (String s : nodesList)
+        {
+            if (s.toLowerCase().contains(search) || search.isEmpty())
+            {
                 root.add(new DefaultMutableTreeNode(s));
             }
         }
@@ -187,22 +211,30 @@ public class SearchPopupMenu extends JPopupMenu {
         revalidate();
     }
 
-    private void addNodeThroughSearch() {
+    private void addNodeThroughSearch()
+    {
         programPanel.flowForge.controlPanel.getSelectedNodeAtTree(searchTree, false);
         getThis().setVisible(false);
 
 
-        if (programPanel.selectedNode.isBeingConnected) {
-            if (!(programPanel.selectedNode instanceof BranchNode node)) {
+        if (programPanel.selectedNode.isBeingConnected)
+        {
+            if (!(programPanel.selectedNode instanceof BranchNode node))
+            {
                 programPanel.startConnection(programPanel.selectedNode);
                 programPanel.finishConnection(programPanel.nodes.getLast());
 
                 programPanel.selectedNode.outputButton.setSelected(true);
-            } else {
-                if (node.isBeingTrueConnected) {
+            }
+            else
+            {
+                if (node.isBeingTrueConnected)
+                {
                     node.addTrueNode(programPanel.nodes.getLast());
                     node.outputButton.setSelected(true);
-                } else if (node.isBeingFalseConnected) {
+                }
+                else if (node.isBeingFalseConnected)
+                {
                     node.addFalseNode(programPanel.nodes.getLast());
                     node.outputXButton.setSelected(true);
                 }
@@ -212,13 +244,12 @@ public class SearchPopupMenu extends JPopupMenu {
         }
 
 
-
         programPanel.selectedNode = null;
     }
 
 
-
-    private JPopupMenu getThis() {
+    private JPopupMenu getThis()
+    {
         return this;
     }
 

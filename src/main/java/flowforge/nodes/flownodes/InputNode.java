@@ -1,21 +1,21 @@
 package flowforge.nodes.flownodes;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import flowforge.ui.panels.ProgramPanel;
 import flowforge.nodes.Node;
+import flowforge.ui.panels.ProgramPanel;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 
-public class InputNode extends Node {
+public class InputNode extends Node
+{
 
-    private ProgramPanel programPanel;
     public JTextField inputField;
     public String inputValue;
+    private ProgramPanel programPanel;
 
-    public InputNode(String title, ProgramPanel programPanel) {
+    public InputNode(String title, ProgramPanel programPanel)
+    {
         super(title, programPanel);
         this.programPanel = programPanel;
 
@@ -32,17 +32,25 @@ public class InputNode extends Node {
 
 
     @Override
-    public void execute(boolean isStepExecution) {
-        if (isStepExecution) {
-            synchronized (programPanel.stepExecutorLock) {
-                try {
+    public void execute(boolean isStepExecution)
+    {
+        if (isStepExecution)
+        {
+            synchronized (programPanel.stepExecutorLock)
+            {
+                try
+                {
                     programPanel.stepExecutorLock.wait();
-                } catch (InterruptedException e) {
+                }
+                catch (InterruptedException e)
+                {
                     throw new RuntimeException(e);
                 }
             }
-            SwingUtilities.invokeLater(() -> {
-                for (Node node : programPanel.nodes) {
+            SwingUtilities.invokeLater(() ->
+            {
+                for (Node node : programPanel.nodes)
+                {
                     node.restoreBorder();
                 }
                 this.setStepExecutedBorder();
@@ -50,11 +58,13 @@ public class InputNode extends Node {
         }
         inputValue = JOptionPane.showInputDialog(inputField.getText());
 
-        for (Node node : outputXNodes) {
+        for (Node node : outputXNodes)
+        {
             node.execute(isStepExecution);
         }
 
-        for (Node node : outputNodes) {
+        for (Node node : outputNodes)
+        {
             node.execute(isStepExecution);
         }
     }

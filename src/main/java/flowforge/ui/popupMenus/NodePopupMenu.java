@@ -1,47 +1,55 @@
 package flowforge.ui.popupMenus;
 
 import flowforge.nodes.Node;
+import flowforge.nodes.StartNode;
 import flowforge.nodes.flownodes.BranchNode;
 import flowforge.nodes.variables.BooleanNode;
 import flowforge.nodes.variables.IntegerNode;
 import flowforge.nodes.variables.StringNode;
 import flowforge.ui.panels.ProgramPanel;
-import flowforge.nodes.StartNode;
 
 import javax.swing.*;
 
-public class NodePopupMenu extends JPopupMenu {
+public class NodePopupMenu extends JPopupMenu
+{
 
     private ProgramPanel programPanel;
 
     private JMenuItem deleteNode, resetConnections, resize, highlight, comment;
 
-    public NodePopupMenu(ProgramPanel programPanel) {
+    public NodePopupMenu(ProgramPanel programPanel)
+    {
         this.programPanel = programPanel;
 
         initUI();
     }
 
-    private void initUI() {
+    private void initUI()
+    {
         resize = new JMenuItem("Resize");
         highlight = new JMenuItem("Highlight");
         comment = new JMenuItem("Add Comment");
         resetConnections = new JMenuItem("Disconnect");
         deleteNode = new JMenuItem("Delete");
 
-        resize.addActionListener(e -> {
+        resize.addActionListener(e ->
+        {
 
             Node node = programPanel.selectedNode;
 
-            if (!node.isMinimized) {
+            if (!node.isMinimized)
+            {
                 node.setSize(150, 40);
                 node.isMinimized = true;
                 node.contentPanel.setVisible(false);
-            } else {
+            }
+            else
+            {
                 if (node instanceof StringNode
                         || node instanceof IntegerNode
                         || node instanceof BooleanNode
-                        || node instanceof BranchNode) {
+                        || node instanceof BranchNode)
+                {
                     node.setSize(210, 90);
                     node.isMinimized = false;
                     node.contentPanel.setVisible(true);
@@ -55,20 +63,28 @@ public class NodePopupMenu extends JPopupMenu {
 
         });
 
-        highlight.addActionListener(e -> {
-             if (programPanel.selectedNode.isHighlighted) {
-                 programPanel.selectedNode.isHighlighted = false;
-             } else {
-                 programPanel.selectedNode.isHighlighted = true;
-             }
-             programPanel.selectedNode.restoreBorder();
+        highlight.addActionListener(e ->
+        {
+            if (programPanel.selectedNode.isHighlighted)
+            {
+                programPanel.selectedNode.isHighlighted = false;
+            }
+            else
+            {
+                programPanel.selectedNode.isHighlighted = true;
+            }
+            programPanel.selectedNode.restoreBorder();
         });
 
-        comment.addActionListener(e -> {
-            if (programPanel.selectedNode.isCommented) {
+        comment.addActionListener(e ->
+        {
+            if (programPanel.selectedNode.isCommented)
+            {
                 programPanel.selectedNode.isCommented = false;
                 programPanel.selectedNode.setToolTipText(null);
-            } else {
+            }
+            else
+            {
 
                 JTextArea textArea = new JTextArea(10, 30);
                 textArea.setLineWrap(true);
@@ -86,7 +102,8 @@ public class NodePopupMenu extends JPopupMenu {
                         JOptionPane.PLAIN_MESSAGE
                 );
 
-                if (result == JOptionPane.OK_OPTION) {
+                if (result == JOptionPane.OK_OPTION)
+                {
                     String input = textArea.getText();
                     programPanel.selectedNode.setToolTipText(input);
                     programPanel.selectedNode.comment = input;
@@ -94,13 +111,14 @@ public class NodePopupMenu extends JPopupMenu {
                 }
 
 
-
             }
         });
 
         resetConnections.addActionListener(e -> programPanel.selectedNode.disconnectAll());
-        deleteNode.addActionListener(e ->  {
-            if (programPanel.selectedNode instanceof StartNode) {
+        deleteNode.addActionListener(e ->
+        {
+            if (programPanel.selectedNode instanceof StartNode)
+            {
                 JOptionPane.showMessageDialog(null, "Start Node cannot be deleted",
                         "Error", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -119,7 +137,8 @@ public class NodePopupMenu extends JPopupMenu {
     }
 
 
-    public void display(Node node, int x, int y, boolean isMinimized, boolean isHighlighted, boolean isCommented) {
+    public void display(Node node, int x, int y, boolean isMinimized, boolean isHighlighted, boolean isCommented)
+    {
         this.show(node, x, y);
 
         if (isMinimized) resize.setText("Maximise");

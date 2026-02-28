@@ -3,15 +3,15 @@ package flowforge.nodes;
 import flowforge.ui.panels.ProgramPanel;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 
-public class StartNode extends Node{
+public class StartNode extends Node
+{
 
-    private ProgramPanel programPanel;
+    private final ProgramPanel programPanel;
 
-    public StartNode(String title, ProgramPanel programPanel) {
+    public StartNode(String title, ProgramPanel programPanel)
+    {
         super(title, programPanel);
         this.setClosable(false);
         this.setResizable(false);
@@ -29,22 +29,31 @@ public class StartNode extends Node{
         this.setLocation(20, 300);
     }
 
-    public void print(String message) {
+    public void print(String message)
+    {
         programPanel.flowForge.console.print(message);
     }
 
     @Override
-    public void execute(boolean isStepExecution) {
-        if (isStepExecution) {
-            synchronized (programPanel.stepExecutorLock) {
-                try {
+    public void execute(boolean isStepExecution)
+    {
+        if (isStepExecution)
+        {
+            synchronized (programPanel.stepExecutorLock)
+            {
+                try
+                {
                     programPanel.stepExecutorLock.wait();
-                } catch (InterruptedException e) {
+                }
+                catch (InterruptedException e)
+                {
                     throw new RuntimeException(e);
                 }
             }
-            SwingUtilities.invokeLater(() -> {
-                for (Node node : programPanel.nodes) {
+            SwingUtilities.invokeLater(() ->
+            {
+                for (Node node : programPanel.nodes)
+                {
                     node.restoreBorder();
                 }
                 this.setStepExecutedBorder();

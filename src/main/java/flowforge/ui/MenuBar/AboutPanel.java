@@ -1,10 +1,12 @@
 package flowforge.ui.MenuBar;
 
 import flowforge.FlowForge;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class AboutPanel {
+public class AboutPanel
+{
     private JPanel rootPanel;
     private JPanel mainPanel;
     private JTextPane aboutTextPane;
@@ -15,7 +17,8 @@ public class AboutPanel {
     private JButton confirmButton;
     private FlowForge flowForge;
 
-    public AboutPanel(FlowForge flowForge) {
+    public AboutPanel(FlowForge flowForge)
+    {
         this.flowForge = flowForge;
 
         // Initialize the GUI components
@@ -26,7 +29,8 @@ public class AboutPanel {
         scrollPane.getVerticalScrollBar().setUnitIncrement(14);
     }
 
-    private void initializeComponents() {
+    private void initializeComponents()
+    {
         // Create root panel
         rootPanel = new JPanel();
         rootPanel.setLayout(new GridBagLayout());
@@ -195,7 +199,8 @@ public class AboutPanel {
         mainPanel.add(Box.createHorizontalGlue(), mainGbc);
     }
 
-    private void setupLayout() {
+    private void setupLayout()
+    {
         GridBagConstraints rootGbc = new GridBagConstraints();
 
         // Add title label to root panel
@@ -204,7 +209,8 @@ public class AboutPanel {
         rootGbc.gridwidth = 3;
         rootGbc.anchor = GridBagConstraints.CENTER;
         rootGbc.insets = new Insets(0, 0, 10, 0);
-        rootPanel.add(new JLabel("About FlowForge") {{
+        rootPanel.add(new JLabel("About FlowForge")
+        {{
             setFont(new Font(Font.SANS_SERIF, Font.BOLD, 28));
             setHorizontalAlignment(SwingConstants.CENTER);
         }}, rootGbc);
@@ -241,8 +247,10 @@ public class AboutPanel {
         rootPanel.add(Box.createHorizontalGlue(), rootGbc);
     }
 
-    private void setupEventHandlers() {
-        confirmButton.addActionListener(e -> {
+    private void setupEventHandlers()
+    {
+        confirmButton.addActionListener(e ->
+        {
             flowForge.remove(this.getRootPanel());
             flowForge.add(flowForge.startPanel, BorderLayout.CENTER);
             flowForge.menuBar.aboutPanelVisible = false;
@@ -251,7 +259,8 @@ public class AboutPanel {
         });
     }
 
-    public JPanel getRootPanel() {
+    public JPanel getRootPanel()
+    {
         return rootPanel;
     }
 }

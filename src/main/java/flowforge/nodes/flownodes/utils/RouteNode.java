@@ -1,18 +1,17 @@
 package flowforge.nodes.flownodes.utils;
 
-import flowforge.ui.panels.ProgramPanel;
 import flowforge.nodes.Node;
+import flowforge.ui.panels.ProgramPanel;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-import java.awt.*;
 
-public class RouteNode extends Node {
+public class RouteNode extends Node
+{
 
     private ProgramPanel programPanel;
 
-    public RouteNode(String title, ProgramPanel programPanel) {
+    public RouteNode(String title, ProgramPanel programPanel)
+    {
         super(title, programPanel);
         this.programPanel = programPanel;
 
@@ -25,25 +24,34 @@ public class RouteNode extends Node {
     }
 
     @Override
-    public void execute(boolean isStepExecution) {
+    public void execute(boolean isStepExecution)
+    {
 
-        if (isStepExecution) {
-            synchronized (programPanel.stepExecutorLock) {
-                try {
+        if (isStepExecution)
+        {
+            synchronized (programPanel.stepExecutorLock)
+            {
+                try
+                {
                     programPanel.stepExecutorLock.wait();
-                } catch (InterruptedException e) {
+                }
+                catch (InterruptedException e)
+                {
                     throw new RuntimeException(e);
                 }
             }
-            SwingUtilities.invokeLater(() -> {
-                for (Node node : programPanel.nodes) {
+            SwingUtilities.invokeLater(() ->
+            {
+                for (Node node : programPanel.nodes)
+                {
                     node.restoreBorder();
                 }
                 this.setStepExecutedBorder();
             });
         }
 
-        for (Node node : outputNodes) {
+        for (Node node : outputNodes)
+        {
             node.execute(isStepExecution);
         }
     }

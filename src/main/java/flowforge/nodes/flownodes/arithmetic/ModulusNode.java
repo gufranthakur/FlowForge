@@ -1,22 +1,21 @@
 package flowforge.nodes.flownodes.arithmetic;
 
-import flowforge.nodes.variables.FloatNode;
-import flowforge.ui.panels.ProgramPanel;
 import flowforge.nodes.Node;
 import flowforge.nodes.flownodes.PrintNode;
+import flowforge.nodes.variables.FloatNode;
 import flowforge.nodes.variables.IntegerNode;
+import flowforge.ui.panels.ProgramPanel;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-import java.awt.*;
 
-public class ModulusNode extends Node {
+public class ModulusNode extends Node
+{
 
     private ProgramPanel programPanel;
     private float result;
 
-    public ModulusNode(String title, ProgramPanel programPanel) {
+    public ModulusNode(String title, ProgramPanel programPanel)
+    {
         super(title, programPanel);
         this.programPanel = programPanel;
 
@@ -26,26 +25,36 @@ public class ModulusNode extends Node {
         outputXButton.setText("Remainder");
     }
 
-    public float getResult() {
+    public float getResult()
+    {
         return result;
     }
 
-    public void setResult(float result) {
+    public void setResult(float result)
+    {
         this.result = result;
     }
 
     @Override
-    public void execute(boolean isStepExecution) {
-        if (isStepExecution) {
-            synchronized (programPanel.stepExecutorLock) {
-                try {
+    public void execute(boolean isStepExecution)
+    {
+        if (isStepExecution)
+        {
+            synchronized (programPanel.stepExecutorLock)
+            {
+                try
+                {
                     programPanel.stepExecutorLock.wait();
-                } catch (InterruptedException e) {
+                }
+                catch (InterruptedException e)
+                {
                     throw new RuntimeException(e);
                 }
             }
-            SwingUtilities.invokeLater(() -> {
-                for (Node node : programPanel.nodes) {
+            SwingUtilities.invokeLater(() ->
+            {
+                for (Node node : programPanel.nodes)
+                {
                     node.restoreBorder();
                 }
                 this.setStepExecutedBorder();
@@ -61,37 +70,52 @@ public class ModulusNode extends Node {
         Node secondNode = inputXNodes.get(1);
 
         // Handle all combinations of Integer and Float nodes
-        if (firstNode instanceof IntegerNode && secondNode instanceof IntegerNode) {
+        if (firstNode instanceof IntegerNode && secondNode instanceof IntegerNode)
+        {
             dividend = Float.valueOf(((IntegerNode) firstNode).getValue());
             divisor = Float.valueOf(((IntegerNode) secondNode).getValue());
-        } else if (firstNode instanceof FloatNode && secondNode instanceof FloatNode) {
+        }
+        else if (firstNode instanceof FloatNode && secondNode instanceof FloatNode)
+        {
             dividend = ((FloatNode) firstNode).getValue();
             divisor = ((FloatNode) secondNode).getValue();
-        } else if (firstNode instanceof IntegerNode && secondNode instanceof FloatNode) {
+        }
+        else if (firstNode instanceof IntegerNode && secondNode instanceof FloatNode)
+        {
             dividend = Float.valueOf(((IntegerNode) firstNode).getValue());
             divisor = ((FloatNode) secondNode).getValue();
-        } else if (firstNode instanceof FloatNode && secondNode instanceof IntegerNode) {
+        }
+        else if (firstNode instanceof FloatNode && secondNode instanceof IntegerNode)
+        {
             dividend = ((FloatNode) firstNode).getValue();
             divisor = Float.valueOf(((IntegerNode) secondNode).getValue());
         }
 
-        if (dividend != null && divisor != null) {
-            if (divisor == 0.0f) {
+        if (dividend != null && divisor != null)
+        {
+            if (divisor == 0.0f)
+            {
                 result = Float.NaN;
                 System.err.println("Warning: Modulus by zero in ModulusNode");
-            } else {
+            }
+            else
+            {
                 result = dividend % divisor;
             }
-        } else {
+        }
+        else
+        {
             result = 0.0f;
             System.err.println("Warning: Invalid input types for ModulusNode");
         }
 
-        for (Node node : outputXNodes) {
+        for (Node node : outputXNodes)
+        {
             if (node != null && !(node instanceof PrintNode)) node.execute(isStepExecution);
         }
 
-        for (Node node : outputNodes) {
+        for (Node node : outputNodes)
+        {
             if (node != null) node.execute(isStepExecution);
         }
     }

@@ -9,37 +9,27 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Path2D;
 import java.util.ArrayList;
 
-public abstract class Node extends JPanel {
-    private ProgramPanel programPanel;
-
+public abstract class Node extends JPanel
+{
     public ArrayList<Node> inputNodes = new ArrayList<>();
     public ArrayList<Node> outputNodes = new ArrayList<>();
     public ArrayList<Node> inputXNodes = new ArrayList<>();
     public ArrayList<Node> outputXNodes = new ArrayList<>();
-
     public JRadioButton inputButton;
     public JRadioButton outputButton;
     public JRadioButton inputXButton;
     public JRadioButton outputXButton;
-
     public JPanel contentPanel;
     public JPanel topPanel;
     public JPanel outputsPanel;
     public JPanel inputsPanel;
-
-    private int nodeX;
-    private int nodeY;
-    private int nodeWidth;
-    private int nodeHeight;
-
-    // Dragging variables
-    private Point dragStart;
-    private boolean isDragging = false;
-
     public boolean isBeingConnected = false;
     public boolean isBeingXConnected = false;
     public boolean isMinimized = false;
@@ -47,30 +37,39 @@ public abstract class Node extends JPanel {
     public boolean isCommented = false;
     public boolean isNodeDuringStepExecution;
     public String comment;
-
-
     public Color nodeTheme;
     public Color stepExecutionNodeTheme;
     public Color connectionColor = Color.WHITE;
     public Color connectionColor2 = Color.WHITE;
     public Color connectionXColor = new Color(237, 121, 66);
     public Color connectionXColor2 = new Color(220, 197, 56);
-
     public String nodeType;
     public String title;
+    private ProgramPanel programPanel;
+    private int nodeX;
+    private int nodeY;
+    private int nodeWidth;
+    private int nodeHeight;
+    // Dragging variables
+    private Point dragStart;
+    private boolean isDragging = false;
 
-    public Node(String title, ProgramPanel programPanel) {
+    public Node(String title, ProgramPanel programPanel)
+    {
         this.title = title;
         this.programPanel = programPanel;
 
         // Mouse listeners for selection, right-click menu, and dragging
-        this.addMouseListener(new MouseAdapter() {
+        this.addMouseListener(new MouseAdapter()
+        {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseClicked(MouseEvent e)
+            {
                 super.mouseClicked(e);
                 programPanel.selectedNode = Node.this;
                 programPanel.flowForge.controlPanel.updatePropertiesPanel(Node.this);
-                if (SwingUtilities.isRightMouseButton(e)) {
+                if (SwingUtilities.isRightMouseButton(e))
+                {
                     programPanel.nodePopupMenu.display(Node.this,
                             e.getX() + 10, e.getY() + 10,
                             isMinimized, isHighlighted, isCommented);
@@ -78,8 +77,10 @@ public abstract class Node extends JPanel {
             }
 
             @Override
-            public void mousePressed(MouseEvent e) {
-                if (SwingUtilities.isLeftMouseButton(e)) {
+            public void mousePressed(MouseEvent e)
+            {
+                if (SwingUtilities.isLeftMouseButton(e))
+                {
                     dragStart = e.getPoint();
                     isDragging = true;
                     programPanel.selectedNode = Node.this;
@@ -88,16 +89,20 @@ public abstract class Node extends JPanel {
             }
 
             @Override
-            public void mouseReleased(MouseEvent e) {
+            public void mouseReleased(MouseEvent e)
+            {
                 isDragging = false;
                 dragStart = null;
             }
         });
 
-        this.addMouseMotionListener(new MouseAdapter() {
+        this.addMouseMotionListener(new MouseAdapter()
+        {
             @Override
-            public void mouseDragged(MouseEvent e) {
-                if (isDragging && dragStart != null) {
+            public void mouseDragged(MouseEvent e)
+            {
+                if (isDragging && dragStart != null)
+                {
                     int gridSize = 30; // Adjust this value as needed
 
                     Point current = e.getPoint();
@@ -106,7 +111,8 @@ public abstract class Node extends JPanel {
                     int newX = parentLocation.x + current.x - dragStart.x;
                     int newY = parentLocation.y + current.y - dragStart.y;
 
-                    if (programPanel.snapToGrid) {
+                    if (programPanel.snapToGrid)
+                    {
                         newX = (newX / gridSize) * gridSize;
                         newY = (newY / gridSize) * gridSize;
                     }
@@ -117,11 +123,14 @@ public abstract class Node extends JPanel {
             }
         });
 
-        this.addKeyListener(new KeyAdapter() {
+        this.addKeyListener(new KeyAdapter()
+        {
             @Override
-            public void keyPressed(KeyEvent e) {
+            public void keyPressed(KeyEvent e)
+            {
                 super.keyPressed(e);
-                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
+                {
                     programPanel.selectedNode = null;
                 }
             }
@@ -134,7 +143,8 @@ public abstract class Node extends JPanel {
         loadActionListeners();
     }
 
-    private void loadUI() {
+    private void loadUI()
+    {
         setLocation(300, 300);
         setSize(210, 150);
         setLayout(new BorderLayout());
@@ -193,28 +203,33 @@ public abstract class Node extends JPanel {
         revalidate();
     }
 
-    public void styleRadioButton(JRadioButton button, boolean isXConnection) {
+    public void styleRadioButton(JRadioButton button, boolean isXConnection)
+    {
         button.setFocusable(false);
         button.setOpaque(false);
         button.setForeground(Color.WHITE);
         button.setFont(button.getFont().deriveFont(14f));
 
-        if (isXConnection) {
+        if (isXConnection)
+        {
             button.putClientProperty(FlatClientProperties.STYLE,
                     "icon.selectedBackground: rgb(229,117,42);");
         }
     }
 
 
-    private void loadActionListeners() {
-        inputButton.addActionListener(e -> {
+    private void loadActionListeners()
+    {
+        inputButton.addActionListener(e ->
+        {
             programPanel.selectedNode = Node.this;
 
             for (Node node : programPanel.nodes) node.isBeingConnected = false;
 
             programPanel.flowForge.controlPanel.updatePropertiesPanel(Node.this);
 
-            for (Node node : programPanel.nodes) {
+            for (Node node : programPanel.nodes)
+            {
                 node.inputXButton.setEnabled(true);
                 node.outputXButton.setEnabled(true);
             }
@@ -223,14 +238,16 @@ public abstract class Node extends JPanel {
 
         });
 
-        outputButton.addActionListener(e -> {
+        outputButton.addActionListener(e ->
+        {
             isBeingConnected = true;
             isBeingXConnected = false;
 
             programPanel.selectedNode = Node.this;
             programPanel.flowForge.controlPanel.updatePropertiesPanel(Node.this);
 
-            for (Node node : programPanel.nodes) {
+            for (Node node : programPanel.nodes)
+            {
                 node.inputXButton.setEnabled(false);
                 node.outputXButton.setEnabled(false);
             }
@@ -239,13 +256,15 @@ public abstract class Node extends JPanel {
 
         });
 
-        inputXButton.addActionListener(e -> {
+        inputXButton.addActionListener(e ->
+        {
             programPanel.selectedNode = Node.this;
             programPanel.flowForge.controlPanel.updatePropertiesPanel(Node.this);
 
             for (Node node : programPanel.nodes) node.isBeingXConnected = false;
 
-            for (Node node : programPanel.nodes) {
+            for (Node node : programPanel.nodes)
+            {
                 node.inputButton.setEnabled(true);
                 node.outputButton.setEnabled(true);
             }
@@ -254,15 +273,18 @@ public abstract class Node extends JPanel {
 
         });
 
-        if (!(Node.this instanceof BranchNode)) {
-            outputXButton.addActionListener(e -> {
+        if (!(Node.this instanceof BranchNode))
+        {
+            outputXButton.addActionListener(e ->
+            {
                 isBeingConnected = false;
                 isBeingXConnected = true;
 
                 programPanel.selectedNode = Node.this;
                 programPanel.flowForge.controlPanel.updatePropertiesPanel(Node.this);
 
-                for (Node node : programPanel.nodes) {
+                for (Node node : programPanel.nodes)
+                {
                     node.inputButton.setEnabled(false);
                     node.outputButton.setEnabled(false);
                 }
@@ -274,35 +296,42 @@ public abstract class Node extends JPanel {
 
     }
 
-    public void connectTo(Node target) {
+    public void connectTo(Node target)
+    {
         this.outputNodes.add(target);
         target.inputNodes.add(this);
         programPanel.repaint();
     }
 
-    public void connectToX(Node target) {
+    public void connectToX(Node target)
+    {
         this.outputXNodes.add(target);
         target.inputXNodes.add(this);
         programPanel.repaint();
     }
 
-    public void drawConnection(Graphics2D g) {
-        for (Node output : outputNodes) {
+    public void drawConnection(Graphics2D g)
+    {
+        for (Node output : outputNodes)
+        {
             Point start = getOutputPoint();
             Point end = output.getInputPoint();
             drawCurvedGradientLine(g, start, end, connectionColor, connectionColor2);
         }
     }
 
-    public void drawXConnection(Graphics2D g) {
-        for (Node output : outputXNodes) {
+    public void drawXConnection(Graphics2D g)
+    {
+        for (Node output : outputXNodes)
+        {
             Point start = getOutputXPoint();
             Point end = output.getInputXPoint();
             drawCurvedGradientLine(g, start, end, connectionXColor, connectionXColor2);
         }
     }
 
-    public void drawCurvedGradientLine(Graphics2D g, Point start, Point end, Color startColor, Color endColor) {
+    public void drawCurvedGradientLine(Graphics2D g, Point start, Point end, Color startColor, Color endColor)
+    {
         int dx = end.x - start.x;
 
         int ctrlX1, ctrlY1, ctrlX2, ctrlY2;
@@ -332,19 +361,24 @@ public abstract class Node extends JPanel {
         g.setStroke(originalStroke);
     }
 
-    public void disconnectAll() {
-        for (Node input : inputNodes) {
+    public void disconnectAll()
+    {
+        for (Node input : inputNodes)
+        {
             input.outputNodes.remove(this);
         }
-        for (Node output : outputNodes) {
+        for (Node output : outputNodes)
+        {
             output.inputNodes.remove(this);
         }
 
-        for (Node input : inputXNodes) {
+        for (Node input : inputXNodes)
+        {
             input.outputXNodes.remove(this);
         }
 
-        for (Node output : outputXNodes) {
+        for (Node output : outputXNodes)
+        {
             output.inputXNodes.remove(this);
         }
 
@@ -359,25 +393,31 @@ public abstract class Node extends JPanel {
         outputXButton.setSelected(false);
     }
 
-    private void updateNodeDimensions() {
+    private void updateNodeDimensions()
+    {
         nodeX = getX();
         nodeY = getY();
         nodeWidth = getWidth();
         nodeHeight = getHeight();
     }
 
-    public void restoreDimensions(boolean isMinimized, int x, int y) {
+    public void restoreDimensions(boolean isMinimized, int x, int y)
+    {
         setLocation(x, y);
 
-        if (isMinimized) {
+        if (isMinimized)
+        {
             setSize(150, 40);
-        } else {
+        }
+        else
+        {
             setSize(200, 150);
         }
         updateNodeDimensions();
     }
 
-    public void restoreBorder() {
+    public void restoreBorder()
+    {
         Border coloredBorder;
         isNodeDuringStepExecution = false;
 
@@ -394,7 +434,8 @@ public abstract class Node extends JPanel {
     }
 
 
-    public void setStepExecutedBorder() {
+    public void setStepExecutedBorder()
+    {
         isNodeDuringStepExecution = true;
 
         Border coloredBorder = BorderFactory.createLineBorder(stepExecutionNodeTheme, 2);
@@ -408,27 +449,34 @@ public abstract class Node extends JPanel {
     }
 
     @Override
-    public void paintComponent(Graphics g) {
+    public void paintComponent(Graphics g)
+    {
         super.paintComponent(g);
         Graphics2D g2D = (Graphics2D) g;
 
-        if (isNodeDuringStepExecution) {
+        if (isNodeDuringStepExecution)
+        {
             GradientPaint gradientPaint = new GradientPaint(
                     0, 0,
                     stepExecutionNodeTheme,
                     getWidth() - 50, 80,
                     getBackground());
             g2D.setPaint(gradientPaint);
-        } else {
+        }
+        else
+        {
 
-            if (this instanceof BranchNode node) {
+            if (this instanceof BranchNode node)
+            {
                 GradientPaint gradientPaint = new GradientPaint(
                         0, 0,
                         node.trueConnectionColor.darker().darker(),
                         getWidth() - 50, 80,
                         node.falseConnectionColor2.darker().darker());
                 g2D.setPaint(gradientPaint);
-            } else {
+            }
+            else
+            {
                 GradientPaint gradientPaint = new GradientPaint(
                         0, 0,
                         nodeTheme,
@@ -443,46 +491,74 @@ public abstract class Node extends JPanel {
     }
 
     // Getters
-    public String getTitle() { return title; }
-    public int getNodeX() { return nodeX; }
-    public int getNodeY() { return nodeY; }
-    public int getNodeWidth() { return nodeWidth; }
-    public int getNodeHeight() { return nodeHeight; }
+    public String getTitle()
+    {
+        return title;
+    }
 
-    public Point getInputPoint() {
+    public void setTitle(String s)
+    {
+        this.title = s;
+    }
+
+    public int getNodeX()
+    {
+        return nodeX;
+    }
+
+    public int getNodeY()
+    {
+        return nodeY;
+    }
+
+    public int getNodeWidth()
+    {
+        return nodeWidth;
+    }
+
+    public int getNodeHeight()
+    {
+        return nodeHeight;
+    }
+
+    public Point getInputPoint()
+    {
         if (isMinimized) return new Point(getX(), getY() + 10);
         return new Point(getX(), getY() + getHeight() / 2 + 15);
     }
 
-    public Point getOutputPoint() {
+    public Point getOutputPoint()
+    {
         if (isMinimized) return new Point(getX() + getWidth(), getY() + 10);
-        return new Point(getX() + getWidth(), getY() + getHeight()/2 + 15);
+        return new Point(getX() + getWidth(), getY() + getHeight() / 2 + 15);
     }
 
-    public Point getInputXPoint() {
+    public Point getInputXPoint()
+    {
         if (isMinimized) return new Point(getX(), getY() + 25);
-        return new Point(getX(), getY() + getHeight()/2 + 30);
-    }
-
-    public Point getOutputXPoint() {
-        if (isMinimized) return new Point(getX() + getWidth(), getY() + 25);
-        return new Point(getX() + getWidth(), getY() + getHeight() / 2 + 30);
+        return new Point(getX(), getY() + getHeight() / 2 + 30);
     }
 
     public abstract void execute(boolean isStepExecution);
 
-    public void setClosable(boolean b) {
+    public Point getOutputXPoint()
+    {
+        if (isMinimized) return new Point(getX() + getWidth(), getY() + 25);
+        return new Point(getX() + getWidth(), getY() + getHeight() / 2 + 30);
+    }
+
+    public void setClosable(boolean b)
+    {
 
     }
 
-    public void setResizable(boolean b) {
+    public void setResizable(boolean b)
+    {
 
     }
-    public void pack() {
 
-    }
+    public void pack()
+    {
 
-    public void setTitle(String s) {
-        this.title = s;
     }
 }

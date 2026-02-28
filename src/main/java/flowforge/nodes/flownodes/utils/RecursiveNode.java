@@ -1,17 +1,16 @@
 package flowforge.nodes.flownodes.utils;
 
-import flowforge.ui.panels.ProgramPanel;
 import flowforge.nodes.Node;
+import flowforge.ui.panels.ProgramPanel;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-import java.awt.*;
 
-public class RecursiveNode extends Node {
+public class RecursiveNode extends Node
+{
     private ProgramPanel programPanel;
 
-    public RecursiveNode(String title, ProgramPanel programPanel) {
+    public RecursiveNode(String title, ProgramPanel programPanel)
+    {
         super(title, programPanel);
         this.programPanel = programPanel;
 
@@ -25,17 +24,25 @@ public class RecursiveNode extends Node {
 
 
     @Override
-    public void execute(boolean isStepExecution) {
-        if (isStepExecution) {
-            synchronized (programPanel.stepExecutorLock) {
-                try {
+    public void execute(boolean isStepExecution)
+    {
+        if (isStepExecution)
+        {
+            synchronized (programPanel.stepExecutorLock)
+            {
+                try
+                {
                     programPanel.stepExecutorLock.wait();
-                } catch (InterruptedException e) {
+                }
+                catch (InterruptedException e)
+                {
                     throw new RuntimeException(e);
                 }
             }
-            SwingUtilities.invokeLater(() -> {
-                for (Node node : programPanel.nodes) {
+            SwingUtilities.invokeLater(() ->
+            {
+                for (Node node : programPanel.nodes)
+                {
                     node.restoreBorder();
                 }
                 this.setStepExecutedBorder();
@@ -43,15 +50,20 @@ public class RecursiveNode extends Node {
         }
 
 
-        synchronized (programPanel.stepExecutorLock) {
-            try {
+        synchronized (programPanel.stepExecutorLock)
+        {
+            try
+            {
                 programPanel.stepExecutorLock.wait(200);
-            } catch (InterruptedException e) {
+            }
+            catch (InterruptedException e)
+            {
                 throw new RuntimeException(e);
             }
         }
 
-        for (Node node : outputNodes) {
+        for (Node node : outputNodes)
+        {
             if (node != null) node.execute(isStepExecution);
         }
     }

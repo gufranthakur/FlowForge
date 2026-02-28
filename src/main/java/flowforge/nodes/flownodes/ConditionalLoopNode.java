@@ -1,19 +1,19 @@
 package flowforge.nodes.flownodes;
 
-import flowforge.ui.panels.ProgramPanel;
 import flowforge.nodes.Node;
 import flowforge.nodes.variables.BooleanNode;
+import flowforge.ui.panels.ProgramPanel;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 
-public class ConditionalLoopNode extends Node {
+public class ConditionalLoopNode extends Node
+{
     private ProgramPanel programPanel;
     private int iteration;
 
-    public ConditionalLoopNode(String title, ProgramPanel programPanel) {
+    public ConditionalLoopNode(String title, ProgramPanel programPanel)
+    {
         super(title, programPanel);
         this.programPanel = programPanel;
 
@@ -29,17 +29,25 @@ public class ConditionalLoopNode extends Node {
     }
 
     @Override
-    public void execute(boolean isStepExecution) {
-        if (isStepExecution) {
-            synchronized (programPanel.stepExecutorLock) {
-                try {
+    public void execute(boolean isStepExecution)
+    {
+        if (isStepExecution)
+        {
+            synchronized (programPanel.stepExecutorLock)
+            {
+                try
+                {
                     programPanel.stepExecutorLock.wait();
-                } catch (InterruptedException e) {
+                }
+                catch (InterruptedException e)
+                {
                     throw new RuntimeException(e);
                 }
             }
-            SwingUtilities.invokeLater(() -> {
-                for (Node node : programPanel.nodes) {
+            SwingUtilities.invokeLater(() ->
+            {
+                for (Node node : programPanel.nodes)
+                {
                     node.restoreBorder();
                 }
                 this.setStepExecutedBorder();
@@ -49,10 +57,14 @@ public class ConditionalLoopNode extends Node {
 
 
         Node node = inputXNodes.get(0);
-        if (node instanceof BooleanNode boolNode) {
-            while (boolNode.getValue()) {
-                for (Node outputNode : outputNodes) {
-                    if (outputNode != null) {
+        if (node instanceof BooleanNode boolNode)
+        {
+            while (boolNode.getValue())
+            {
+                for (Node outputNode : outputNodes)
+                {
+                    if (outputNode != null)
+                    {
                         outputNode.execute(isStepExecution);
                     }
                 }

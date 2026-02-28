@@ -1,20 +1,20 @@
 package flowforge.nodes.variables;
 
-import flowforge.ui.panels.ProgramPanel;
 import flowforge.nodes.Node;
 import flowforge.nodes.flownodes.InputNode;
 import flowforge.nodes.flownodes.arithmetic.*;
+import flowforge.ui.panels.ProgramPanel;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 
-public class IntegerNode extends Node {
-    private ProgramPanel programPanel;
+public class IntegerNode extends Node
+{
     public JSpinner spinner;
+    private ProgramPanel programPanel;
 
-    public IntegerNode(String title, ProgramPanel programPanel, Integer intValue) {
+    public IntegerNode(String title, ProgramPanel programPanel, Integer intValue)
+    {
         super(title, programPanel);
         this.programPanel = programPanel;
         this.setSize(210, 90);
@@ -35,25 +35,36 @@ public class IntegerNode extends Node {
     }
 
     @Override
-    public void execute(boolean isStepExecution) {
-        if (isStepExecution) {
-            synchronized (programPanel.stepExecutorLock) {
-                try {
+    public void execute(boolean isStepExecution)
+    {
+        if (isStepExecution)
+        {
+            synchronized (programPanel.stepExecutorLock)
+            {
+                try
+                {
                     programPanel.stepExecutorLock.wait();
-                } catch (InterruptedException e) {
+                }
+                catch (InterruptedException e)
+                {
                     throw new RuntimeException(e);
                 }
             }
-            SwingUtilities.invokeLater(() -> {
-                for (Node node : programPanel.nodes) {
+            SwingUtilities.invokeLater(() ->
+            {
+                for (Node node : programPanel.nodes)
+                {
                     node.restoreBorder();
                 }
                 this.setStepExecutedBorder();
             });
         }
-        for (Node node : inputXNodes) {
-            if (node != null) {
-                switch (node) {
+        for (Node node : inputXNodes)
+        {
+            if (node != null)
+            {
+                switch (node)
+                {
                     case InputNode inputNode -> setIntValue(Integer.valueOf(inputNode.inputValue));
                     case AddNode addNode -> setIntValue((int) addNode.getResult());
                     case SubtractNode subtractNode -> setIntValue((int) subtractNode.getResult());
@@ -65,21 +76,23 @@ public class IntegerNode extends Node {
             }
         }
 
-        for (Node nodes : outputNodes) {
+        for (Node nodes : outputNodes)
+        {
             if (nodes != null) nodes.execute(isStepExecution);
         }
 
     }
 
-    public Integer getValue() {
+    public Integer getValue()
+    {
         return programPanel.integers.get(title);
     }
 
-    public void setIntValue(Integer intValue) {
+    public void setIntValue(Integer intValue)
+    {
         programPanel.integers.put(title, intValue);
         System.out.println(programPanel.integers);
     }
-
 
 
 }
